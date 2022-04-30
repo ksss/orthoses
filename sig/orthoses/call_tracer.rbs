@@ -1,0 +1,5 @@
+module Orthoses
+  class ClassTracer
+    attr_accessor result: Array[[Method, Hash[Symbol, untyped]]]
+  end
+end

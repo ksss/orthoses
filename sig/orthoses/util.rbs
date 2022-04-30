@@ -1,0 +1,16 @@
+module Orthoses
+  module Util
+    VIRTUAL_NAMESPACE: Regexp
+
+    def self.unautoload!: () -> void
+    def self.each_const_recursive: (Module root, ?cache: Hash[untyped, true], ?on_error: (^(ConstLoadError) -> void)?) ?{ (Module, Symbol, untyped) -> void } -> void
+    def self.rbs_defined_const?: (String name, ?library: (String | Array[String])?, ?collection: boolish) -> bool
+    def self.rbs_defined_class?: (String name, ?library: (String | Array[String])?, ?collection: boolish) -> bool
+    def self.rbs_type_name: (String) -> RBS::TypeName
+    def self.rbs_environment: (?library: String | Array[String] | nil, ?collection: boolish) -> RBS::Environment
+    def self.string_to_namespaces: (String) -> Array[String]
+    def self.object_to_rbs: (untyped object) -> String
+    def self.check_const_getable: (String name) ?{ (untyped error) -> void } -> bool
+    def self.module_name: (Module mod) -> String?
+  end
+end
