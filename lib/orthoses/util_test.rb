@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UtilTest
   def test_rbs_defined_const?(t)
     [
@@ -41,82 +43,6 @@ module UtilTest
     end
   end
 
-  module Foo
-  end
-  class SuperIsModule < Module
-  end
-  autoload :LoadError, 'expect_load_error'
-  CONST = 1
-  SuperClassNameNil = Class.new(Class.new)
-  SingletonClass = singleton_class
-
-  def test_string_to_namespaces(t)
-    [
-      [
-        "UtilTest::Foo",
-        ["module UtilTest", "module Foo"],
-      ],
-      [
-        "module UtilTest::Bar",
-        ["module UtilTest", "module Bar"],
-      ],
-      [
-        "class UtilTest::Baz[T]",
-        ["module UtilTest", "class Baz[T]"],
-      ],
-      [
-        "interface UtilTest::Virtual::_Qux",
-        ["module UtilTest", "module Virtual", "interface _Qux"],
-      ],
-      [
-        "UtilTest::SuperIsModule",
-        ["module UtilTest", "module SuperIsModule"],
-      ],
-      [
-        "UtilTest::SuperClassNameNil",
-        ["module UtilTest", "class SuperClassNameNil"],
-      ],
-      [
-        "Object",
-        ["class Object < ::BasicObject"],
-      ],
-      [
-        "Random",
-        ["class Random"],
-      ],
-      [
-        "Hash",
-        ["class Hash[unchecked out K, unchecked out V]"],
-      ],
-      [
-        "BasicObject",
-        ["class BasicObject"],
-      ],
-      [
-        "Enumerable",
-        ["module Enumerable[unchecked out Elem]"],
-      ],
-    ].each do |full_name, expect|
-      actual = Orthoses::Util.string_to_namespaces(full_name)
-      unless expect == actual
-        t.error("expect=\n#{expect.inspect}\nbut got\n#{actual.inspect} with full_name=#{full_name}")
-      end
-    end
-
-    [
-      ["UtilTest::CONST", Orthoses::NameSpaceError],
-      ["UtilTest::NOTHING", Orthoses::ConstLoadError],
-    ].each do |error_case, error_class|
-      begin
-        Orthoses::Util.string_to_namespaces(error_case)
-      rescue => err
-      end
-      unless err.instance_of?(error_class)
-        t.error("case=#{error_case} expect=#{error_class} but got #{err.inspect}")
-      end
-    end
-  end
-
   def test_object_to_rbs(t)
     [
       [ Object, "singleton(Object)" ],
@@ -141,30 +67,6 @@ module UtilTest
       actual = Orthoses::Util.object_to_rbs(object)
       unless actual == expect
         t.error("expect=#{expect.inspect}, but got #{actual.inspect}")
-      end
-    end
-  end
-
-  def test_check_const_getable(t)
-    [
-      [ "Object", true ],
-      [ "class Object", false, NameError ],
-      [ "UtilTest::Foo", true ],
-      [ "UtilTest::LoadError", false, ::LoadError ],
-      [ "UtilTest::SingletonClass", false ],
-    ].each do |name, expect, expect_error|
-      actual_error = nil
-      actual = Orthoses::Util.check_const_getable(name) do |error|
-        actual_error = error
-      end
-      unless actual == expect
-        t.error("expect=#{expect.inspect}, but got #{actual.inspect}") and next
-      end
-      if !!actual_error ^ !!expect_error
-        t.error("expect_error=#{expect_error.inspect}, but got #{actual_error.inspect}") and next
-      end
-      if actual_error && expect_error && !actual_error.instance_of?(expect_error)
-        t.error("expect_error=#{expect_error.inspect}, but got #{actual_error.inspect}")
       end
     end
   end

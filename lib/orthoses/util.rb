@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Orthoses
   module Util
     VIRTUAL_NAMESPACE = /\A(?<kind>module|class|interface)\s+(?<name>[\w:]+)(?<others>.+)?/
@@ -11,8 +13,8 @@ module Orthoses
     def self.each_const_recursive(root, cache: {}, on_error: nil, &block)
       root.constants(false).each do |const|
         val = root.const_get(const)
-        next if cache[val]
-        cache[val] = true
+        next if cache[const] == val
+        cache[const] = val
         next if val.equal?(root)
         block.call(root, const, val) if block
         if val.respond_to?(:constants)
@@ -28,7 +30,7 @@ module Orthoses
     def self.rbs_defined_const?(name, library: nil, collection: false)
       return false if name.start_with?("#<")
       env = rbs_environment(library: library, collection: collection)
-      name.sub!(/Object::/, '')
+      name = name.sub(/Object::/, '')
       target = rbs_type_name(name)
       env.constant_decls.has_key?(target)
     end
@@ -41,6 +43,7 @@ module Orthoses
     end
 
     def self.rbs_type_name(name)
+      return name if name.instance_of?(RBS::TypeName)
       name = "::#{name}" if !name.start_with?("::")
       RBS::Namespace.parse(name).to_type_name
     end
@@ -72,58 +75,6 @@ module Orthoses
 
       environment = RBS::Environment.from_loader(loader).resolve_type_names
       @env_cache[[library, collection]] = environment
-    end
-
-    def self.string_to_namespaces(full_name)
-      match = VIRTUAL_NAMESPACE.match(full_name)
-      if match
-        full_name = match[:name] or raise
-      end
-      name_splited = full_name.split('::')
-
-      name_splited.map.with_index do |part, index|
-        if match && name_splited.length == index + 1
-          next "#{match[:kind]} #{part}#{match[:others]}"
-        end
-
-        begin
-          const = name_splited[0, index + 1].join('::')
-          val = Object.const_get(const)
-        rescue NameError => error
-          if match
-            # use virtual module
-            next "module #{part}"
-          end
-          raise ConstLoadError.new(root: name_splited.first, const: const, error: error)
-        end
-
-        type_params = known_type_params(const)&.then do |type_params|
-          if type_params.empty?
-            nil
-          else
-            "[#{type_params.join(', ')}]"
-          end
-        end
-
-        case val
-        when Class
-          if val.superclass == Module
-            "module #{part}#{type_params}"
-          elsif val.superclass.nil? ||
-              val.superclass == Object ||
-              val.superclass.singleton_class? ||
-              val.superclass.name.nil? ||
-              val.equal?(Random) # https://github.com/ruby/rbs/pull/977
-            "class #{part}#{type_params}"
-          else
-            "class #{part}#{type_params} < ::#{val.superclass}"
-          end
-        when Module
-          "module #{part}#{type_params}"
-        else
-          raise NameSpaceError, "#{val.inspect} must be a class/module"
-        end
-      end
     end
 
     def self.object_to_rbs(object)
@@ -167,44 +118,35 @@ module Orthoses
       end
     end
 
-    def self.check_const_getable(name, &block)
-      begin
-        mod = Object.const_get(name)
-      rescue NameError => name_error
-        if ["wrong constant name", "uninitialized constant"].any? { |msg| name_error.message.include?(msg) }
-          block.call(name_error) if block
-          return false
-        else
-          raise
-        end
-      rescue LoadError => load_error
-        if ["cannot load such file"].any? { |msg| load_error.message.include?(msg) }
-          block.call(load_error) if block
-          return false
-        else
-          raise
-        end
-      rescue => error
-        block.call(error) if block
-        return false
-      end
-
-      return false if mod.singleton_class?
-      return false if mod.name.nil?
-
-      true
-    end
-
     UNBOUND_NAME_METHOD = Module.instance_method(:name)
 
     # Want to get the module name even if the method is overwritten.
     # e.g.) Rails::Info
     def self.module_name(mod)
+      return nil unless mod
       UNBOUND_NAME_METHOD.bind(mod).call
     end
 
+    def self.module_to_type_name(mod)
+      name = Util.module_name(mod)
+      if name && !name.empty?
+        TypeName(name)
+      else
+        nil
+      end
+    end
+
     def self.known_type_params(name)
-      rbs_environment(library: "stdlib", collection: true).class_decls[rbs_type_name(name)]&.then do |entry|
+      type_name =
+        case name
+        when String
+          name
+        when Module
+          module_to_type_name(name)
+        else
+          raise TypeError
+        end
+      rbs_environment(collection: true).class_decls[type_name]&.then do |entry|
         entry.decls.first.decl.type_params
       end
     end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Orthoses
-  # key = Module or Class name (String)
-  # value = code lines (Array)
+  # Internal middleware for return RBSStore object
+  # Builder set this middleware on last stack by default
   class Store
     def initialize(loader)
       @loader = loader
@@ -8,7 +10,7 @@ module Orthoses
 
     def call(env)
       @loader.call(env)
-      Hash.new { |h, k| h[k] = [] }
+      RBSStore.new
     end
   end
 end

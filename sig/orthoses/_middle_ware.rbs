@@ -1,0 +1,5 @@
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+interface ::Orthoses::_MiddleWare
+  include ::Orthoses::_Call
+end

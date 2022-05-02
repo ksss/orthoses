@@ -1,0 +1,5 @@
+module Orthoses
+  class Builder
+    def call: (env) { () -> void } -> RBSStore
+  end
+end

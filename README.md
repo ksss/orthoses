@@ -26,16 +26,17 @@ Orthoses::Builder.new do
     base_dir: Rails.root.join("sig/out"),
     header: "# !!! GENERATED CODE !!!"
   use Orthoses::Filter,
-    if: -> (name, bodies) {
-      path, _lineno = Object.const_source_location(name)
+    if: -> (type_name, _buffer) {
+      # @type var type_name: RBS::TypeName
+      path, _lineno = Object.const_source_location(type_name.to_s)
       return false unless path
       %r{app/models}.match?(path)
     }
   use YourCustom::Middleware
   use Orthoses::IncludeExtendPrepend
   use Orthoses::Constant
-  use Orthoses::ObjectSpaceDiff
-  use Orthoses::Store
+  use Orthoses::Walk,
+    root: "Foo"
   run -> (_) {
     # load library or application
   }
@@ -74,10 +75,15 @@ Debug pring current stored values
 
 Set logger to `env[:logger]` by `Logger.new(env[:errors])`.
 
-### Orthoses::Store
+### Orthoses::KnownSig
 
-Set default store.
-It is recommended that they be added to the end of the stack.
+Load RBS from `dir`.
+And loaded RBS will write to output.
+
+### Orthoses::Walk
+
+Load class/module recersive from `root` constant.
+If set String to `root`, It get constant after loading.
 
 ## Development
 

@@ -1,23 +1,29 @@
+# frozen_string_literal: true
+
 module ObjectSpaceAllTest
   module Foo
     module Bar
     end
   end
 
-  def test_constant(t)
-    store = Orthoses::ObjectSpaceAll.new(
-      ->(_) { {} }
-    ).call({})
+  def test_object_space_all(t)
+    store = Orthoses::Builder.new do
+      use Orthoses::Filter,
+        if: -> (name, buffer) { name.to_s.start_with?("::ObjectSpaceAllTest") }
+      use Orthoses::ObjectSpaceAll
+      run ->(_) {}
+    end.call({})
 
-    store.select! { |k, v| k.start_with?("ObjectSpaceAllTest") }
+    store.resolve!
 
-    expect = {
-      "ObjectSpaceAllTest" => [],
-      "ObjectSpaceAllTest::Foo" => [],
-      "ObjectSpaceAllTest::Foo::Bar" => [],
-    }
-    unless store == expect
-      t.error("[ObjectSpaceAll] expect=#{expect.inspect}, but got #{store}")
+    %w[
+      ObjectSpaceAllTest
+      ObjectSpaceAllTest::Foo
+      ObjectSpaceAllTest::Foo::Bar
+    ].each do |expect_key|
+      unless store.key?(TypeName(expect_key).absolute!)
+        t.error("expec to has key=#{expect_key.inspect}, but nothing")
+      end
     end
   end
 end

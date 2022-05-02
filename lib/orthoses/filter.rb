@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Orthoses
   # Filter current store.
   #   use Orthoses::Filter,
@@ -11,8 +13,8 @@ module Orthoses
 
     def call(env)
       @loader.call(env).tap do |store|
-        store.filter! do |name, bodies|
-          @if.call(name, bodies)
+        store.filter! do |name, buffer|
+          @if.call(name, buffer)
         end
       end
     end

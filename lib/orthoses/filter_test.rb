@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FilterTest
   def test_filter(t)
     store = Orthoses::Filter.new(->(_){

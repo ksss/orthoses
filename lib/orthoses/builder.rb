@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 module Orthoses
   # Middleware builder like the Rack
   #   Builder.new do
   #     use Orthoses::Logger
   #     use Orthoses::PP
-  #     use Orthoses::Store
   #     run ->(_) { }
   #   end
   class Builder
@@ -22,7 +23,7 @@ module Orthoses
     end
 
     def to_loader
-      @use.reverse.inject(@run) { |current, next_proc| next_proc[current] }
+      [*@use, Store.new(@run)].reverse.inject { |current, next_proc| next_proc[current] }
     end
 
     def call(env)

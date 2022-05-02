@@ -1,13 +1,9 @@
-module Orthoses
-  VERSION: String
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
-  class ConstLoadError < StandardError
-    attr_reader root: Module
-    attr_reader const: Symbol
-    attr_reader error: untyped
-    def initialize: (root: Module, const: Symbol, error: untyped) -> void
-  end
+module ::Orthoses
+  ::Orthoses::VERSION: String
 
-  class NameSpaceError < StandardError
-  end
+  attr_accessor self.logger: ::Logger
+
+  type ::Orthoses::env = Hash[Symbol, untyped]
 end

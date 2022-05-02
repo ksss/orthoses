@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Orthoses
   class IncludeExtendPrepend
     def initialize(loader, if: nil)
@@ -9,45 +11,60 @@ module Orthoses
       modules = Hash.new { |h, k| h[k] = [] }
       ::Module.module_eval do
         define_method(:included) do |mod|
-          if mod.kind_of?(Module) && Util.module_name(mod) && Util.module_name(self)
-            modules[Util.module_name(mod)] << [:include, Util.module_name(self)]
-          end
+          modules[mod] << [:include, self]
         end
 
         define_method(:extended) do |mod|
-          if mod.kind_of?(Module) && Util.module_name(mod) && Util.module_name(self)
-            modules[Util.module_name(mod)] << [:extend, Util.module_name(self)]
-          end
+          modules[mod] << [:extend, self]
         end
 
         define_method(:prepended) do |mod|
-          if mod.kind_of?(Module) && Util.module_name(mod) && Util.module_name(self)
-            modules[Util.module_name(mod)] << [:prepend, Util.module_name(self)]
-          end
+          modules[mod] << [:prepend, self]
         end
       end
 
       store = @loader.call(env)
 
-      modules.each do |base_name, how_mods|
-        lines = how_mods.filter_map do |how, mod|
-          next unless Util.check_const_getable(mod) { |e| env[:logger]&.info(e) }
-          next unless @if.nil? || @if.call(base_name, how, mod)
+      modules.each do |base_mod, how_mods|
+        next unless base_mod.kind_of?(Module)
+        next unless Util.module_name(base_mod)
 
-          if base_name == "Object"
+        lines = how_mods.filter_map do |how, mod|
+          next unless Util.module_name(mod)
+          known_type_params = Util.known_type_params(mod)
+          next unless known_type_params.nil? || known_type_params.empty?
+          next unless @if.nil? || @if.call(base_mod, how, mod)
+
+          if how == :include && base_mod == Object
             # avoid RecursiveAncestorError
-            if bodies = store.delete(mod)
-              store["module #{mod} : BasicObject"].concat(bodies)
-            else
-              store["module #{mod} : BasicObject"] = []
+            old_buffer = store.delete(mod)
+            store[mod].tap do |buffer|
+              if buffer.decl.nil?
+                buffer.decl = RBS::AST::Declarations::Module.new(
+                  name: Util.module_to_type_name(mod) || raise,
+                  type_params: [],
+                  self_types: [
+                    RBS::AST::Declarations::Module::Self.new(
+                      name: TypeName("BasicObject").absolute!,
+                      args: [],
+                      location: nil
+                    )
+                  ],
+                  members: [],
+                  annotations: [],
+                  location: nil,
+                  comment: nil
+                )
+              end
+              buffer.lines.concat(old_buffer.lines)
             end
           else
-            store[mod] ||= []
+            store[mod]
           end
 
           "#{how} #{mod}"
         end
-        store[base_name].concat(lines)
+        store[base_mod].concat(lines)
       end
 
       store

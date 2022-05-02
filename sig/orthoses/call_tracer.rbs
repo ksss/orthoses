@@ -1,5 +1,5 @@
-module Orthoses
-  class ClassTracer
-    attr_accessor result: Array[[Method, Hash[Symbol, untyped]]]
-  end
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+class ::Orthoses::CallTracer
+  attr_accessor result: Array[[ Method, Hash[Symbol, untyped] ]]
 end

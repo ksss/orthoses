@@ -1,0 +1,10 @@
+module Orthoses
+  class RBSStore
+    include Enumerable[[RBS::TypeName, Buffer]]
+    def []: (String | Module | RBS::TypeName) -> Orthoses::RBSStore::Buffer
+    def each: () { (RBS::TypeName, Buffer) -> void } -> void
+    def filter!: () { (RBS::TypeName, Buffer) -> boolish } -> void
+    def env: () -> RBS::Environment
+    def resolve!: () -> void
+  end
+end

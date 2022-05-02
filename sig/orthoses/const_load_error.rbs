@@ -1,0 +1,8 @@
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+class ::Orthoses::ConstLoadError < StandardError
+  attr_reader root: Module
+  attr_reader const: Symbol
+  attr_reader error: untyped
+  def initialize: (root: Module, const: Symbol, error: untyped) -> void
+end

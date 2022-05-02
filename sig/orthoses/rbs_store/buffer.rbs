@@ -1,0 +1,17 @@
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+class ::Orthoses::RBSStore::Buffer
+  type ::Orthoses::RBSStore::Buffer::decl = (RBS::AST::Declarations::Class | RBS::AST::Declarations::Module | RBS::AST::Declarations::Interface)?
+  attr_reader env: RBS::Environment
+  attr_reader type_name: RBS::TypeName
+  attr_reader lines: Array[String]
+  attr_accessor decl: ::Orthoses::RBSStore::Buffer::decl
+  def initialize: (env: RBS::Environment, type_name: RBS::TypeName, ?lines: Array[String], ?decl: ::Orthoses::RBSStore::Buffer::decl) -> void
+  def <<: (String) -> void
+  def resolve!: () -> void
+  private
+  def auto_set_decl: () -> void
+  def key_name: () -> String
+  def name_and_params: (RBS::TypeName, Array[RBS::AST::TypeParam]) -> String
+  def name_and_args: (RBS::TypeName, Array[RBS::AST::TypeParam]) -> String
+end

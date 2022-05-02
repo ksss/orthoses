@@ -1,0 +1,7 @@
+module Orthoses
+  class Constant
+    @loader: _Call
+    include Orthoses::_MiddleWare
+    def initialize: (Orthoses::_Call loader, ?if: ^(Module, Symbol, untyped) -> boolish, ?on_error: ^(Orthoses::ConstLoadError) -> void) -> void
+  end
+end

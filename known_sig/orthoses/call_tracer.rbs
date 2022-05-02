@@ -1,0 +1,5 @@
+module Orthoses
+  class CallTracer
+    attr_accessor result: Array[[Method, Hash[Symbol, untyped]]]
+  end
+end

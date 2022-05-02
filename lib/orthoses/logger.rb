@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Orthoses
   class Logger
     def initialize(loader, level: ::Logger::INFO)

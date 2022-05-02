@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CreateFileByNameTest
   module Foo
   end
@@ -5,12 +7,51 @@ module CreateFileByNameTest
   def test_create_file_by_name(t)
     Orthoses::CreateFileByName.new(
       ->(_) {
-        {
-          "CreateFileByNameTest::Foo" => ["# Foo"],
-          "module CreateFileByNameTest::Bar[T]" => ["# Bar"],
-          "class CreateFileByNameTest::Virtual::Baz" => ["# Baz"],
-          "interface CreateFileByNameTest::Virtual::Virtual::_Qux" => ["# Qux"]
-        }
+        Orthoses::RBSStore.new.tap do |store|
+          store[CreateFileByNameTest::Foo] << "# foo"
+          store["CreateFileByNameTest::Foo"] << "def foo: () -> void"
+
+          store["CreateFileByNameTest::Bar"].tap do |buffer|
+            buffer.decl = RBS::AST::Declarations::Module.new(
+              name: TypeName("CreateFileByNameTest::Bar"),
+              type_params: [RBS::AST::TypeParam.new(name: :T, variance: :invariant, upper_bound: nil, location: nil)],
+              members: [],
+              location: nil,
+              annotations: [],
+              self_types: [],
+              comment: nil
+            )
+            buffer << "# bar"
+            buffer << "def bar: () -> T"
+          end
+
+          store["CreateFileByNameTest::Virtual::Baz"].tap do |buffer|
+            buffer.decl = RBS::AST::Declarations::Class.new(
+              name: TypeName("CreateFileByNameTest::Virtual::Baz"),
+              type_params: [],
+              members: [],
+              location: nil,
+              annotations: [],
+              super_class: nil,
+              comment: nil
+            )
+            buffer << "# baz"
+            buffer << "def baz: () -> void"
+          end
+
+          store["CreateFileByNameTest::Virtual::Virtual::_Qux"].tap do |buffer|
+            buffer.decl = RBS::AST::Declarations::Interface.new(
+              name: TypeName("CreateFileByNameTest::Virtual::Virtual::_Qux"),
+              type_params: [],
+              members: [],
+              location: nil,
+              annotations: [],
+              comment: nil
+            )
+            buffer << "# qux"
+            buffer << "def qux: () -> void"
+          end
+        end
       },
       base_dir: "tmp",
       header: "# header"
@@ -30,43 +71,33 @@ module CreateFileByNameTest
     foo_expect = <<~CODE
       # header
 
-      module CreateFileByNameTest
-        module Foo
-          # Foo
-        end
+      module ::CreateFileByNameTest::Foo
+        # foo
+        def foo: () -> void
       end
     CODE
     bar_expect = <<~CODE
       # header
 
-      module CreateFileByNameTest
-        module Bar[T]
-          # Bar
-        end
+      module ::CreateFileByNameTest::Bar[T]
+        # bar
+        def bar: () -> T
       end
     CODE
     baz_expect = <<~CODE
       # header
 
-      module CreateFileByNameTest
-        module Virtual
-          class Baz
-            # Baz
-          end
-        end
+      class ::CreateFileByNameTest::Virtual::Baz
+        # baz
+        def baz: () -> void
       end
     CODE
     qux_expect = <<~CODE
       # header
 
-      module CreateFileByNameTest
-        module Virtual
-          module Virtual
-            interface _Qux
-              # Qux
-            end
-          end
-        end
+      interface ::CreateFileByNameTest::Virtual::Virtual::_Qux
+        # qux
+        def qux: () -> void
       end
     CODE
 

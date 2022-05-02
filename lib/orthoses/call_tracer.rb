@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Orthoses
   # Trace :call event by TracePoint and capture arguments.
   #   def call(env)

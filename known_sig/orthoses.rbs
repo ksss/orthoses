@@ -1,0 +1,24 @@
+module Orthoses
+  VERSION: String
+
+  class ConstLoadError < StandardError
+    attr_reader root: Module
+    attr_reader const: Symbol
+    attr_reader error: untyped
+    def initialize: (root: Module, const: Symbol, error: untyped) -> void
+  end
+
+  class NameSpaceError < StandardError
+  end
+
+  attr_accessor self.logger: ::Logger
+
+  type env = Hash[Symbol, untyped]
+
+  interface _Call
+    def call: (env) -> Orthoses::RBSStore
+  end
+  interface _MiddleWare
+    include _Call
+  end
+end

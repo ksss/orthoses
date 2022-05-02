@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LoggerTest
   def test_logger(t)
     middleware = Class.new do

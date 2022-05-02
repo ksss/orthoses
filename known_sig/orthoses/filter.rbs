@@ -1,0 +1,7 @@
+module Orthoses
+  class Filter
+    @loader: _Call
+    include Orthoses::_MiddleWare
+    def initialize: (Orthoses::_Call loader, if: ^(RBS::TypeName, Orthoses::RBSStore::Buffer) -> boolish) -> void
+  end
+end

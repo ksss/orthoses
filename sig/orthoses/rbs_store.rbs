@@ -1,0 +1,10 @@
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+class ::Orthoses::RBSStore
+  include Enumerable[[ RBS::TypeName, ::Orthoses::RBSStore::Buffer ]]
+  def []: (String | Module | RBS::TypeName) -> ::Orthoses::RBSStore::Buffer
+  def each: () { (RBS::TypeName, ::Orthoses::RBSStore::Buffer) -> void } -> void
+  def filter!: () { (RBS::TypeName, ::Orthoses::RBSStore::Buffer) -> boolish } -> void
+  def env: () -> RBS::Environment
+  def resolve!: () -> void
+end

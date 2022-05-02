@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Orthoses
   class CreateFileByName
     def initialize(loader, base_dir:, header: nil)
@@ -23,39 +25,36 @@ module Orthoses
     })
 
     def call(env)
-      @loader.call(env).each do |name, lines|
-        next if name.start_with?('#')
-        begin
-          name_spaces = Orthoses::Util.string_to_namespaces(name)
-        rescue ArgumentError => e
-          # <= 6.1 ActiveSupport::Dependencies#load_missing_constant
-          next if e.message.end_with?("has been removed from the module tree but is still active!")
-          raise
-        end
+      store = @loader.call(env)
 
-        path_base = (Util::VIRTUAL_NAMESPACE.match(name)&.[](:name) || name).split('::').map(&:underscore)
-        path = path_base.join('/') << ".rbs"
-        indent = +"  " * name_spaces.length
-        rbs = []
+      store.resolve!
 
-        # header
-        if @header
-          rbs << @header
-          rbs << ""
-        end
-        rbs.concat name_spaces.map.with_index { |name_space, indent| +"  " * indent << name_space }
+      store.env.class_decls.each do |name, entry|
+        next if name.name.start_with?('#')
 
-        # body
-        bodies = lines.flatten.compact.map { |line| "#{indent}#{line}" }
-        rbs.concat bodies if 0 < bodies.length
-
-        # footer
-        rbs.concat name_spaces.each_with_index.reverse_each.map { |_, indent| +"  " * indent << "end" }
-
-        path_name = Pathname(@base_dir) / path
-        path_name.dirname.mkpath
-        path_name.write("#{rbs.join("\n")}\n")
+        write_decls(name, entry.decls.map(&:decl))
       end
+
+      store.env.interface_decls.each do |name, entry|
+        write_decls(name, [entry.decl])
+      end
+    end
+
+    private
+
+    def write_decls(name, decls)
+      name = name.relative!
+      file_path = Pathname("#{@base_dir}/#{name.to_s.split('::').map(&:underscore).join('/')}.rbs")
+      file_path.dirname.mkpath
+      file_path.open('w+') do |out|
+        if @header
+          out.puts @header
+          out.puts
+        end
+        writer = RBS::Writer.new(out: out)
+        writer.write(decls)
+      end
+      Orthoses.logger.debug("Generate file to #{file_path.to_s}")
     end
   end
 end
