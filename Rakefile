@@ -19,7 +19,7 @@ task :generate_self_sig do
       header: "# THIS IS GENERATED CODE from `$ rake generate_self_sig`"
     use Orthoses::Filter,
       if: ->(name, _) {
-        name.name == :Orthoses || name.namespace.path.first == :Orthoses
+        name.start_with?("Orthoses")
       }
     use Orthoses::IncludeExtendPrepend
     use Orthoses::Constant

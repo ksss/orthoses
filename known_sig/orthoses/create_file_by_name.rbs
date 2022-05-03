@@ -1,6 +1,6 @@
 module Orthoses
   class CreateFileByName
-    @loader: _Call
+    @loader: Orthoses::_Call
     include Orthoses::_MiddleWare
     def initialize: (Orthoses::_Call loader, base_dir: String, ?header: String?) -> void
   end

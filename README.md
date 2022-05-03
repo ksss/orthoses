@@ -26,9 +26,8 @@ Orthoses::Builder.new do
     base_dir: Rails.root.join("sig/out"),
     header: "# !!! GENERATED CODE !!!"
   use Orthoses::Filter,
-    if: -> (type_name, _buffer) {
-      # @type var type_name: RBS::TypeName
-      path, _lineno = Object.const_source_location(type_name.to_s)
+    if: -> (name, _content) {
+      path, _lineno = Object.const_source_location(name)
       return false unless path
       %r{app/models}.match?(path)
     }
@@ -65,7 +64,7 @@ Separate directories for each module name and output RBS files.
 
 ### Orthoses::Filter
 
-Filter stored value by name and bodies.
+Filter stored value by name and content.
 
 ### Orthoses::PP
 

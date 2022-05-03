@@ -11,45 +11,22 @@ module CreateFileByNameTest
           store[CreateFileByNameTest::Foo] << "# foo"
           store["CreateFileByNameTest::Foo"] << "def foo: () -> void"
 
-          store["CreateFileByNameTest::Bar"].tap do |buffer|
-            buffer.decl = RBS::AST::Declarations::Module.new(
-              name: TypeName("CreateFileByNameTest::Bar"),
-              type_params: [RBS::AST::TypeParam.new(name: :T, variance: :invariant, upper_bound: nil, location: nil)],
-              members: [],
-              location: nil,
-              annotations: [],
-              self_types: [],
-              comment: nil
-            )
-            buffer << "# bar"
-            buffer << "def bar: () -> T"
+          store["CreateFileByNameTest::Bar"].tap do |content|
+            content.header = "module CreateFileByNameTest::Bar[T]"
+            content << "# bar"
+            content << "def bar: () -> T"
           end
 
-          store["CreateFileByNameTest::Virtual::Baz"].tap do |buffer|
-            buffer.decl = RBS::AST::Declarations::Class.new(
-              name: TypeName("CreateFileByNameTest::Virtual::Baz"),
-              type_params: [],
-              members: [],
-              location: nil,
-              annotations: [],
-              super_class: nil,
-              comment: nil
-            )
-            buffer << "# baz"
-            buffer << "def baz: () -> void"
+          store["CreateFileByNameTest::Virtual::Baz"].tap do |content|
+            content.header = "class CreateFileByNameTest::Virtual::Baz"
+            content << "# baz"
+            content << "def baz: () -> void"
           end
 
-          store["CreateFileByNameTest::Virtual::Virtual::_Qux"].tap do |buffer|
-            buffer.decl = RBS::AST::Declarations::Interface.new(
-              name: TypeName("CreateFileByNameTest::Virtual::Virtual::_Qux"),
-              type_params: [],
-              members: [],
-              location: nil,
-              annotations: [],
-              comment: nil
-            )
-            buffer << "# qux"
-            buffer << "def qux: () -> void"
+          store["CreateFileByNameTest::Virtual::Virtual::_Qux"].tap do |content|
+            content.header = "interface CreateFileByNameTest::Virtual::Virtual::_Qux"
+            content << "# qux"
+            content << "def qux: () -> void"
           end
         end
       },
@@ -64,14 +41,14 @@ module CreateFileByNameTest
 
     [foo, bar, baz, qux].each do |file|
       unless file.exist?
-        t.error("[CreateFileByName] file not created `#{file}`")
+        t.error("file not created `#{file}`")
       end
     end
 
     foo_expect = <<~CODE
       # header
 
-      module ::CreateFileByNameTest::Foo
+      module CreateFileByNameTest::Foo
         # foo
         def foo: () -> void
       end
@@ -79,7 +56,7 @@ module CreateFileByNameTest
     bar_expect = <<~CODE
       # header
 
-      module ::CreateFileByNameTest::Bar[T]
+      module CreateFileByNameTest::Bar[T]
         # bar
         def bar: () -> T
       end
@@ -87,7 +64,7 @@ module CreateFileByNameTest
     baz_expect = <<~CODE
       # header
 
-      class ::CreateFileByNameTest::Virtual::Baz
+      class CreateFileByNameTest::Virtual::Baz
         # baz
         def baz: () -> void
       end
@@ -95,7 +72,7 @@ module CreateFileByNameTest
     qux_expect = <<~CODE
       # header
 
-      interface ::CreateFileByNameTest::Virtual::Virtual::_Qux
+      interface CreateFileByNameTest::Virtual::Virtual::_Qux
         # qux
         def qux: () -> void
       end

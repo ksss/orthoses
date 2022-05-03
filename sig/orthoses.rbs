@@ -1,9 +1,9 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
-module ::Orthoses
-  ::Orthoses::VERSION: String
+module Orthoses
+  VERSION: String
 
   attr_accessor self.logger: ::Logger
 
-  type ::Orthoses::env = Hash[Symbol, untyped]
+  type env = Hash[Symbol, untyped]
 end

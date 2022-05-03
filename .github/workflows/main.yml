@@ -27,4 +27,6 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
     - name: Run the default task
-      run: bundle exec rake
+      run: |
+        mkdir .gem_rbs_collection
+        bundle exec rake

@@ -12,11 +12,11 @@ module Orthoses
       cache = {}
       store = @loader.call(env)
       store.each do |name, _|
-        next if name.name == :Module
-        next if name.name.start_with?('#<')
+        next if name == :Module
+        next if name.start_with?('#<')
 
         begin
-          base = Object.const_get(name.to_s)
+          base = Object.const_get(name)
         rescue NameError
           next
         end
@@ -31,7 +31,7 @@ module Orthoses
           next unless rbs
           next unless @if.nil? || @if.call(current, const, val, rbs)
 
-          store[current] << "::#{current}::#{const}: #{rbs}"
+          store[current] << "#{const}: #{rbs}"
 
           cache[[current, const]] = true
         end

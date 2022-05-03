@@ -27,34 +27,18 @@ module Orthoses
     def call(env)
       store = @loader.call(env)
 
-      store.resolve!
-
-      store.env.class_decls.each do |name, entry|
-        next if name.name.start_with?('#')
-
-        write_decls(name, entry.decls.map(&:decl))
-      end
-
-      store.env.interface_decls.each do |name, entry|
-        write_decls(name, [entry.decl])
-      end
-    end
-
-    private
-
-    def write_decls(name, decls)
-      name = name.relative!
-      file_path = Pathname("#{@base_dir}/#{name.to_s.split('::').map(&:underscore).join('/')}.rbs")
-      file_path.dirname.mkpath
-      file_path.open('w+') do |out|
-        if @header
-          out.puts @header
-          out.puts
+      store.each do |name, content|
+        file_path = Pathname("#{@base_dir}/#{name.to_s.split('::').map(&:underscore).join('/')}.rbs")
+        file_path.dirname.mkpath
+        file_path.open('w+') do |out|
+          if @header
+            out.puts @header
+            out.puts
+          end
+          out.puts content.to_rbs
         end
-        writer = RBS::Writer.new(out: out)
-        writer.write(decls)
+        Orthoses.logger.debug("Generate file to #{file_path.to_s}")
       end
-      Orthoses.logger.debug("Generate file to #{file_path.to_s}")
     end
   end
 end

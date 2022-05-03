@@ -1,8 +1,8 @@
 module Orthoses
   class Walk
-    @loader: _Call
+    @loader: Orthoses::_Call
     @root: Module | String
-    include _MiddleWare
-    def initialize: (_Call loader, root: Module | String) -> void
+    include Orthoses::_MiddleWare
+    def initialize: (Orthoses::_Call loader, root: Module | String) -> void
   end
 end

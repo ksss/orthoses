@@ -43,7 +43,6 @@ module Orthoses
     end
 
     def self.rbs_type_name(name)
-      return name if name.instance_of?(RBS::TypeName)
       name = "::#{name}" if !name.start_with?("::")
       RBS::Namespace.parse(name).to_type_name
     end

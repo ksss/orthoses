@@ -9,8 +9,8 @@ module FilterTest
         "Baz" => ["# Baz"],
       }
     },
-    if: -> (name, bodies) {
-      /^Ba/.match?(name) && !bodies.empty?
+    if: -> (name, content) {
+      /^Ba/.match?(name) && !content.empty?
     }).call({})
 
     expect = { "Baz" => ["# Baz"] }

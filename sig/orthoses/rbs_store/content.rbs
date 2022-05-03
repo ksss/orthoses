@@ -1,0 +1,11 @@
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+class Orthoses::RBSStore::Content
+  attr_reader name: String
+  attr_reader body: Array[String]
+  attr_accessor header: String?
+  def initialize: (name: String) -> void
+  def <<: (String) -> void
+  def concat: (Array[String]) -> void
+  def to_rbs: () -> String
+end

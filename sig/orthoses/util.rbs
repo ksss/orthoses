@@ -1,9 +1,11 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
-module ::Orthoses::Util
+module Orthoses::Util
+  UNBOUND_NAME_METHOD: UnboundMethod
+
   def self.unautoload!: () -> void
 
-  def self.each_const_recursive: (Module root, ?cache: Hash[untyped, true], ?on_error: ^(::Orthoses::ConstLoadError) -> void?) ?{ (Module, Symbol, untyped) -> void } -> void
+  def self.each_const_recursive: (Module root, ?cache: Hash[untyped, true], ?on_error: ^(Orthoses::ConstLoadError) -> void?) ?{ (Module, Symbol, untyped) -> void } -> void
 
   def self.rbs_defined_const?: (String name, ?library: (String | Array[String])?, ?collection: boolish) -> bool
 
@@ -21,7 +23,5 @@ module ::Orthoses::Util
 
   def self.known_type_params: (Module | String) -> Array[RBS::AST::TypeParam]
 
-  ::Orthoses::Util::VIRTUAL_NAMESPACE: Regexp
-
-  ::Orthoses::Util::UNBOUND_NAME_METHOD: UnboundMethod
+  VIRTUAL_NAMESPACE: Regexp
 end

@@ -16,9 +16,9 @@ module Orthoses
   type env = Hash[Symbol, untyped]
 
   interface _Call
-    def call: (env) -> Orthoses::RBSStore
+    def call: (Orthoses::env) -> Orthoses::RBSStore
   end
   interface _MiddleWare
-    include _Call
+    include Orthoses::_Call
   end
 end

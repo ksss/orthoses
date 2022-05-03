@@ -1,5 +1,5 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
-interface ::Orthoses::_Call
-  def call: (::Orthoses::env) -> ::Orthoses::RBSStore
+interface Orthoses::_Call
+  def call: (Orthoses::env) -> Orthoses::RBSStore
 end

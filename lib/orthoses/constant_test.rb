@@ -20,28 +20,25 @@ module ConstantTest
         store[ConstantTest::Foo::Bar]
         store[ConstantTest::Foo::Baz]
       end
-    }
-    ).call({})
+    }).call({})
 
-    store.resolve!
-
-    unless store.env.constant_decls.length == 4
-      t.error("expect 4 constant decls, but got #{store.env.constant_decls.length}")
+    unless store.length == 4
+      t.error("expect 4 constant decls, but got #{store.length}")
     end
 
     {
-      "ConstantTest::CONST" => "0",
-      "ConstantTest::Foo::CONST" => "1",
-      "ConstantTest::Foo::Bar::CONST" => "2",
-      "ConstantTest::Foo::Baz::CONST" => "3",
+      "ConstantTest" => ["CONST: 0"],
+      "ConstantTest::Foo" => ["CONST: 1"],
+      "ConstantTest::Foo::Bar" => ["CONST: 2"],
+      "ConstantTest::Foo::Baz" => ["CONST: 3"],
     }.each do |name, expect|
-      entry = store.env.constant_decls[TypeName(name).absolute!]
-      unless entry
+      content = store[name]
+      unless content
         t.error("expect found name=#{name.inspect} in store, but nothing")
         next
       end
-      unless expect == entry.decl.type.to_s
-        t.error("expect=#{expect}, but got #{entry.decl.type.to_s}")
+      unless expect == content.body
+        t.error("expect=#{expect}, but got #{content.body}")
       end
     end
   end

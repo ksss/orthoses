@@ -37,26 +37,12 @@ module Orthoses
 
           if how == :include && base_mod == Object
             # avoid RecursiveAncestorError
-            old_buffer = store.delete(mod)
-            store[mod].tap do |buffer|
-              if buffer.decl.nil?
-                buffer.decl = RBS::AST::Declarations::Module.new(
-                  name: Util.module_to_type_name(mod) || raise,
-                  type_params: [],
-                  self_types: [
-                    RBS::AST::Declarations::Module::Self.new(
-                      name: TypeName("BasicObject").absolute!,
-                      args: [],
-                      location: nil
-                    )
-                  ],
-                  members: [],
-                  annotations: [],
-                  location: nil,
-                  comment: nil
-                )
+            old_content = store.delete(mod)
+            store[mod].tap do |content|
+              if content.header.nil?
+                content.header = "module #{Util.module_to_type_name(mod)} : ::BasicObject"
               end
-              buffer.lines.concat(old_buffer.lines)
+              content.body.concat(old_content.body) if old_content
             end
           else
             store[mod]
