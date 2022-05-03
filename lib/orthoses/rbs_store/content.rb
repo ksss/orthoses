@@ -25,7 +25,7 @@ module Orthoses
         if @header.nil?
           auto_header
         end
-        body_uniq("#{@header}\n#{@body.map { "  #{_1}\n" }.join}end\n")
+        body_uniq("#{@header}\n#{@body.map { |b| "  #{b}\n" }.join}end\n")
       end
 
       private

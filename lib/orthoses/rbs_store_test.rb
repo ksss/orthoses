@@ -11,7 +11,7 @@ module RBSStoreTest
     store["RBSStoreTest::Simple"] << "CONST: Integer"
     store["RBSStoreTest::WithSuper"]
 
-    actual = store.map { _2.to_rbs }.join("\n")
+    actual = store.map { |_, v| v.to_rbs }.join("\n")
 
     expect = <<~RBS
       class RBSStoreTest::Simple

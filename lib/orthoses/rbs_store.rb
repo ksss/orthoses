@@ -24,8 +24,8 @@ module Orthoses
       @name_content_map[full_name.to_s] ||= RBSStore::Content.new(name: full_name.to_s)
     end
 
-    def each(...)
-      @name_content_map.each(...)
+    def each(&block)
+      @name_content_map.each(&block)
     end
 
     def key?(full_name)
@@ -36,8 +36,8 @@ module Orthoses
       @name_content_map.delete(full_name)
     end
 
-    def filter!(...)
-      @name_content_map.filter!(...)
+    def filter!(&block)
+      @name_content_map.filter!(&block)
     end
 
     def length()

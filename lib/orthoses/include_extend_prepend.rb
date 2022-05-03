@@ -29,7 +29,7 @@ module Orthoses
         next unless base_mod.kind_of?(Module)
         next unless Util.module_name(base_mod)
 
-        lines = how_mods.filter_map do |how, mod|
+        lines = how_mods.filter.map do |how, mod|
           next unless Util.module_name(mod)
           known_type_params = Util.known_type_params(mod)
           next unless known_type_params.nil? || known_type_params.empty?
