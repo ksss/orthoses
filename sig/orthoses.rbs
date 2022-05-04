@@ -6,4 +6,6 @@ module Orthoses
   attr_accessor self.logger: ::Logger
 
   type env = Hash[Symbol, untyped]
+
+  type store = Hash[String | Module, Orthoses::Content]
 end

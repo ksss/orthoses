@@ -1,9 +1,0 @@
-module Orthoses
-  class RBSStore
-    include Enumerable[[String, Content]]
-    def []: (_ToS) -> Content
-    def each: () { ([String, Content]) -> void } -> void
-    def filter!: () { (String, Content) -> boolish } -> void
-    def length: () -> Integer
-  end
-end

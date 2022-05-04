@@ -1,5 +1,5 @@
 module Orthoses
   class Builder
-    def call: (Orthoses::env) { () -> void } -> Orthoses::RBSStore
+    def call: (Orthoses::env) { () -> void } -> Orthoses::store
   end
 end

@@ -14,9 +14,10 @@ module Orthoses
   attr_accessor self.logger: ::Logger
 
   type env = Hash[Symbol, untyped]
+  type store = Hash[String | Module, Orthoses::Content]
 
   interface _Call
-    def call: (Orthoses::env) -> Orthoses::RBSStore
+    def call: (Orthoses::env) -> Hash[String, Orthoses::Content]
   end
   interface _MiddleWare
     include Orthoses::_Call

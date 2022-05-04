@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 
-module RBSStoreTest
+module ContentTest
   class Simple
   end
   class WithSuper < Integer
   end
 
-  def test_auto_set_decl(t)
-    store = Orthoses::RBSStore.new
-    store["RBSStoreTest::Simple"] << "CONST: Integer"
-    store["RBSStoreTest::WithSuper"]
+  def test_to_rbs(t)
+    store = Orthoses::Util.new_store
+    store["ContentTest::Simple"] << "CONST: Integer"
+    store["ContentTest::WithSuper"]
 
     actual = store.map { |_, v| v.to_rbs }.join("\n")
 
     expect = <<~RBS
-      class RBSStoreTest::Simple
+      class ContentTest::Simple
         CONST: Integer
       end
 
-      class RBSStoreTest::WithSuper < ::Integer
+      class ContentTest::WithSuper < ::Integer
       end
     RBS
     unless expect == actual

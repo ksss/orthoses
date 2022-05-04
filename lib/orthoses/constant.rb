@@ -10,8 +10,7 @@ module Orthoses
 
     def call(env)
       cache = {}
-      store = @loader.call(env)
-      store.each do |name, _|
+      @loader.call(env).each do |name, _|
         next if name == :Module
         next if name.start_with?('#<')
 
@@ -36,7 +35,6 @@ module Orthoses
           cache[[current, const]] = true
         end
       end
-      store
     end
   end
 end

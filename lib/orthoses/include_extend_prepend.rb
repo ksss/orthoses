@@ -38,12 +38,11 @@ module Orthoses
           if how == :include && base_mod == Object
             # avoid RecursiveAncestorError
             old_content = store.delete(mod)
-            store[mod].tap do |content|
-              if content.header.nil?
-                content.header = "module #{Util.module_to_type_name(mod)} : ::BasicObject"
-              end
-              content.body.concat(old_content.body) if old_content
+            content = store[mod]
+            if content.header.nil?
+              content.header = "module #{Util.module_to_type_name(mod)} : ::BasicObject"
             end
+            content.body.concat(old_content.body) if old_content
           else
             store[mod]
           end

@@ -1,6 +1,6 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
-class Orthoses::RBSStore::Content
+class Orthoses::Content
   attr_reader name: String
   attr_reader body: Array[String]
   attr_accessor header: String?

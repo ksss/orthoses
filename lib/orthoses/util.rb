@@ -149,5 +149,9 @@ module Orthoses
         entry.decls.first.decl.type_params
       end
     end
+
+    def self.new_store
+      Hash.new { |h, k| h[k.to_s] ||= Content.new(name: k.to_s) }
+    end
   end
 end

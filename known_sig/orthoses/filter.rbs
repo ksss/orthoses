@@ -2,6 +2,6 @@ module Orthoses
   class Filter
     @loader: Orthoses::_Call
     include Orthoses::_MiddleWare
-    def initialize: (Orthoses::_Call loader, if: ^(String, Orthoses::RBSStore::Content) -> boolish) -> void
+    def initialize: (Orthoses::_Call loader, if: ^(String, Orthoses::Content) -> boolish) -> void
   end
 end
