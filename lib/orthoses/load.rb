@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Orthoses
-  class KnownSig
-    # use Orthoses::KnownSig,
+  class Load
+    # use Orthoses::Load,
     #   dir: 'known_sig'
     def initialize(loader, dir:)
       @loader = loader

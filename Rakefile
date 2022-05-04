@@ -24,7 +24,7 @@ task :generate_self_sig do
       }
     use Orthoses::IncludeExtendPrepend
     use Orthoses::Constant
-    use Orthoses::KnownSig,
+    use Orthoses::Load,
       dir: 'known_sig'
     use Orthoses::Walk,
       root: "Orthoses"

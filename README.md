@@ -69,7 +69,7 @@ Filter stored value by name and content.
 
 Debug pring current stored values
 
-### Orthoses::KnownSig
+### Orthoses::Load
 
 Load RBS from `dir`.
 And loaded RBS will write to output.
