@@ -24,10 +24,12 @@ module Orthoses
     end
 
     def <<(line)
+      Orthoses.logger.debug("[#{name}] << #{line} on #{__FILE__}:#{__LINE__}")
       @body << line
     end
 
     def concat(other)
+      Orthoses.logger.debug("[#{name}] concat #{other} on #{__FILE__}:#{__LINE__}")
       @body.concat(other)
     end
 
@@ -72,7 +74,7 @@ module Orthoses
         before_members = parsed_decl.members.dup
         parsed_decl.members.uniq! { |m| [m.class, m.respond_to?(:name) ? m.name : nil] }
         (before_members - parsed_decl.members).each do |droped_member|
-          Orthoses.logger.debug("#{parsed_decl.name}::#{droped_member.name.to_s}: #{droped_member.to_s} was droped since duplication")
+          Orthoses.logger.warn("#{parsed_decl.name}::#{droped_member.name.to_s}: #{droped_member.to_s} was droped since duplication")
         end
         parsed_decl
       end

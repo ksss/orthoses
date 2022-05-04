@@ -21,6 +21,7 @@ module Orthoses
           each_const_recursive(val, cache: cache, on_error: on_error, &block)
         end
       rescue LoadError, StandardError => err
+        Orthoses.logger.error("#{err.class}: #{err.message} on #{err.backtrace.first}")
         if on_error
           on_error.call(ConstLoadError.new(root: root, const: const, error: err))
         end
@@ -151,7 +152,7 @@ module Orthoses
     end
 
     def self.new_store
-      Hash.new { |h, k| h[k.to_s] ||= Content.new(name: k.to_s) }
+      Hash.new { |h, k| h[k] = Content.new(name: k) }
     end
   end
 end

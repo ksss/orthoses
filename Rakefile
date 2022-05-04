@@ -13,6 +13,7 @@ desc "generate self signature to `sig` dir"
 task :generate_self_sig do
   Pathname('sig').rmtree rescue nil
   require_relative 'lib/orthoses'
+  Orthoses.logger.level = :info
   Orthoses::Builder.new do
     use Orthoses::CreateFileByName,
       base_dir: 'sig',

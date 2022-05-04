@@ -14,6 +14,7 @@ module Orthoses
         tmp_env = RBS::Environment.new
 
         paths.each do |rbs_file|
+          Orthoses.logger.debug("Load #{rbs_file}")
           buffer = RBS::Buffer.new(name: rbs_file.to_s, content: File.read(rbs_file, encoding: "UTF-8"))
           decls = RBS::Parser.parse_signature(buffer)
           decls.each { |decl| tmp_env << decl }

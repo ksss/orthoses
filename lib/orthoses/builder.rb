@@ -3,9 +3,12 @@
 module Orthoses
   # Middleware builder like the Rack
   #   Builder.new do
-  #     use Orthoses::Logger
-  #     use Orthoses::PP
-  #     run ->(_) { }
+  #     use Orthoses::CreateFileByName
+  #     use Orthoses::Constant
+  #     use Orthoses::IncludeExtendPrepend
+  #     use Orthoses::Walk,
+  #       root: "Foo"
+  #     run ->(_) { require 'foo' }
   #   end
   class Builder
     def initialize(&block)

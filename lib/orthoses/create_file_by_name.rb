@@ -37,7 +37,7 @@ module Orthoses
           end
           out.puts content.to_rbs
         end
-        Orthoses.logger.debug("Generate file to #{file_path.to_s}")
+        Orthoses.logger.info("Generate file to #{file_path.to_s}")
       end
     end
   end

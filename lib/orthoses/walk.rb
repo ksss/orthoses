@@ -10,9 +10,14 @@ module Orthoses
     def call(env)
       @loader.call(env).tap do |store|
         root = Object.const_get(@root) if @root.instance_of?(String)
-        store[root]
+        Util.module_name(root)&.then { |root_name| store[root_name] }
         Orthoses::Util.each_const_recursive(root) do |current, const, val|
-          store[val] if val.kind_of?(Module)
+          if val.kind_of?(Module)
+            Util.module_name(val)&.then do |val_name|
+              Orthoses.logger.debug("Add [#{val_name}] on #{__FILE__}:#{__LINE__}")
+              store[val_name]
+            end
+          end
         end
       end
     end

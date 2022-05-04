@@ -27,29 +27,31 @@ module Orthoses
 
       modules.each do |base_mod, how_mods|
         next unless base_mod.kind_of?(Module)
-        next unless Util.module_name(base_mod)
+        base_mod_name = Util.module_name(base_mod)
+        next unless base_mod_name
 
         lines = how_mods.filter.map do |how, mod|
-          next unless Util.module_name(mod)
+          mod_name = Util.module_name(mod)
+          next unless mod_name
           known_type_params = Util.known_type_params(mod)
           next unless known_type_params.nil? || known_type_params.empty?
           next unless @if.nil? || @if.call(base_mod, how, mod)
 
           if how == :include && base_mod == Object
             # avoid RecursiveAncestorError
-            old_content = store.delete(mod)
-            content = store[mod]
+            old_content = store.delete(mod_name)
+            content = store[mod_name]
             if content.header.nil?
               content.header = "module #{Util.module_to_type_name(mod)} : ::BasicObject"
             end
             content.body.concat(old_content.body) if old_content
           else
-            store[mod]
+            store[mod_name]
           end
 
-          "#{how} #{mod}"
+          "#{how} #{mod_name}"
         end
-        store[base_mod].concat(lines)
+        store[base_mod_name].concat(lines)
       end
 
       store

@@ -1,4 +1,0 @@
-# THIS IS GENERATED CODE from `$ rake generate_self_sig`
-
-class Orthoses::Logger
-end

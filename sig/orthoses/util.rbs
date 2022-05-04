@@ -24,4 +24,6 @@ module Orthoses::Util
   def self.known_type_params: (Module | String) -> Array[RBS::AST::TypeParam]
 
   def self.new_store: () -> Orthoses::store
+
+  VIRTUAL_NAMESPACE: Regexp
 end

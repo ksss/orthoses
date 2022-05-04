@@ -21,7 +21,6 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ```rb
 Orthoses::Builder.new do
-  use Orthoses::Logger
   use Orthoses::CreateFileByName
     base_dir: Rails.root.join("sig/out"),
     header: "# !!! GENERATED CODE !!!"
@@ -69,10 +68,6 @@ Filter stored value by name and content.
 ### Orthoses::PP
 
 Debug pring current stored values
-
-### Orthoses::Logger
-
-Set logger to `env[:logger]` by `Logger.new(env[:errors])`.
 
 ### Orthoses::KnownSig
 

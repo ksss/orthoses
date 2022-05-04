@@ -12,10 +12,11 @@ module Orthoses
 
       after_modules = ObjectSpace.each_object(Module).to_a
       after_modules.each do |mod|
-        next if Util.module_name(mod).nil?
+        mod_name = Util.module_name(mod)
+        next if mod_name.nil?
         next unless @if.nil? || @if.call(mod)
 
-        store[Util.module_name(mod)]
+        store[mod_name]
       end
 
       store

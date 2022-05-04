@@ -14,7 +14,9 @@ module Orthoses
     def call(env)
       @loader.call(env).tap do |store|
         store.filter! do |name, content|
-          @if.call(name, content)
+          @if.call(name, content).tap do
+            Orthoses.logger.debug("Filter pass [#{name}]")
+          end
         end
       end
     end

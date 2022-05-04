@@ -10,7 +10,7 @@ module Orthoses
 
     def call(env)
       @loader.call(env)
-      Hash.new { |h, k| h[k.to_s] = Content.new(name: k.to_s) }
+      Util.new_store
     end
   end
 end

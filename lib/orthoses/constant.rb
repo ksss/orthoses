@@ -10,29 +10,31 @@ module Orthoses
 
     def call(env)
       cache = {}
-      @loader.call(env).each do |name, _|
-        next if name == :Module
-        next if name.start_with?('#<')
+      @loader.call(env).tap do |store|
+        store.each do |name, _|
+          next if name == :Module
+          next if name.start_with?('#<')
 
-        begin
-          base = Object.const_get(name)
-        rescue NameError
-          next
-        end
-        next unless base.kind_of?(Module)
-        Orthoses::Util.each_const_recursive(base, on_error: @on_error) do |current, const, val|
-          next if current.singleton_class?
-          next if current.name.nil?
-          next if val.kind_of?(Module)
-          next if cache[[current, const]]
+          begin
+            base = Object.const_get(name)
+          rescue NameError
+            next
+          end
+          next unless base.kind_of?(Module)
+          Orthoses::Util.each_const_recursive(base, on_error: @on_error) do |current, const, val|
+            next if current.singleton_class?
+            next if current.name.nil?
+            next if Util.module_name(current).nil?
+            next if val.kind_of?(Module)
+            next if cache[[current, const]]
+            cache[[current, const]] = true
 
-          rbs = Orthoses::Util.object_to_rbs(val)
-          next unless rbs
-          next unless @if.nil? || @if.call(current, const, val, rbs)
+            rbs = Orthoses::Util.object_to_rbs(val)
+            next unless rbs
+            next unless @if.nil? || @if.call(current, const, val, rbs)
 
-          store[current] << "#{const}: #{rbs}"
-
-          cache[[current, const]] = true
+            store[Util.module_name(current)] << "#{const}: #{rbs}"
+          end
         end
       end
     end

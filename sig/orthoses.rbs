@@ -7,5 +7,5 @@ module Orthoses
 
   type env = Hash[Symbol, untyped]
 
-  type store = Hash[String | Module, Orthoses::Content]
+  type store = Hash[String, Orthoses::Content]
 end
