@@ -8,3 +8,4 @@ gemspec
 gem "rake", "~> 13.0"
 gem "rgot", "~> 1.1"
 gem "steep"
+gem "activesupport"
