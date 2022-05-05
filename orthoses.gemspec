@@ -19,9 +19,15 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject do |f|
-      (f == __FILE__) || f.match(%r{\A(?:(?:bin|test|spec|features)/|\.(?:git|travis|circleci)|appveyor)})
+      next true if (f == __FILE__)
+      next true if f.match?(%r{\A(?:bin|known_sig)/}) # dir
+      next true if f.match?(%r{\A\.(?:git)}) # git
+      next true if f.match?(%r{\A(?:rbs_collection|Steepfile|Rakefile)}) # top file
+      next true if f.match?(%r{_test\.rb\z}) # test
+      false
     end
   end
+
   spec.bindir = "exe"
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
