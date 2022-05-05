@@ -43,39 +43,35 @@ module Orthoses
     private
 
     def auto_header
-      names = name.split('::')
-      names.each_with_index do |_, index|
-        const = names[0, index + 1].join('::')
-        val = Object.const_get(const)
+      val = Object.const_get(name)
 
-        type_params = Util.known_type_params(const)&.then do |type_params|
-          if type_params.empty?
-            nil
-          else
-            "[#{type_params.join(', ')}]"
-          end
+      type_params = Util.known_type_params(name)&.then do |type_params|
+        if type_params.empty?
+          nil
+        else
+          "[#{type_params.join(', ')}]"
         end
+      end
 
-        case val
-        when Class
-          superclass =
-            if val.superclass && val.superclass != Object
-              super_module_name = Util.module_name(val.superclass)
+      case val
+      when Class
+        superclass =
+          if val.superclass && val.superclass != Object
+            super_module_name = Util.module_name(val.superclass)
 
-              if super_module_name && super_module_name != "Random::Base" # https://github.com/ruby/rbs/pull/977
-                " < ::#{super_module_name}"
-              else
-                nil
-              end
+            if super_module_name && super_module_name != "Random::Base" # https://github.com/ruby/rbs/pull/977
+              " < ::#{super_module_name}"
             else
               nil
             end
-          self.header = "class #{Util.module_name(val)}#{type_params}#{superclass}"
-        when Module
-          self.header = "module #{Util.module_name(val)}#{type_params}"
-        else
-          raise "#{val.inspect} is not class/module"
-        end
+          else
+            nil
+          end
+        self.header = "class #{Util.module_name(val)}#{type_params}#{superclass}"
+      when Module
+        self.header = "module #{Util.module_name(val)}#{type_params}"
+      else
+        raise "#{val.inspect} is not class/module"
       end
     end
 
