@@ -17,16 +17,35 @@ module Orthoses
       instance_eval(&block) if block
     end
 
+    module CallLogable
+      def call(env)
+        Orthoses.logger.info("[#{self.class}]#call start")
+        super.tap do
+          Orthoses.logger.info("[#{self.class}]#call end")
+        end
+      end
+    end
+
     def use(middleware, *args, **key, &block)
-      @use << proc { |loader| middleware.new(loader, *args, **key, &block) }
+      @use << proc do |loader|
+        middleware.new(loader, *args, **key, &block).tap do |m|
+          m.extend CallLogable
+        end
+      end
     end
 
     def run(loader)
-      @run = loader
+      use Store
+      @run = proc do |env|
+        Orthoses.logger.info("[loader].call start")
+        loader.call(env).tap do
+          Orthoses.logger.info("[loader].call end")
+        end
+      end
     end
 
     def to_loader
-      [*@use, Store.new(@run)].reverse.inject { |current, next_proc| next_proc[current] }
+      @use.reverse.inject(@run) { |current, next_proc| next_proc[current] }
     end
 
     def call(env)
