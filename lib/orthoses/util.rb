@@ -130,7 +130,7 @@ module Orthoses
     def self.module_to_type_name(mod)
       name = Util.module_name(mod)
       if name && !name.empty?
-        TypeName(name).absolute!
+        TypeName(name)
       else
         nil
       end
