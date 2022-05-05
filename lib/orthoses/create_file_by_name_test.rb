@@ -8,7 +8,7 @@ module CreateFileByNameTest
     Orthoses::CreateFileByName.new(
       ->(_) {
         Orthoses::Util.new_store.tap do |store|
-          store[CreateFileByNameTest::Foo] << "# foo"
+          store["CreateFileByNameTest::Foo"] << "# foo"
           store["CreateFileByNameTest::Foo"] << "def foo: () -> void"
 
           store["CreateFileByNameTest::Bar"].tap do |content|
