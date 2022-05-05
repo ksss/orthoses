@@ -65,7 +65,7 @@ module Orthoses
 
     def body_uniq(rbs)
       buffer = RBS::Buffer.new(
-        name: "orthoses/rbs_store/content.rb",
+        name: "orthoses/content.rb",
         content: rbs
       )
       out = StringIO.new
@@ -80,6 +80,11 @@ module Orthoses
       end
       writer.write(decls)
       out.string
+    rescue RBS::ParsingError => err
+      puts "```rbs"
+      puts rbs
+      puts "```"
+      raise
     end
   end
 end
