@@ -2,8 +2,6 @@
 
 module Orthoses
   module Utils
-    VIRTUAL_NAMESPACE = /\A(?<kind>module|class|interface)\s+(?<name>[\w:]+)(?<others>.+)?/
-
     def self.unautoload!
       ObjectSpace.each_object(Module) do |mod|
         each_const_recursive(mod)

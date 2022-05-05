@@ -5,7 +5,6 @@ module Orthoses
   # Orthoses::Content expect to use result of middleware.
   #   store = @loader.call
   #   store["Foo::Bar"] << "def baz: () -> void"
-  #   store[Foo::Bar] << "def qux: () -> void"
   # By default, Orthoses::Content search constant of keys.
   # and decide class or module declaration.
   # Also declaraion can specify directly.
