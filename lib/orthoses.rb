@@ -40,5 +40,5 @@ module Orthoses
   class << self
     attr_accessor :logger
   end
-  self.logger = ::Logger.new($stdout)
+  self.logger = ::Logger.new($stdout, level: :info)
 end
