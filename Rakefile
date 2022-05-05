@@ -4,7 +4,7 @@ require "bundler/gem_tasks"
 require "rgot/cli"
 
 task :test do
-  Rgot::Cli.new(%w[-v --require orthoses lib]).run
+  Rgot::Cli.new(%w[-v --require orthoses lib integration_test]).run
 end
 
 task default: :test
