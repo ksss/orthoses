@@ -49,8 +49,14 @@ module Orthoses
         case val
         when Class
           superclass =
-            if val.superclass && val.superclass != Object && val.superclass.to_s != "Random::Base"
-              " < ::#{Util.module_name(val.superclass)}"
+            if val.superclass && val.superclass != Object
+              super_module_name = Util.module_name(val.superclass)
+
+              if super_module_name && super_module_name != "Random::Base"
+                " < ::#{super_module_name}"
+              else
+                nil
+              end
             else
               nil
             end

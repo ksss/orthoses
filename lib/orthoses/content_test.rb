@@ -5,11 +5,14 @@ module ContentTest
   end
   class WithSuper < Integer
   end
+  class SuperClassIsNoName < Class.new
+  end
 
   def test_to_rbs(t)
     store = Orthoses::Util.new_store
     store["ContentTest::Simple"] << "CONST: Integer"
     store["ContentTest::WithSuper"]
+    store["ContentTest::SuperClassIsNoName"]
 
     actual = store.map { |_, v| v.to_rbs }.join("\n")
 
@@ -19,6 +22,9 @@ module ContentTest
       end
 
       class ContentTest::WithSuper < ::Integer
+      end
+
+      class ContentTest::SuperClassIsNoName
       end
     RBS
     unless expect == actual
