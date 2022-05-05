@@ -15,10 +15,7 @@ module ConstantTest
   def test_constant(t)
     store = Orthoses::Constant.new(->(env){
       Orthoses::Util.new_store.tap do |store|
-        store[ConstantTest]
-        store[ConstantTest::Foo]
-        store[ConstantTest::Foo::Bar]
-        store[ConstantTest::Foo::Baz]
+        store["ConstantTest"]
       end
     }).call({})
 

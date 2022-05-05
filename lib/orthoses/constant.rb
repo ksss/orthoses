@@ -11,6 +11,7 @@ module Orthoses
     def call(env)
       cache = {}
       @loader.call(env).tap do |store|
+        will_add_key_and_content = []
         store.each do |name, _|
           next if name == :Module
           next if name.start_with?('#<')
@@ -23,7 +24,6 @@ module Orthoses
           next unless base.kind_of?(Module)
           Orthoses::Util.each_const_recursive(base, on_error: @on_error) do |current, const, val|
             next if current.singleton_class?
-            next if current.name.nil?
             next if Util.module_name(current).nil?
             next if val.kind_of?(Module)
             next if cache[[current, const]]
@@ -33,8 +33,11 @@ module Orthoses
             next unless rbs
             next unless @if.nil? || @if.call(current, const, val, rbs)
 
-            store[Util.module_name(current)] << "#{const}: #{rbs}"
+            will_add_key_and_content << [Util.module_name(current), "#{const}: #{rbs}"]
           end
+        end
+        will_add_key_and_content.each do |name, line|
+          store[name] << line
         end
       end
     end
