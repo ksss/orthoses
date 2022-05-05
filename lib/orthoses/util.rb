@@ -13,7 +13,7 @@ module Orthoses
     def self.each_const_recursive(root, cache: {}, on_error: nil, &block)
       root.constants(false).each do |const|
         val = root.const_get(const)
-        next if cache[const] == val
+        next if cache[const].equal?(val)
         cache[const] = val
         next if val.equal?(root)
         block.call(root, const, val) if block
@@ -21,7 +21,7 @@ module Orthoses
           each_const_recursive(val, cache: cache, on_error: on_error, &block)
         end
       rescue LoadError, StandardError => err
-        Orthoses.logger.error("#{err.class}: #{err.message} on #{err.backtrace.first}")
+        Orthoses.logger.warn("Orthoses::Util.each_const_recursive: #{err.class}: #{err.message} on #{err.backtrace.first}")
         if on_error
           on_error.call(ConstLoadError.new(root: root, const: const, error: err))
         end

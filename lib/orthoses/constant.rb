@@ -18,7 +18,8 @@ module Orthoses
 
           begin
             base = Object.const_get(name)
-          rescue NameError
+          rescue NameError, ArgumentError
+            # i18n/tests raise ArgumentError
             next
           end
           next unless base.kind_of?(Module)
