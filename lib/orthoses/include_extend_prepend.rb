@@ -27,13 +27,13 @@ module Orthoses
 
       modules.each do |base_mod, how_mods|
         next unless base_mod.kind_of?(Module)
-        base_mod_name = Util.module_name(base_mod)
+        base_mod_name = Utils.module_name(base_mod)
         next unless base_mod_name
 
         lines = how_mods.filter.map do |how, mod|
-          mod_name = Util.module_name(mod)
+          mod_name = Utils.module_name(mod)
           next unless mod_name
-          known_type_params = Util.known_type_params(mod)
+          known_type_params = Utils.known_type_params(mod)
           next unless known_type_params.nil? || known_type_params.empty?
           next unless @if.nil? || @if.call(base_mod, how, mod)
 
@@ -42,7 +42,7 @@ module Orthoses
             old_content = store.delete(mod_name)
             content = store[mod_name]
             if content.header.nil?
-              content.header = "module #{Util.module_to_type_name(mod)} : ::BasicObject"
+              content.header = "module #{Utils.module_to_type_name(mod)} : ::BasicObject"
             end
             content.body.concat(old_content.body) if old_content
           else

@@ -45,7 +45,7 @@ module Orthoses
     def auto_header
       val = Object.const_get(name)
 
-      type_params = Util.known_type_params(name)&.then do |type_params|
+      type_params = Utils.known_type_params(name)&.then do |type_params|
         if type_params.empty?
           nil
         else
@@ -57,7 +57,7 @@ module Orthoses
       when Class
         superclass =
           if val.superclass && val.superclass != Object
-            super_module_name = Util.module_name(val.superclass)
+            super_module_name = Utils.module_name(val.superclass)
 
             if super_module_name && super_module_name != "Random::Base" # https://github.com/ruby/rbs/pull/977
               " < ::#{super_module_name}"
@@ -67,9 +67,9 @@ module Orthoses
           else
             nil
           end
-        self.header = "class #{Util.module_name(val)}#{type_params}#{superclass}"
+        self.header = "class #{Utils.module_name(val)}#{type_params}#{superclass}"
       when Module
-        self.header = "module #{Util.module_name(val)}#{type_params}"
+        self.header = "module #{Utils.module_name(val)}#{type_params}"
       else
         raise "#{val.inspect} is not class/module"
       end

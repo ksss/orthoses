@@ -1,6 +1,6 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
-module Orthoses::Util
+module Orthoses::Utils
   UNBOUND_NAME_METHOD: UnboundMethod
 
   def self.unautoload!: () -> void

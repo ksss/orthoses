@@ -10,7 +10,7 @@ module Orthoses
 
     def call
       @loader.call
-      Util.new_store
+      Utils.new_store
     end
   end
 end

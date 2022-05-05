@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module UtilTest
+module UtilsTest
   def test_rbs_defined_const?(t)
     [
       ["Object::RUBY_VERSION", nil, true],
@@ -15,7 +15,7 @@ module UtilTest
       ["URI::HTTP::DEFAULT_PORT", 'uri', true],
       ["Nothing", 'uri', false],
     ].each do |klass, library, expect|
-      actual = Orthoses::Util.rbs_defined_const?(klass, library: library)
+      actual = Orthoses::Utils.rbs_defined_const?(klass, library: library)
       unless expect == actual
         t.error("Orthoses.rbs_defined_const?(#{klass}) expect=#{expect}, but got #{actual}")
       end
@@ -36,7 +36,7 @@ module UtilTest
       ["URI", 'uri', true],
       ["Nothing", 'uri', false],
     ].each do |klass, library, expect|
-      actual = Orthoses::Util.rbs_defined_class?(klass, library: library)
+      actual = Orthoses::Utils.rbs_defined_class?(klass, library: library)
       unless expect == actual
         t.error("Orthoses.rbs_defined_class?(#{klass}) expect=#{expect}, but got #{actual}")
       end
@@ -64,7 +64,7 @@ module UtilTest
       [ { a: 1, b: 'c' }, '{ a: 1, b: "c" }' ],
       [ { 1 => 2, 3 => 4 }, 'Hash[1 | 3, 2 | 4]' ],
     ].each do |object, expect|
-      actual = Orthoses::Util.object_to_rbs(object)
+      actual = Orthoses::Utils.object_to_rbs(object)
       unless actual == expect
         t.error("expect=#{expect.inspect}, but got #{actual.inspect}")
       end

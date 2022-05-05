@@ -14,7 +14,7 @@ require_relative 'orthoses/load'
 require_relative 'orthoses/object_space_all'
 require_relative 'orthoses/pp'
 require_relative 'orthoses/store'
-require_relative 'orthoses/util'
+require_relative 'orthoses/utils'
 require_relative 'orthoses/version'
 require_relative 'orthoses/walk'
 

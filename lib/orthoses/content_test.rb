@@ -9,7 +9,7 @@ module ContentTest
   end
 
   def test_to_rbs(t)
-    store = Orthoses::Util.new_store
+    store = Orthoses::Utils.new_store
     store["ContentTest::Simple"] << "CONST: Integer"
     store["ContentTest::WithSuper"]
     store["ContentTest::SuperClassIsNoName"]

@@ -12,7 +12,7 @@ module ActiveSupportTest
       use Orthoses::ObjectSpaceAll
       run -> () {
         require 'active_support'
-        Orthoses::Util.unautoload!
+        Orthoses::Utils.unautoload!
       }
     end.call
   ensure

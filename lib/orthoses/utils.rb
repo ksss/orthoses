@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Orthoses
-  module Util
+  module Utils
     VIRTUAL_NAMESPACE = /\A(?<kind>module|class|interface)\s+(?<name>[\w:]+)(?<others>.+)?/
 
     def self.unautoload!
@@ -21,7 +21,7 @@ module Orthoses
           each_const_recursive(val, cache: cache, on_error: on_error, &block)
         end
       rescue LoadError, StandardError => err
-        Orthoses.logger.warn("Orthoses::Util.each_const_recursive: #{err.class}: #{err.message} on #{err.backtrace.first}")
+        Orthoses.logger.warn("Orthoses::Utils.each_const_recursive: #{err.class}: #{err.message} on #{err.backtrace.first}")
         if on_error
           on_error.call(ConstLoadError.new(root: root, const: const, error: err))
         end
@@ -114,7 +114,7 @@ module Orthoses
           end
         end
       else
-        Util.module_name(object.class) || 'untyped'
+        Utils.module_name(object.class) || 'untyped'
       end
     end
 
@@ -128,7 +128,7 @@ module Orthoses
     end
 
     def self.module_to_type_name(mod)
-      name = Util.module_name(mod)
+      name = Utils.module_name(mod)
       if name && !name.empty?
         TypeName(name)
       else
