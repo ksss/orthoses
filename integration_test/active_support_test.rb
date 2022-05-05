@@ -10,11 +10,11 @@ module ActiveSupportTest
       use Orthoses::Constant
       use Orthoses::IncludeExtendPrepend
       use Orthoses::ObjectSpaceAll
-      run -> (_) {
+      run -> () {
         require 'active_support'
         Orthoses::Util.unautoload!
       }
-    end.call({})
+    end.call
   ensure
     Pathname('integration_test/tmp').rmtree rescue nil
   end

@@ -35,10 +35,10 @@ Orthoses::Builder.new do
   use Orthoses::Constant
   use Orthoses::Walk,
     root: "Foo"
-  run -> (_) {
+  run -> () {
     # load library or application
   }
-end.call({})
+end.call
 ```
 
 ## Middlewares

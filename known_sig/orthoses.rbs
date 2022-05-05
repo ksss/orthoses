@@ -13,11 +13,10 @@ module Orthoses
 
   attr_accessor self.logger: ::Logger
 
-  type env = Hash[Symbol, untyped]
   type store = Hash[String, Orthoses::Content]
 
   interface _Call
-    def call: (Orthoses::env) -> Hash[String, Orthoses::Content]
+    def call: () -> Hash[String, Orthoses::Content]
   end
   interface _MiddleWare
     include Orthoses::_Call

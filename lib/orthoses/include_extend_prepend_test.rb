@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module IncludeExtendPrependTest
-  LOADER = ->(_){
+  LOADER = ->(){
     module Mod
     end
     class Foo
@@ -18,7 +18,7 @@ module IncludeExtendPrependTest
   def test_include_extend_prepend(t)
     store = Orthoses::IncludeExtendPrepend.new(
       Orthoses::Store.new(LOADER)
-    ).call({})
+    ).call
 
     expect = <<~RBS
       module IncludeExtendPrependTest::Mod : ::BasicObject

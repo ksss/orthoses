@@ -7,8 +7,8 @@ module Orthoses
       @root = root
     end
 
-    def call(env)
-      @loader.call(env).tap do |store|
+    def call
+      @loader.call.tap do |store|
         root = Object.const_get(@root) if @root.instance_of?(String)
         Util.module_name(root)&.then { |root_name| store[root_name] }
         Orthoses::Util.each_const_recursive(root) do |current, const, val|

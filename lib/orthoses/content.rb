@@ -3,7 +3,7 @@
 module Orthoses
   # Common interface for output.
   # Orthoses::Content expect to use result of middleware.
-  #   store = @loader.call(env)
+  #   store = @loader.call
   #   store["Foo::Bar"] << "def baz: () -> void"
   #   store[Foo::Bar] << "def qux: () -> void"
   # By default, Orthoses::Content search constant of keys.

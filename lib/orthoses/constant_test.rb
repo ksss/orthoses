@@ -13,11 +13,11 @@ module ConstantTest
   end
 
   def test_constant(t)
-    store = Orthoses::Constant.new(->(env){
+    store = Orthoses::Constant.new(->(){
       Orthoses::Util.new_store.tap do |store|
         store["ConstantTest"]
       end
-    }).call({})
+    }).call
 
     unless store.length == 4
       t.error("expect 4 constant decls, but got #{store.length}")

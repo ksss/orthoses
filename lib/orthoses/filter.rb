@@ -11,8 +11,8 @@ module Orthoses
       @if = binding.local_variable_get(:if)
     end
 
-    def call(env)
-      @loader.call(env).tap do |store|
+    def call
+      @loader.call.tap do |store|
         store.filter! do |name, content|
           @if.call(name, content).tap do
             Orthoses.logger.debug("Filter pass [#{name}]")

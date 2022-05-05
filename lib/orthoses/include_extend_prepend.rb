@@ -7,7 +7,7 @@ module Orthoses
       @if = binding.local_variable_get(:if)
     end
 
-    def call(env)
+    def call
       modules = Hash.new { |h, k| h[k] = [] }
       ::Module.module_eval do
         define_method(:included) do |mod|
@@ -23,7 +23,7 @@ module Orthoses
         end
       end
 
-      store = @loader.call(env)
+      store = @loader.call
 
       modules.each do |base_mod, how_mods|
         next unless base_mod.kind_of?(Module)

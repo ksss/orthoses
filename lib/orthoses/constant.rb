@@ -8,9 +8,9 @@ module Orthoses
       @on_error = on_error
     end
 
-    def call(env)
+    def call
       cache = {}
-      @loader.call(env).tap do |store|
+      @loader.call.tap do |store|
         will_add_key_and_content = []
         store.each do |name, _|
           next if name == :Module

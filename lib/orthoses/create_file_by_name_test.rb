@@ -6,7 +6,7 @@ module CreateFileByNameTest
 
   def test_create_file_by_name(t)
     Orthoses::CreateFileByName.new(
-      ->(_) {
+      ->() {
         Orthoses::Util.new_store.tap do |store|
           store["CreateFileByNameTest::Foo"] << "# foo"
           store["CreateFileByNameTest::Foo"] << "def foo: () -> void"
@@ -32,7 +32,7 @@ module CreateFileByNameTest
       },
       base_dir: "tmp",
       header: "# header"
-    ).call({})
+    ).call
 
     foo = Pathname("tmp/create_file_by_name_test/foo.rbs")
     bar = Pathname("tmp/create_file_by_name_test/bar.rbs")

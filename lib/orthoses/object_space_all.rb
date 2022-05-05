@@ -7,8 +7,8 @@ module Orthoses
       @if = binding.local_variable_get(:if)
     end
 
-    def call(env)
-      store = @loader.call(env)
+    def call
+      store = @loader.call
 
       after_modules = ObjectSpace.each_object(Module).to_a
       after_modules.each do |mod|

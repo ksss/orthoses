@@ -11,8 +11,8 @@ module ObjectSpaceAllTest
       use Orthoses::Filter,
         if: -> (name, content) { name.to_s.start_with?("ObjectSpaceAllTest") }
       use Orthoses::ObjectSpaceAll
-      run ->(_) {}
-    end.call({})
+      run ->() {}
+    end.call
 
     %w[
       ObjectSpaceAllTest

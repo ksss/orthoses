@@ -8,8 +8,8 @@ module Orthoses
       @loader = loader
     end
 
-    def call(env)
-      pp @loader.call(env)
+    def call
+      pp @loader.call
     end
   end
 end

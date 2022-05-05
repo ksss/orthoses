@@ -2,7 +2,7 @@
 
 module FilterTest
   def test_filter(t)
-    store = Orthoses::Filter.new(->(_){
+    store = Orthoses::Filter.new(->(){
       {
         "Foo" => [],
         "Bar" => [],
@@ -11,7 +11,7 @@ module FilterTest
     },
     if: -> (name, content) {
       /^Ba/.match?(name) && !content.empty?
-    }).call({})
+    }).call
 
     expect = { "Baz" => ["# Baz"] }
     unless store == expect

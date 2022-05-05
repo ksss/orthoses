@@ -1,5 +1,5 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 class Orthoses::Builder
-  def call: (Orthoses::env) { () -> void } -> Orthoses::store
+  def call: () { () -> void } -> Orthoses::store
 end

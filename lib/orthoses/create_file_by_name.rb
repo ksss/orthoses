@@ -24,8 +24,8 @@ module Orthoses
       end
     })
 
-    def call(env)
-      store = @loader.call(env)
+    def call
+      store = @loader.call
 
       store.each do |name, content|
         file_path = Pathname("#{@base_dir}/#{name.to_s.split('::').map(&:underscore).join('/')}.rbs")

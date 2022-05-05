@@ -8,8 +8,8 @@ module Orthoses
       @loader = loader
     end
 
-    def call(env)
-      @loader.call(env)
+    def call
+      @loader.call
       Util.new_store
     end
   end

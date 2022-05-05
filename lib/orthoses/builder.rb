@@ -8,7 +8,7 @@ module Orthoses
   #     use Orthoses::IncludeExtendPrepend
   #     use Orthoses::Walk,
   #       root: "Foo"
-  #     run ->(_) { require 'foo' }
+  #     run ->() { require 'foo' }
   #   end
   class Builder
     def initialize(&block)
@@ -18,7 +18,7 @@ module Orthoses
     end
 
     module CallLogable
-      def call(env)
+      def call()
         Orthoses.logger.info("[#{self.class}]#call start")
         super.tap do
           Orthoses.logger.info("[#{self.class}]#call end")
@@ -36,9 +36,9 @@ module Orthoses
 
     def run(loader)
       use Store
-      @run = proc do |env|
+      @run = proc do
         Orthoses.logger.info("[loader].call start")
-        loader.call(env).tap do
+        loader.call.tap do
           Orthoses.logger.info("[loader].call end")
         end
       end
@@ -48,8 +48,8 @@ module Orthoses
       @use.reverse.inject(@run) { |current, next_proc| next_proc[current] }
     end
 
-    def call(env)
-      to_loader.call(env)
+    def call
+      to_loader.call
     end
   end
 end

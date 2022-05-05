@@ -2,10 +2,10 @@
 
 module Orthoses
   # Trace :call event by TracePoint and capture arguments.
-  #   def call(env)
+  #   def call
   #     scope = CallTracer.new
   #     scope.trace(ActiveRecord::Base.method(:scope)) do
-  #       @loader.call(env)
+  #       @loader.call
   #     end
   #     scope.result.each do |method, argument|
   #       argument[:name]

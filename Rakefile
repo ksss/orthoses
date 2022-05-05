@@ -28,6 +28,6 @@ task :generate_self_sig do
       dir: 'known_sig'
     use Orthoses::Walk,
       root: "Orthoses"
-    run ->(_) { }
-  end.call({})
+    run ->() { }
+  end.call
 end

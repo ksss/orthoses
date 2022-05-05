@@ -9,8 +9,8 @@ module Orthoses
       @dir = dir
     end
 
-    def call(env)
-      @loader.call(env).tap do |store|
+    def call
+      @loader.call.tap do |store|
         tmp_env = RBS::Environment.new
 
         paths.each do |rbs_file|
