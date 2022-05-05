@@ -13,6 +13,7 @@ module ContentTest
     store["ContentTest::Simple"] << "CONST: Integer"
     store["ContentTest::WithSuper"]
     store["ContentTest::SuperClassIsNoName"]
+    store["Array"]
 
     actual = store.map { |_, v| v.to_rbs }.join("\n")
 
@@ -25,6 +26,9 @@ module ContentTest
       end
 
       class ContentTest::SuperClassIsNoName
+      end
+
+      class Array[unchecked out Elem]
       end
     RBS
     unless expect == actual
