@@ -37,14 +37,12 @@ module Orthoses
           next unless known_type_params.nil? || known_type_params.empty?
           next unless @if.nil? || @if.call(base_mod, how, mod)
 
-          if how == :include && base_mod == Object
+          if base_mod_name == "Object"
             # avoid RecursiveAncestorError
-            old_content = store.delete(mod_name)
             content = store[mod_name]
             if content.header.nil?
               content.header = "module #{Utils.module_to_type_name(mod)} : ::BasicObject"
             end
-            content.body.concat(old_content.body) if old_content
           else
             store[mod_name]
           end
