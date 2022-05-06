@@ -18,7 +18,7 @@ module Orthoses
 
           begin
             base = Object.const_get(name)
-          rescue NameError, ArgumentError
+          rescue NameError, ArgumentError, LoadError
             # i18n/tests raise ArgumentError
             next
           end
