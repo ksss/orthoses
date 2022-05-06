@@ -44,14 +44,6 @@ module Orthoses
     def auto_header
       val = Object.const_get(name)
 
-      type_params = Utils.known_type_params(name)&.then do |type_params|
-        if type_params.empty?
-          nil
-        else
-          "[#{type_params.join(', ')}]"
-        end
-      end
-
       case val
       when Class
         superclass =
@@ -59,18 +51,39 @@ module Orthoses
             super_module_name = Utils.module_name(val.superclass)
 
             if super_module_name && super_module_name != "Random::Base" # https://github.com/ruby/rbs/pull/977
-              " < ::#{super_module_name}"
+              delegated_type_params = delegated_type_params(super_module_name)
+              "#{delegated_type_params} < ::#{super_module_name}#{delegated_type_params}"
             else
               nil
             end
           else
             nil
           end
-        self.header = "class #{Utils.module_name(val)}#{type_params}#{superclass}"
+        self.header = "class #{Utils.module_name(val)}#{type_params(name)}#{superclass}"
       when Module
-        self.header = "module #{Utils.module_name(val)}#{type_params}"
+        self.header = "module #{Utils.module_name(val)}#{type_params(name)}"
       else
         raise "#{val.inspect} is not class/module"
+      end
+    end
+
+    def delegated_type_params(name)
+      Utils.known_type_params(name)&.then do |params|
+        if params.empty?
+          nil
+        else
+          "[#{(:T..).take(params.length).join(', ')}]"
+        end
+      end
+    end
+
+    def type_params(name)
+      Utils.known_type_params(name)&.then do |type_params|
+        if type_params.empty?
+          nil
+        else
+          "[#{type_params.join(', ')}]"
+        end
       end
     end
 
@@ -91,7 +104,7 @@ module Orthoses
       end
       writer.write(decls)
       out.string
-    rescue RBS::ParsingError => err
+    rescue RBS::ParsingError
       puts "```rbs"
       puts rbs
       puts "```"
