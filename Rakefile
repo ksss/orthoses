@@ -24,8 +24,8 @@ task :generate_self_sig do
       }
     use Orthoses::IncludeExtendPrepend
     use Orthoses::Constant
-    use Orthoses::Load,
-      dir: 'known_sig'
+    use Orthoses::LoadRBS,
+      paths: Dir.glob("known_sig/**/*.rbs")
     use Orthoses::Walk,
       root: "Orthoses"
     run ->() { }

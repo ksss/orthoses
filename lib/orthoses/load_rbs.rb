@@ -1,26 +1,24 @@
 # frozen_string_literal: true
 
 module Orthoses
-  class Load
-    # use Orthoses::Load,
-    #   dir: 'known_sig'
-    def initialize(loader, dir:)
+  class LoadRBS
+    # use Orthoses::LoadRBS,
+    #   paths: Dir.glob("known_sig/**/*.rbs")
+    def initialize(loader, paths:)
       @loader = loader
-      @dir = dir
+      @paths = paths
     end
 
     def call
       @loader.call.tap do |store|
         tmp_env = RBS::Environment.new
 
-        paths.each do |rbs_file|
-          Orthoses.logger.debug("Load #{rbs_file}")
-          buffer = RBS::Buffer.new(name: rbs_file.to_s, content: File.read(rbs_file, encoding: "UTF-8"))
+        @paths.each do |path|
+          Orthoses.logger.debug("Load #{path}")
+          buffer = RBS::Buffer.new(name: path.to_s, content: File.read(path.to_s, encoding: "UTF-8"))
           decls = RBS::Parser.parse_signature(buffer)
           decls.each { |decl| tmp_env << decl }
         end
-
-        # tmp_env = tmp_env.resolve_type_names
 
         tmp_env.class_decls.each do |type_name, m_entry|
           name = type_name.relative!.to_s
@@ -72,10 +70,6 @@ module Orthoses
           "#{name}[#{args.join(", ")}]"
         end
       end
-    end
-
-    def paths
-      Dir.glob("#{@dir}/**/*.rbs")
     end
 
     def decls_to_lines(decls)

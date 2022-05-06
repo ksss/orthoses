@@ -69,9 +69,9 @@ Filter stored value by name and content.
 
 Debug pring current stored values
 
-### Orthoses::Load
+### Orthoses::LoadRBS
 
-Load RBS from `dir`.
+Load RBS from `paths`.
 And loaded RBS will write to output.
 
 ### Orthoses::Walk
