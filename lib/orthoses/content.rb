@@ -51,8 +51,7 @@ module Orthoses
             super_module_name = Utils.module_name(val.superclass)
 
             if super_module_name && super_module_name != "Random::Base" # https://github.com/ruby/rbs/pull/977
-              delegated_type_params = delegated_type_params(super_module_name)
-              "#{delegated_type_params} < ::#{super_module_name}#{delegated_type_params}"
+              " < ::#{super_module_name}#{temporary_type_params(super_module_name)}"
             else
               nil
             end
@@ -67,12 +66,12 @@ module Orthoses
       end
     end
 
-    def delegated_type_params(name)
+    def temporary_type_params(name)
       Utils.known_type_params(name)&.then do |params|
         if params.empty?
           nil
         else
-          "[#{(:T..).take(params.length).join(', ')}]"
+          "[#{params.map { :untyped }.join(', ')}]"
         end
       end
     end
