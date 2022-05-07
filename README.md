@@ -79,6 +79,11 @@ And loaded RBS will write to output.
 Load class/module recersive from `root` constant.
 If set String to `root`, It get constant after loading.
 
+### Orthoses::Tap
+
+Get the current store in the block as an argument.
+This is very useful for middleware development and debugging.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
