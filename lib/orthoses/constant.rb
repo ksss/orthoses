@@ -2,8 +2,9 @@
 
 module Orthoses
   class Constant
-    def initialize(loader, if: nil, on_error: nil)
+    def initialize(loader, strict:, if: nil, on_error: nil)
       @loader = loader
+      @strict = strict
       @if = binding.local_variable_get(:if)
       @on_error = on_error
     end
@@ -30,7 +31,7 @@ module Orthoses
             next if cache[[current, const]]
             cache[[current, const]] = true
 
-            rbs = Orthoses::Utils.object_to_rbs(val)
+            rbs = Orthoses::Utils.object_to_rbs(val, strict: @strict)
             next unless rbs
             next unless @if.nil? || @if.call(current, const, val, rbs)
 

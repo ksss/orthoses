@@ -43,7 +43,35 @@ module UtilsTest
     end
   end
 
-  def test_object_to_rbs(t)
+  def test_object_to_rbs_with_no_strict(t)
+    [
+      [ Object, "singleton(Object)" ],
+      [ Enumerable, "singleton(Enumerable)" ],
+      [ Class, "singleton(Class)" ],
+      [ Object.new, "Object" ],
+      [ 123, "Integer" ],
+      [ true, "true" ],
+      [ false, "false" ],
+      [ nil, "nil" ],
+      [ 123.45, "Float" ],
+      [ :sym, "Symbol" ],
+      [ /a/, "Regexp" ],
+      [ Set[], "Set[untyped]" ],
+      [ Set[123, 234], "Set[Integer]" ],
+      [ [], "Array[untyped]" ],
+      [ [123, 234], "Array[Integer]" ],
+      [ {}, "Hash[untyped, untyped]" ],
+      [ { a: 1, b: 'c' }, 'Hash[Symbol, Integer | String]' ],
+      [ { 1 => 2, 3 => 4 }, 'Hash[Integer, Integer]' ],
+    ].each do |object, expect|
+      actual = Orthoses::Utils.object_to_rbs(object, strict: false)
+      unless actual == expect
+        t.error("expect=#{expect.inspect}, but got #{actual.inspect}")
+      end
+    end
+  end
+
+  def test_object_to_rbs_with_strict(t)
     [
       [ Object, "singleton(Object)" ],
       [ Enumerable, "singleton(Enumerable)" ],
@@ -64,7 +92,7 @@ module UtilsTest
       [ { a: 1, b: 'c' }, '{ a: 1, b: "c" }' ],
       [ { 1 => 2, 3 => 4 }, 'Hash[1 | 3, 2 | 4]' ],
     ].each do |object, expect|
-      actual = Orthoses::Utils.object_to_rbs(object)
+      actual = Orthoses::Utils.object_to_rbs(object, strict: true)
       unless actual == expect
         t.error("expect=#{expect.inspect}, but got #{actual.inspect}")
       end

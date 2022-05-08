@@ -17,7 +17,7 @@ module ConstantTest
       Orthoses::Utils.new_store.tap do |store|
         store["ConstantTest"]
       end
-    }).call
+    }, strict: true).call
 
     unless store.length == 4
       t.error("expect 4 constant decls, but got #{store.length}")

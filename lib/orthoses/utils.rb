@@ -75,18 +75,24 @@ module Orthoses
       @env_cache[[library, collection]] = environment
     end
 
-    def self.object_to_rbs(object)
+    def self.object_to_rbs(object, strict:)
       case object
       when Class, Module
         "singleton(#{object})"
-      when Integer, Symbol, String, true, false, nil
+      when Integer, Symbol, String
+        if strict
+          object.inspect
+        else
+          Utils.module_name(object.class) || 'untyped'
+        end
+      when true, false, nil
         object.inspect
       when Set
         if object.empty?
           "Set[untyped]"
         else
           ary = object.map do |o|
-            object_to_rbs(o)
+            object_to_rbs(o, strict: strict)
           end
           "Set[#{ary.uniq.join(' | ')}]"
         end
@@ -95,19 +101,23 @@ module Orthoses
           "Array[untyped]"
         else
           ary = object.map do |o|
-            object_to_rbs(o)
+            object_to_rbs(o, strict: strict)
           end
-          "[#{ary.join(', ')}]"
+          if strict
+            "[#{ary.join(', ')}]"
+          else
+            "Array[#{ary.uniq.join(' | ')}]"
+          end
         end
       when Hash
         if object.empty?
           "Hash[untyped, untyped]"
         else
-          if object.keys.all? { |key| key.is_a?(Symbol) && /\A[a-zA-Z0-9_]+\z/.match?(key) }
-            "{ #{object.map { |k, v| "#{k}: #{object_to_rbs(v)}" }.join(', ')} }"
+          if strict && object.keys.all? { |key| key.is_a?(Symbol) && /\A\w+\z/.match?(key) }
+            "{ #{object.map { |k, v| "#{k}: #{object_to_rbs(v, strict: strict)}" }.join(', ')} }"
           else
-            keys = object.keys.map { |k| object_to_rbs(k) }.uniq
-            values = object.values.map { |k| object_to_rbs(k) }.uniq
+            keys = object.keys.map { |k| object_to_rbs(k, strict: strict) }.uniq
+            values = object.values.map { |k| object_to_rbs(k, strict: strict) }.uniq
             "Hash[#{keys.join(' | ')}, #{values.join(' | ')}]"
           end
         end

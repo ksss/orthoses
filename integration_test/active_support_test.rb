@@ -7,7 +7,7 @@ module ActiveSupportTest
         if: ->(name, content) {
           name.start_with?("ActiveSupport") || name.start_with?("Integer")
         }
-      use Orthoses::Constant
+      use Orthoses::Constant, strict: false
       use Orthoses::IncludeExtendPrepend
       use Orthoses::ObjectSpaceAll
       run -> () {
