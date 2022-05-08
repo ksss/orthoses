@@ -84,6 +84,26 @@ If set String to `root`, It get constant after loading.
 Get the current store in the block as an argument.
 This is very useful for middleware development and debugging.
 
+### Orthoses::DelegateClass
+
+If a class is defined using the `DelegateClass` method
+RBS is automatically generated as inherited.
+
+.rb
+
+```rb
+class Tempfile < DelegateClass(File)
+end
+```
+
+.rbs
+
+```rbs
+class Tempfile < File
+end
+```
+
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
