@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'orthoses/content/duplication_checker'
+
 module Orthoses
   # Common interface for output.
   # Orthoses::Content expect to use result of middleware.
@@ -94,19 +96,20 @@ module Orthoses
       out = StringIO.new
       writer = RBS::Writer.new(out: out)
       decls = RBS::Parser.parse_signature(buffer).map do |parsed_decl|
-        before_members = parsed_decl.members.dup
-        parsed_decl.members.uniq! { |m| [m.class, m.respond_to?(:name) ? m.name : nil] }
-        (before_members - parsed_decl.members).each do |droped_member|
-          Orthoses.logger.warn("#{parsed_decl.name}::#{droped_member.name.to_s}: #{droped_member.to_s} was droped since duplication")
+        parsed_decl.tap do |decl|
+          duplicate_checker = DuplicationChecker.new(decl)
+          decl.members.each do |member|
+            duplicate_checker << member
+          end
+          decl.members.replace(duplicate_checker.uniq_members)
         end
-        parsed_decl
       end
       writer.write(decls)
       out.string
     rescue RBS::ParsingError
-      puts "```rbs"
-      puts rbs
-      puts "```"
+      Orthoses.logger.error "```rbs"
+      Orthoses.logger.error rbs
+      Orthoses.logger.error "```"
       raise
     end
   end
