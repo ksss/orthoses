@@ -27,5 +27,5 @@ jobs:
         bundler-cache: true
     - name: Run the default task
       run: |
-        mkdir .gem_rbs_collection
+        bundle exec rbs collection install
         bundle exec rake
