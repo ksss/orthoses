@@ -33,20 +33,12 @@ module Orthoses
         when RBS::AST::Members::MethodDefinition
           # member.types.hash is different
           [member.class, member.name, member.kind]
-        when RBS::AST::Members::Mixin
-          # include Mod[Arg] => keep
-          # include Mod      => drop
-          [member.class, member.name]
-        when RBS::AST::Members::Attribute
-          # attr_reader foo: String => keep
-          # attr_reader foo: void   => drop
-          [member.class, member.name]
-        when RBS::AST::Members::Var
-          # @foo: Integer => keep
-          # @foo: String  => drop
-          [member.class, member.name]
+        when RBS::AST::Members::LocationOnly
+          [member.class]
+        when RBS::AST::Members::Alias
+          [member.class, member.new_name, member.old_name, member.kind]
         else
-          member
+          [member.class, member.name]
         end
       end
     end

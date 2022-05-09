@@ -107,9 +107,7 @@ module Orthoses
       writer.write(decls)
       out.string
     rescue RBS::ParsingError
-      Orthoses.logger.error "```rbs"
-      Orthoses.logger.error rbs
-      Orthoses.logger.error "```"
+      Orthoses.logger.error "```rbs\n#{rbs}```"
       raise
     end
   end
