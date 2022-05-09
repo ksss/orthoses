@@ -29,17 +29,22 @@ module Orthoses
           next unless subclass_name
           delegate_to_class_name = Utils.module_name(delegate_to_class)
           next unless delegate_to_class_name
-          store[subclass_name].header = "class #{subclass_name} < #{delegate_to_class_name}"
+
+          header = "class #{subclass_name} < ::#{delegate_to_class_name}#{temporary_type_params(delegate_to_class_name)}"
+          store[subclass_name].header = header
         end
       end
       store
     end
 
-    def from_DelegateClass?(klass)
-      klass.name.nil? &&
-        klass.superclass == Delegator &&
-        klass.instance_methods.include?(:__setobj__) &&
-        klass.instance_method(:__setobj__).source_location.first.end_with?("delegate.rb")
+    def temporary_type_params(name)
+      Utils.known_type_params(name)&.then do |params|
+        if params.empty?
+          nil
+        else
+          "[#{params.map { :untyped }.join(', ')}]"
+        end
+      end
     end
   end
 end
