@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module IncludeExtendPrependTest
+module MixinTest
   LOADER = ->(){
     module Mod
     end
@@ -15,28 +15,28 @@ module IncludeExtendPrependTest
     end
   }
 
-  def test_include_extend_prepend(t)
-    store = Orthoses::IncludeExtendPrepend.new(
+  def test_mixin(t)
+    store = Orthoses::Mixin.new(
       Orthoses::Store.new(LOADER)
     ).call
 
     expect = <<~RBS
-      module IncludeExtendPrependTest::Mod : ::BasicObject
+      module MixinTest::Mod : ::BasicObject
       end
     RBS
-    actual = store["IncludeExtendPrependTest::Mod"].to_rbs
+    actual = store["MixinTest::Mod"].to_rbs
     unless expect == actual
       t.error("expect\n```rbs\n#{expect}```\nbut got\n```rb\n#{actual}```")
     end
 
     expect = <<~RBS
-      class IncludeExtendPrependTest::Foo
-        include IncludeExtendPrependTest::Mod
-        extend IncludeExtendPrependTest::Mod
-        prepend IncludeExtendPrependTest::Mod
+      class MixinTest::Foo
+        include MixinTest::Mod
+        extend MixinTest::Mod
+        prepend MixinTest::Mod
       end
     RBS
-    actual = store["IncludeExtendPrependTest::Foo"].to_rbs
+    actual = store["MixinTest::Foo"].to_rbs
     unless expect == actual
       t.error("expect\n```rbs\n#{expect}```\nbut got\n```rb\n#{actual}```")
     end
@@ -44,7 +44,7 @@ module IncludeExtendPrependTest
     actual = store["Object"].to_rbs
     expect = <<~RBS
       class Object < ::BasicObject
-        include IncludeExtendPrependTest::Mod
+        include MixinTest::Mod
       end
     RBS
     unless expect == actual

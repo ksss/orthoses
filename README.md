@@ -31,7 +31,7 @@ Orthoses::Builder.new do
       %r{app/models}.match?(path)
     }
   use YourCustom::Middleware
-  use Orthoses::IncludeExtendPrepend
+  use Orthoses::Mixin
   use Orthoses::Constant
   use Orthoses::Walk,
     root: "Foo"
@@ -48,7 +48,7 @@ end.call
 Add constant signature to class/module.
 Signatures are predicted from constant values.
 
-### Orthoses::IncludeExtendPrepend
+### Orthoses::Mixin
 
 Add module include/extend/prepend definition.
 It use `Module#{includeed,extended,prepended}` for capture.

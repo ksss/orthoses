@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Orthoses
-  class IncludeExtendPrepend
+  class Mixin
     def initialize(loader, if: nil)
       @loader = loader
       @if = binding.local_variable_get(:if)

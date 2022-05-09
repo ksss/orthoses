@@ -8,7 +8,7 @@ module ActiveSupportTest
           name.start_with?("ActiveSupport") || name.start_with?("Integer")
         }
       use Orthoses::Constant, strict: false
-      use Orthoses::IncludeExtendPrepend
+      use Orthoses::Mixin
       use Orthoses::ObjectSpaceAll
       run -> () {
         require 'active_support'

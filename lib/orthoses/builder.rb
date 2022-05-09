@@ -5,7 +5,7 @@ module Orthoses
   #   Builder.new do
   #     use Orthoses::CreateFileByName
   #     use Orthoses::Constant
-  #     use Orthoses::IncludeExtendPrepend
+  #     use Orthoses::Mixin
   #     use Orthoses::Walk,
   #       root: "Foo"
   #     run ->() { require 'foo' }

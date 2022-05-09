@@ -24,7 +24,7 @@ task :generate_self_sig do
       if: ->(name, _) {
         name.start_with?("Orthoses")
       }
-    use Orthoses::IncludeExtendPrepend
+    use Orthoses::Mixin
     use Orthoses::Constant, strict: true
     use Orthoses::LoadRBS,
       paths: Dir.glob("known_sig/**/*.rbs")
