@@ -7,7 +7,7 @@ sources:
 path: ".gem_rbs_collection"
 gems:
 - name: rbs
-  version: 2.3.2
+  version: 2.4.0
   source:
     type: rubygems
 - name: logger
