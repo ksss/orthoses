@@ -121,6 +121,9 @@ module Orthoses
             "Hash[#{keys.join(' | ')}, #{values.join(' | ')}]"
           end
         end
+      when ARGF
+        # see also https://github.com/ruby/rbs/pull/975
+        'untyped'
       else
         Utils.module_name(object.class) || 'untyped'
       end
