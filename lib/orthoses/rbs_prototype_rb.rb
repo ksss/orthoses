@@ -1,0 +1,34 @@
+module Orthoses
+  # Call `rbs prototype rb` and add to store
+  #     use Orthoses::RBSPrototypeRB,
+  #       paths: Dir.glob("lib/**/*.rb")
+  class RBSPrototypeRB
+    def initialize(loader, paths:, constant_filter: nil, mixin_filter: nil)
+      @loader = loader
+      @paths = paths
+      @constant_filter = constant_filter
+      @mixin_filter = mixin_filter
+    end
+
+    def call
+      @loader.call.tap do |store|
+        parser = RBS::Prototype::RB.new
+        @paths.each do |path|
+          begin
+            parser.parse File.read(path.to_s)
+          rescue => err
+            Orthoses.logger.error("Parse error #{err.inspect} by RBS::Prototype::RB #{path}")
+          end
+        end
+        env = Orthoses::Content::Environment.new(
+          constant_filter: @constant_filter,
+          mixin_filter: @mixin_filter,
+        )
+        parser.decls.each do |decl|
+          env << decl
+        end
+        env.write_to(store: store)
+      end
+    end
+  end
+end

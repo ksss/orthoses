@@ -1,9 +1,10 @@
 module Orthoses
   class Content
     class Environment
-      def initialize(constant_filter: nil)
+      def initialize(constant_filter: nil, mixin_filter: nil)
         @env = RBS::Environment.new
         @constant_filter = constant_filter
+        @mixin_filter = mixin_filter
       end
 
       def <<(decl)
@@ -95,6 +96,8 @@ module Orthoses
             case member
             when RBS::AST::Declarations::Constant
               next unless @constant_filter.nil? || @constant_filter.call(member)
+            when RBS::AST::Members::Mixin
+              next unless @mixin_filter.nil? || @mixin_filter.call(member)
             end
             writer.write_member(member)
           end
