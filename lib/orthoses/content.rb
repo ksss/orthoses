@@ -45,6 +45,11 @@ module Orthoses
     private
 
     def auto_header
+      if name.split('::').last.start_with?('_')
+        self.header = "interface #{name}"
+        return
+      end
+
       val = Object.const_get(name)
 
       case val
