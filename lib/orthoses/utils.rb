@@ -117,7 +117,7 @@ module Orthoses
             "{ #{object.map { |k, v| "#{k}: #{object_to_rbs(v, strict: strict)}" }.join(', ')} }"
           else
             keys = object.keys.map { |k| object_to_rbs(k, strict: strict) }.uniq
-            values = object.values.map { |k| object_to_rbs(k, strict: strict) }.uniq
+            values = object.values.map { |v| object_to_rbs(v, strict: strict) }.uniq
             "Hash[#{keys.join(' | ')}, #{values.join(' | ')}]"
           end
         end
