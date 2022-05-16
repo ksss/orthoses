@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'orthoses/content/duplication_checker'
+require 'orthoses/content/environment'
 
 module Orthoses
   # Common interface for output.
