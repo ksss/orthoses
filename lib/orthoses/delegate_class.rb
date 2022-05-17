@@ -29,7 +29,6 @@ module Orthoses
           next unless subclass_name
           delegate_to_class_name = Utils.module_name(delegate_to_class)
           next unless delegate_to_class_name
-          next unless store[subclass_name].header.nil?
 
           header = "class #{subclass_name} < ::#{delegate_to_class_name}#{temporary_type_params(delegate_to_class_name)}"
           store[subclass_name].header = header

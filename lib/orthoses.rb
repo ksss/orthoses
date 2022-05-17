@@ -14,11 +14,13 @@ require_relative 'orthoses/mixin'
 require_relative 'orthoses/load_rbs'
 require_relative 'orthoses/object_space_all'
 require_relative 'orthoses/pp'
+require_relative 'orthoses/rbs_prototype_rb'
 require_relative 'orthoses/store'
 require_relative 'orthoses/tap'
 require_relative 'orthoses/utils'
 require_relative 'orthoses/version'
 require_relative 'orthoses/walk'
+require_relative 'orthoses/writer'
 
 module Orthoses
   class ConstLoadError < StandardError

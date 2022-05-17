@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'orthoses/content/duplication_checker'
+require 'orthoses/content/environment'
 
 module Orthoses
   # Common interface for output.
@@ -44,6 +45,11 @@ module Orthoses
     private
 
     def auto_header
+      if name.split('::').last.start_with?('_')
+        self.header = "interface #{name}"
+        return
+      end
+
       val = Object.const_get(name)
 
       case val

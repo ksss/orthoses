@@ -1,4 +1,8 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 class Orthoses::LoadRBS
+  @loader: Orthoses::_Call
+  @paths: Array[_ToS]
+  include Orthoses::_MiddleWare
+  def initialize: (Orthoses::_Call loader, paths: Array[_ToS]) -> void
 end

@@ -1,0 +1,7 @@
+module Orthoses
+  class Writer
+    @loader: Orthoses::_Call
+    include Orthoses::_MiddleWare
+    def initialize: (Orthoses::_Call loader, io: _Writer) -> void
+  end
+end

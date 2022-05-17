@@ -63,6 +63,7 @@ module UtilsTest
       [ {}, "Hash[untyped, untyped]" ],
       [ { a: 1, b: 'c' }, 'Hash[Symbol, Integer | String]' ],
       [ { 1 => 2, 3 => 4 }, 'Hash[Integer, Integer]' ],
+      [ ARGF, 'untyped' ],
     ].each do |object, expect|
       actual = Orthoses::Utils.object_to_rbs(object, strict: false)
       unless actual == expect
@@ -91,6 +92,7 @@ module UtilsTest
       [ {}, "Hash[untyped, untyped]" ],
       [ { a: 1, b: 'c' }, '{ a: 1, b: "c" }' ],
       [ { 1 => 2, 3 => 4 }, 'Hash[1 | 3, 2 | 4]' ],
+      [ ARGF, 'untyped' ],
     ].each do |object, expect|
       actual = Orthoses::Utils.object_to_rbs(object, strict: true)
       unless actual == expect

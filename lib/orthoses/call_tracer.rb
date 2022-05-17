@@ -20,7 +20,7 @@ module Orthoses
     end
 
     def trace(target, &block)
-      TracePoint.new(:call) do |tp|
+      t = TracePoint.new(:call) do |tp|
         called_method = tp.self.method(tp.method_id)
         argument = tp.parameters.each_with_object({}) do |op_name, hash|
           name = op_name[1]
@@ -47,7 +47,8 @@ module Orthoses
           end
         end
         @result << [called_method, argument]
-      end.enable(target: target, &block)
+      end
+      t.enable(target: target, &block)
     end
   end
 end

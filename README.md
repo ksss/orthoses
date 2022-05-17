@@ -89,6 +89,18 @@ This is very useful for middleware development and debugging.
 If a class is defined using the `DelegateClass` method
 RBS is automatically generated as inherited.
 
+### Orthoses::Writer
+
+Write output RBS to `io` option object.
+`io` should be able to call `#write` method.
+This is useful when you want to combine outputs into a single output.
+
+### Orthoses::RBSPrototypeRB
+
+Run `rbs prototype rb` command process to `paths` option files.
+`content_filter` option could filter with content decl.
+`mixin_filter` option could filter with mixin(include, extend, prepend) decl.
+
 .rb
 
 ```rb

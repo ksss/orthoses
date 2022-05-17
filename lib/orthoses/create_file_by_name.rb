@@ -28,6 +28,12 @@ module Orthoses
       store = @loader.call
 
       store.each do |name, content|
+        rbs = begin
+          content.to_rbs
+        rescue NameError, LoadError => err
+          Orthoses.logger.error(err.inspect)
+          next
+        end
         file_path = Pathname("#{@base_dir}/#{name.to_s.split('::').map(&:underscore).join('/')}.rbs")
         file_path.dirname.mkpath
         file_path.open('w+') do |out|
@@ -35,7 +41,7 @@ module Orthoses
             out.puts @header
             out.puts
           end
-          out.puts content.to_rbs
+          out.puts rbs
         end
         Orthoses.logger.info("Generate file to #{file_path.to_s}")
       end

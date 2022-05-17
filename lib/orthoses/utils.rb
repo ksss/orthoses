@@ -63,11 +63,11 @@ module Orthoses
       when "stdlib"
         RBS::Repository::DEFAULT_STDLIB_ROOT.each_entry do |path|
           lib = path.to_s
-          loader.add(library: lib.to_s) unless lib == "." || lib == ".."
+          loader.add(library: lib.to_s, version: nil) unless lib == "." || lib == ".."
         end
       else
         Array(library).each do |lib|
-          loader.add(library: lib.to_s)
+          loader.add(library: lib.to_s, version: nil)
         end
       end
 
@@ -117,10 +117,13 @@ module Orthoses
             "{ #{object.map { |k, v| "#{k}: #{object_to_rbs(v, strict: strict)}" }.join(', ')} }"
           else
             keys = object.keys.map { |k| object_to_rbs(k, strict: strict) }.uniq
-            values = object.values.map { |k| object_to_rbs(k, strict: strict) }.uniq
+            values = object.values.map { |v| object_to_rbs(v, strict: strict) }.uniq
             "Hash[#{keys.join(' | ')}, #{values.join(' | ')}]"
           end
         end
+      when ARGF
+        # see also https://github.com/ruby/rbs/pull/975
+        'untyped'
       else
         Utils.module_name(object.class) || 'untyped'
       end
