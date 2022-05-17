@@ -63,11 +63,11 @@ module Orthoses
       when "stdlib"
         RBS::Repository::DEFAULT_STDLIB_ROOT.each_entry do |path|
           lib = path.to_s
-          loader.add(library: lib.to_s) unless lib == "." || lib == ".."
+          loader.add(library: lib.to_s, version: nil) unless lib == "." || lib == ".."
         end
       else
         Array(library).each do |lib|
-          loader.add(library: lib.to_s)
+          loader.add(library: lib.to_s, version: nil)
         end
       end
 

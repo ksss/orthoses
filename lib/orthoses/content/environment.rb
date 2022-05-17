@@ -28,6 +28,8 @@ module Orthoses
         end
       end
 
+      private
+
       def each_class
         @env.class_decls.each do |type_name, m_entry|
           name = type_name.relative!.to_s
@@ -61,8 +63,6 @@ module Orthoses
           yield content
         end
       end
-
-      private
 
       def name_and_params(name, params)
         if params.empty?
