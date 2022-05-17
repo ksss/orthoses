@@ -1,4 +1,7 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 class Orthoses::ObjectSpaceAll
+  @loader: Orthoses::_Call
+  include Orthoses::_MiddleWare
+  def initialize: (Orthoses::_Call loader, ?if: ^(Module) -> boolish) -> void
 end

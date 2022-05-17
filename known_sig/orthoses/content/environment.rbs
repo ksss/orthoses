@@ -1,0 +1,15 @@
+module Orthoses
+  class Content
+    class Environment
+      type constant_filter = ^(RBS::AST::Declarations::Constant) -> boolish
+      type mixin_filter = ^(RBS::AST::Members::Mixin) -> boolish
+      @env: RBS::Environment
+      @constant_filter: constant_filter?
+      @mixin_filter: mixin_filter?
+      def initialize: (?constant_filter: constant_filter?, ?mixin_filter: mixin_filter?) -> void
+      def <<: (RBS::AST::Declarations::t decl) -> RBS::Environment
+      def write_to: (store: Orthoses::store) -> void
+      def each: () { (Orthoses::Content) -> void } -> void
+    end
+  end
+end
