@@ -20,6 +20,7 @@ require_relative 'orthoses/tap'
 require_relative 'orthoses/utils'
 require_relative 'orthoses/version'
 require_relative 'orthoses/walk'
+require_relative 'orthoses/writer'
 
 module Orthoses
   class ConstLoadError < StandardError
