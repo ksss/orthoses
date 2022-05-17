@@ -20,7 +20,7 @@ module LoadRBSTest
     end
 
     expect = <<~RBS
-      class Orthoses::ConstLoadError < ::StandardError
+      class Orthoses::ConstLoadError < StandardError
         attr_reader root: Module
         attr_reader const: Symbol
         attr_reader error: untyped
@@ -33,7 +33,7 @@ module LoadRBSTest
     end
 
     expect = <<~RBS
-      class Orthoses::NameSpaceError < ::StandardError
+      class Orthoses::NameSpaceError < StandardError
       end
     RBS
     actual = store["Orthoses::NameSpaceError"].to_rbs
