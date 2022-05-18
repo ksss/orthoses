@@ -36,13 +36,53 @@ module Orthoses
     end
 
     def to_rbs
-      if @header.nil?
-        auto_header
+      case @header
+      when "class Array", "module Enumerable", "class NameError", "class Hash", "class Range", "class Struct"
+        @header = nil
       end
-      body_uniq("#{@header}\n#{@body.map { |b| "  #{b}\n" }.join}end\n")
+      auto_header if @header.nil?
+      uniqed_body_string
+    end
+
+    def to_decl
+      auto_header if @header.nil?
+      uniqed_body_decl
     end
 
     private
+
+    def original_rbs
+      "#{@header}\n#{@body.map { "  #{_1}\n" }.join}end\n"
+    end
+
+    def uniqed_body_string
+      out = StringIO.new
+      writer = RBS::Writer.new(out: out)
+      writer.write_decl(uniqed_body_decl)
+      out.string
+    end
+
+    def uniqed_body_decl
+      buffer = RBS::Buffer.new(
+        name: "orthoses/content.rb",
+        content: original_rbs
+      )
+      parsed_decls = RBS::Parser.parse_signature(buffer)
+      unless parsed_decls.length == 1
+        raise "expect decls.length == 1, but got #{parsed_decls.length}"
+      end
+      parsed_decl = parsed_decls.first
+      parsed_decl.tap do |decl|
+        duplicate_checker = DuplicationChecker.new(decl)
+        decl.members.each do |member|
+          duplicate_checker << member
+        end
+        decl.members.replace(duplicate_checker.uniq_members)
+      end
+    rescue RBS::ParsingError
+      Orthoses.logger.error "```rbs\n#{rbs}```"
+      raise
+    end
 
     def auto_header
       if name.split('::').last.start_with?('_')
@@ -92,29 +132,6 @@ module Orthoses
           "[#{type_params.join(', ')}]"
         end
       end
-    end
-
-    def body_uniq(rbs)
-      buffer = RBS::Buffer.new(
-        name: "orthoses/content.rb",
-        content: rbs
-      )
-      out = StringIO.new
-      writer = RBS::Writer.new(out: out)
-      decls = RBS::Parser.parse_signature(buffer).map do |parsed_decl|
-        parsed_decl.tap do |decl|
-          duplicate_checker = DuplicationChecker.new(decl)
-          decl.members.each do |member|
-            duplicate_checker << member
-          end
-          decl.members.replace(duplicate_checker.uniq_members)
-        end
-      end
-      writer.write(decls)
-      out.string
-    rescue RBS::ParsingError
-      Orthoses.logger.error "```rbs\n#{rbs}```"
-      raise
     end
   end
 end

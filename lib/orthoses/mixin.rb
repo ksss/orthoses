@@ -37,15 +37,7 @@ module Orthoses
           next unless known_type_params.nil? || known_type_params.empty?
           next unless @if.nil? || @if.call(base_mod, how, mod)
 
-          if base_mod_name == "Object"
-            # avoid RecursiveAncestorError
-            content = store[mod_name]
-            if content.header.nil?
-              content.header = "module #{Utils.module_to_type_name(mod)} : ::BasicObject"
-            end
-          else
-            store[mod_name]
-          end
+          store[mod_name]
 
           "#{how} #{mod_name}"
         end

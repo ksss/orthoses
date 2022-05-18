@@ -3,6 +3,7 @@
 require 'rbs'
 require 'pathname'
 
+require_relative 'orthoses/avoid_recursive_ancestor_error'
 require_relative 'orthoses/builder'
 require_relative 'orthoses/call_tracer'
 require_relative 'orthoses/constant'

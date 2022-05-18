@@ -21,7 +21,7 @@ module MixinTest
     ).call
 
     expect = <<~RBS
-      module MixinTest::Mod : ::BasicObject
+      module MixinTest::Mod
       end
     RBS
     actual = store["MixinTest::Mod"].to_rbs

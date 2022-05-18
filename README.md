@@ -115,6 +115,11 @@ Run `rbs prototype rb` command process to `paths` option files.
 `content_filter` option could filter with content decl.
 `mixin_filter` option could filter with mixin(include, extend, prepend) decl.
 
+### Orthoses::AvoidRecursiveAncestorError
+
+Mixin a module into an Object class raises `RBS::RecursiveAncestorError` when validation.
+Please add this middleware then.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

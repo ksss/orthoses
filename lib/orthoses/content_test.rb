@@ -85,4 +85,16 @@ module ContentTest
       t.error("\n```rbs\n#{store["ContentTest::Simple"].to_rbs}```\n#{err.inspect}")
     end
   end
+
+  def test_to_decl(t)
+    content = Orthoses::Content.new(name: "Mod")
+    content.header = "module Mod"
+    content << "def foo: () -> void"
+
+    expect = RBS::Parser.parse_signature("module Mod\ndef foo: () -> void\nend").first
+    actual = content.to_decl
+    unless expect == actual
+      t.error("expect to same as parsed RBS, but not")
+    end
+  end
 end
