@@ -71,7 +71,7 @@ module Orthoses
       unless parsed_decls.length == 1
         raise "expect decls.length == 1, but got #{parsed_decls.length}"
       end
-      parsed_decl = parsed_decls.first
+      parsed_decl = parsed_decls.first or raise
       parsed_decl.tap do |decl|
         duplicate_checker = DuplicationChecker.new(decl)
         decl.members.each do |member|

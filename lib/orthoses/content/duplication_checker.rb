@@ -17,10 +17,27 @@ module Orthoses
       end
 
       def uniq_members
+        drop_known_method_definition
         @uniq_map.values
       end
 
       private
+
+      def drop_known_method_definition
+        env = Utils.rbs_environment(collection: true)
+        if m_entry = env.class_decls[@decl.name.absolute!]
+          m_entry.decls.each do |d|
+            d.decl.members.each do |member|
+              case member
+              when RBS::AST::Members::MethodDefinition
+                @uniq_map.delete(member_key(member))
+              when RBS::AST::Members::Alias
+                @uniq_map.delete([RBS::AST::Members::MethodDefinition, member.new_name, member.kind])
+              end
+            end
+          end
+        end
+      end
 
       def member_to_s(member)
         out = StringIO.new

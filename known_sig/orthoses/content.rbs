@@ -8,5 +8,10 @@ module Orthoses
     def <<: (String) -> void
     def concat: (Array[String]) -> void
     def to_rbs: () -> String
+
+    private
+
+    def uniqed_body_string: () -> String
+    def uniqed_body_decl: () -> RBS::AST::Declarations::t
   end
 end
