@@ -36,23 +36,23 @@ module Orthoses
     end
 
     def to_rbs
-      case @header
-      when "class Array", "module Enumerable", "class NameError", "class Hash", "class Range", "class Struct"
-        @header = nil
-      end
-      auto_header if @header.nil?
+      auto_header
       uniqed_body_string
     end
 
     def to_decl
-      auto_header if @header.nil?
+      auto_header
       uniqed_body_decl
     end
 
     private
 
     def original_rbs
-      "#{@header}\n#{@body.map { "  #{_1}\n" }.join}end\n"
+      <<~RBS
+        #{@header}
+          #{@body.join("\n")}
+        end
+      RBS
     end
 
     def uniqed_body_string
@@ -80,7 +80,7 @@ module Orthoses
         decl.members.replace(duplicate_checker.uniq_members)
       end
     rescue RBS::ParsingError
-      Orthoses.logger.error "```rbs\n#{rbs}```"
+      Orthoses.logger.error "```rbs\n#{original_rbs}```"
       raise
     end
 
@@ -89,6 +89,14 @@ module Orthoses
         self.header = "interface #{name}"
         return
       end
+
+      env = Utils.rbs_environment(collection: true)
+      if m_entry = env.class_decls[TypeName(name).absolute!]
+        @header = Content::Environment.build_header(decl: m_entry.decls.first.decl)
+        return
+      end
+
+      return unless @header.nil?
 
       val = Object.const_get(name)
 

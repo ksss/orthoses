@@ -1,6 +1,59 @@
 module Orthoses
   class Content
     class Environment
+      class << self
+        def build_header(decl:, name_hint: nil)
+          full_name = name_hint || decl.name.relative!
+
+          case decl
+          when RBS::AST::Declarations::Module
+            self_types =
+              if decl.self_types.empty?
+                nil
+              else
+                " : #{decl.self_types.join(', ')}"
+              end
+            "module #{name_and_params(full_name, decl.type_params)}#{self_types}"
+          when RBS::AST::Declarations::Class
+            super_class =
+              if decl.super_class.then { |s| s.nil? || s.name.relative!.to_s.then { |n| n == "Object" || n == "Random::Base" } }
+                nil
+              else
+                " < #{name_and_args(decl.super_class.name, decl.super_class.args)}"
+              end
+            "class #{name_and_params(full_name, decl.type_params)}#{super_class}"
+          when RBS::AST::Declarations::Interface
+            "interface #{name_and_params(full_name, decl.type_params)}"
+          else
+            raise
+          end
+        end
+
+        private
+
+        def name_and_params(name, params)
+          if params.empty?
+            "#{name}"
+          else
+            ps = params.each.map do |param|
+              param.to_s
+            end
+
+            "#{name}[#{ps.join(", ")}]"
+          end
+        end
+
+        def name_and_args(name, args)
+          if name && args
+            if args.empty?
+              "#{name}"
+            else
+              "#{name}[#{args.join(", ")}]"
+            end
+          end
+        end
+      end
+
       def initialize(constant_filter: nil, mixin_filter: nil)
         @env = RBS::Environment.new
         @constant_filter = constant_filter
@@ -34,16 +87,7 @@ module Orthoses
         @env.class_decls.each do |type_name, m_entry|
           name = type_name.relative!.to_s
           content = Content.new(name: name)
-          case decl = m_entry.decls.first.decl
-          when RBS::AST::Declarations::Module
-            self_types = decl.self_types.empty? ? nil : " : #{decl.self_types.join(', ')}"
-            content.header = "module #{name_and_params(name, decl.type_params)}#{self_types}"
-          when RBS::AST::Declarations::Class
-            super_class = decl.super_class.nil? ? nil : " < #{name_and_args(decl.super_class.name, decl.super_class.args)}"
-            content.header = "class #{name_and_params(name, decl.type_params)}#{super_class}"
-          else
-            raise
-          end
+          content.header = self.class.build_header(decl: m_entry.decls.first.decl, name_hint: name)
           decls_to_lines(m_entry.decls.map(&:decl)).each do |line|
             content << line
           end
@@ -56,33 +100,11 @@ module Orthoses
           name = type_name.relative!.to_s
           content = Content.new(name: name)
           decl = s_entry.decl
-          content.header = "interface #{name_and_params(name, decl.type_params)}"
+          content.header = self.class.build_header(decl: s_entry.decl)
           decls_to_lines([decl]).each do |line|
             content << line
           end
           yield content
-        end
-      end
-
-      def name_and_params(name, params)
-        if params.empty?
-          "#{name}"
-        else
-          ps = params.each.map do |param|
-            param.to_s
-          end
-
-          "#{name}[#{ps.join(", ")}]"
-        end
-      end
-
-      def name_and_args(name, args)
-        if name && args
-          if args.empty?
-            "#{name}"
-          else
-            "#{name}[#{args.join(", ")}]"
-          end
         end
       end
 
