@@ -1,0 +1,7 @@
+module Orthoses
+  class AvoidRecursiveAncestorError
+    @loader: Orthoses::_Call
+    include Orthoses::_MiddleWare
+    def initialize: (Orthoses::_Call loader) -> void
+  end
+end
