@@ -20,18 +20,17 @@ module Orthoses
     attr_accessor :header
 
     def initialize(name:)
+      Orthoses.logger.debug("Create Orthoses::Content for #{name}")
       @name = name
       @body = []
       @header = nil
     end
 
     def <<(line)
-      Orthoses.logger.debug("[#{name}] << #{line} on #{__FILE__}:#{__LINE__}")
       @body << line
     end
 
     def concat(other)
-      Orthoses.logger.debug("[#{name}] concat #{other} on #{__FILE__}:#{__LINE__}")
       @body.concat(other)
     end
 

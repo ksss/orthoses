@@ -15,6 +15,7 @@ module Orthoses
         parser = RBS::Prototype::RB.new
         @paths.each do |path|
           begin
+            Orthoses.logger.debug("parse #{path} by RBS::Prototype::RB")
             parser.parse File.read(path.to_s)
           rescue => err
             Orthoses.logger.error("Parse error #{err.inspect} by RBS::Prototype::RB #{path}")
