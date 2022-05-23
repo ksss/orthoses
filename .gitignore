@@ -7,3 +7,6 @@
 /spec/reports/
 /tmp/
 /.gem_rbs_collection/
+
+/examples/minitest/out
+/examples/minitest/src

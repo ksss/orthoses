@@ -2,6 +2,7 @@
 
 require 'orthoses/content/duplication_checker'
 require 'orthoses/content/environment'
+require 'orthoses/content/header_builder'
 
 module Orthoses
   # Common interface for output.
@@ -20,18 +21,17 @@ module Orthoses
     attr_accessor :header
 
     def initialize(name:)
+      Orthoses.logger.debug("Create Orthoses::Content for #{name}")
       @name = name
       @body = []
       @header = nil
     end
 
     def <<(line)
-      Orthoses.logger.debug("[#{name}] << #{line} on #{__FILE__}:#{__LINE__}")
       @body << line
     end
 
     def concat(other)
-      Orthoses.logger.debug("[#{name}] concat #{other} on #{__FILE__}:#{__LINE__}")
       @body.concat(other)
     end
 
@@ -73,11 +73,7 @@ module Orthoses
       end
       parsed_decl = parsed_decls.first or raise
       parsed_decl.tap do |decl|
-        duplicate_checker = DuplicationChecker.new(decl)
-        decl.members.each do |member|
-          duplicate_checker << member
-        end
-        decl.members.replace(duplicate_checker.uniq_members)
+        DuplicationChecker.new(decl).update_decl
       end
     rescue RBS::ParsingError
       Orthoses.logger.error "```rbs\n#{original_rbs}```"
@@ -91,8 +87,8 @@ module Orthoses
       end
 
       env = Utils.rbs_environment(collection: true)
-      if m_entry = env.class_decls[TypeName(name).absolute!]
-        @header = Content::Environment.build_header(decl: m_entry.decls.first.decl)
+      if entry = env.class_decls[TypeName(name).absolute!]
+        @header = Content::HeaderBuilder.new(env: env).build(entry: entry)
         return
       end
 

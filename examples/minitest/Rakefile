@@ -1,0 +1,48 @@
+file :src do
+  sh "git clone https://github.com/minitest/minitest.git src"
+end
+
+desc "generate minitest"
+task :minitest => :src do
+  $:.unshift(File.expand_path("src/lib"))
+
+  out = Pathname('out')
+  out.rmtree rescue nil
+  require 'orthoses'
+
+  Orthoses::Builder.new do
+    use Orthoses::CreateFileByName,
+      base_dir: out.to_s
+    use Orthoses::Filter, if: ->(name, content) {
+      name.start_with?("Minitest") || name == "Kernel"
+    }
+    use Orthoses::Constant,
+      strict: false,
+      if: ->(current, const, val, rbs){
+        !Orthoses::Utils.rbs_defined_const?("#{current}::#{const}")
+      }
+    use Orthoses::Mixin
+    use Orthoses::RBSPrototypeRB,
+      paths: Dir.glob('src/lib/minitest{.rb,/*.rb}'),
+      constant_filter: ->(_) { false },
+      mixin_filter: ->(_) { false }
+    run ->(){
+      require_relative 'src/lib/minitest'
+      require_relative 'src/lib/minitest/test'
+      require_relative 'src/lib/minitest/spec'
+      require_relative 'src/lib/minitest/parallel'
+      require_relative 'src/lib/minitest/mock'
+      require_relative 'src/lib/minitest/benchmark'
+
+      require_relative 'src/lib/minitest/pride_plugin'
+    }
+  end.call
+
+  sh "rbs -r mutex_m -I #{out} validate --silent"
+  out.join("manifest.yaml").write <<~YAML
+    dependencies:
+      - name: mutex_m
+  YAML
+end
+
+task default: :minitest

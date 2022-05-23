@@ -4,35 +4,32 @@ module Orthoses
     class DuplicationChecker
       def initialize(decl)
         @decl = decl
-        @uniq_map = {}
       end
 
-      def <<(member)
-        key = member_key(member)
-        if @uniq_map.key?(key)
-          Orthoses.logger.warn("#{@decl.name}::#{member_to_s(member)} was droped since duplication")
-        else
-          @uniq_map[key] = member
+      def update_decl
+        uniq_map = {}
+        @decl.members.reverse_each do |member|
+          key = member_key(member)
+          if uniq_map.key?(key)
+            Orthoses.logger.warn("#{@decl.name}::#{member_to_s(member)} was droped since duplication")
+          else
+            uniq_map[key] = member
+          end
         end
-      end
-
-      def uniq_members
-        drop_known_method_definition
-        @uniq_map.values
+        drop_known_method_definition(uniq_map)
+        @decl.members.replace(uniq_map.values.reverse)
       end
 
       private
 
-      def drop_known_method_definition
+      def drop_known_method_definition(uniq_map)
         env = Utils.rbs_environment(collection: true)
         if m_entry = env.class_decls[@decl.name.absolute!]
           m_entry.decls.each do |d|
             d.decl.members.each do |member|
               case member
-              when RBS::AST::Members::MethodDefinition
-                @uniq_map.delete(member_key(member))
-              when RBS::AST::Members::Alias
-                @uniq_map.delete([RBS::AST::Members::MethodDefinition, member.new_name, member.kind])
+              when RBS::AST::Members::MethodDefinition, RBS::AST::Members::Alias
+                uniq_map.delete(member_key(member))
               end
             end
           end
@@ -53,7 +50,7 @@ module Orthoses
         when RBS::AST::Members::LocationOnly
           [member.class]
         when RBS::AST::Members::Alias
-          [member.class, member.new_name, member.old_name, member.kind]
+          [RBS::AST::Members::MethodDefinition, member.new_name, member.kind]
         else
           [member.class, member.name]
         end
