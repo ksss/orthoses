@@ -1,20 +1,34 @@
 module EnvironmentTest
-  def test_singleton_build_header(t)
-    [
-      ["class BasicObject",           "class BasicObject"],
-      ["class Object < BasicObject",  "class Object < BasicObject"],
-      ["class Random < Random::Base", "class Random"],
-      ["class Integer < Numeric",     "class Integer < Numeric"],
-      ["class Foo",                   "class Foo"],
-      ["class Foo < Object",          "class Foo"],
-      ["class Foo < Bar",             "class Foo < Bar"],
-      ["class Foo < Struct[untyped]", "class Foo < Struct[untyped]"],
-    ].each do |input_header, expect_header|
-      decl = RBS::Parser.parse_signature("#{input_header}\nend").first
-      output_header = Orthoses::Content::Environment.build_header(decl: decl)
-      unless expect_header == output_header
-        t.error("expect=#{expect_header}, but got #{output_header}")
+  def test_name_resolving(t)
+    input = <<~RUBY
+      class Foo
+        class Bar
+        end
+        class Baz
+        end
+        class Baz < Bar
+        end
       end
+      class Array
+      end
+    RUBY
+    env = Orthoses::Content::Environment.new
+    RBS::Prototype::RB.new.then do |parser|
+      parser.parse(input)
+      parser.decls.each do |decl|
+        env << decl
+      end
+    end
+    store = Orthoses::Utils.new_store
+    env.write_to(store: store)
+
+    expect = <<~RBS
+      class Foo::Baz < ::Foo::Bar
+      end
+    RBS
+    actual = store["Foo::Baz"].to_rbs
+    unless expect == actual
+      t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
     end
   end
 end

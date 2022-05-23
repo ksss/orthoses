@@ -1,107 +1,48 @@
 module Orthoses
   class Content
     class Environment
-      class << self
-        def build_header(decl:, name_hint: nil)
-          full_name = name_hint || decl.name.relative!
-
-          case decl
-          when RBS::AST::Declarations::Module
-            self_types =
-              if decl.self_types.empty?
-                nil
-              else
-                " : #{decl.self_types.join(', ')}"
-              end
-            "module #{name_and_params(full_name, decl.type_params)}#{self_types}"
-          when RBS::AST::Declarations::Class
-            super_class =
-              if decl.super_class.then { |s| s.nil? || s.name.relative!.to_s.then { |n| n == "Object" || n == "Random::Base" } }
-                nil
-              else
-                " < #{name_and_args(decl.super_class.name, decl.super_class.args)}"
-              end
-            "class #{name_and_params(full_name, decl.type_params)}#{super_class}"
-          when RBS::AST::Declarations::Interface
-            "interface #{name_and_params(full_name, decl.type_params)}"
-          else
-            raise
-          end
-        end
-
-        private
-
-        def name_and_params(name, params)
-          if params.empty?
-            "#{name}"
-          else
-            ps = params.each.map do |param|
-              param.to_s
-            end
-
-            "#{name}[#{ps.join(", ")}]"
-          end
-        end
-
-        def name_and_args(name, args)
-          if name && args
-            if args.empty?
-              "#{name}"
-            else
-              "#{name}[#{args.join(", ")}]"
-            end
-          end
-        end
-      end
-
       def initialize(constant_filter: nil, mixin_filter: nil)
-        @env = RBS::Environment.new
+        @load_env = RBS::Environment.new
+        @known_env = Utils.rbs_environment(collection: true)
         @constant_filter = constant_filter
         @mixin_filter = mixin_filter
       end
 
       def <<(decl)
-        @env << decl
+        if known_class_entry = @known_env.class_decls[decl.name.absolute!]
+          decl.type_params.replace(known_class_entry.primary.decl.type_params)
+        end
+        @load_env << decl
+      rescue RBS::DuplicatedDeclarationError => err
+        Orthoses.logger.warn(err.inspect)
       end
 
       def write_to(store:)
         each do |add_content|
           content = store[add_content.name]
-          content.header = add_content.header
+          content.header ||= add_content.header
           content.concat(add_content.body)
         end
       end
 
       def each
-        each_class do |content|
-          yield content
-        end
-        each_interface do |content|
-          yield content
-        end
-      end
+        header_builder = HeaderBuilder.new(env: @load_env)
 
-      private
-
-      def each_class
-        @env.class_decls.each do |type_name, m_entry|
+        @load_env.class_decls.each do |type_name, m_entry|
           name = type_name.relative!.to_s
           content = Content.new(name: name)
-          content.header = self.class.build_header(decl: m_entry.decls.first.decl, name_hint: name)
+          content.header = header_builder.build(entry: m_entry, name_hint: name)
           decls_to_lines(m_entry.decls.map(&:decl)).each do |line|
             content << line
           end
           yield content
         end
-      end
 
-      def each_interface
-        @env.interface_decls.each do |type_name, s_entry|
+        @load_env.interface_decls.each do |type_name, s_entry|
           name = type_name.relative!.to_s
           content = Content.new(name: name)
-          decl = s_entry.decl
-          content.header = self.class.build_header(decl: s_entry.decl)
-          decls_to_lines([decl]).each do |line|
+          content.header = header_builder.build(entry: s_entry)
+          decls_to_lines([s_entry.decl]).each do |line|
             content << line
           end
           yield content
