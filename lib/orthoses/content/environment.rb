@@ -3,16 +3,14 @@ module Orthoses
     class Environment
       def initialize(constant_filter: nil, mixin_filter: nil)
         @load_env = RBS::Environment.new
-        @known_env = Utils.rbs_environment(collection: true)
+        @known_env = Utils.rbs_environment(collection: true).dup
         @constant_filter = constant_filter
         @mixin_filter = mixin_filter
       end
 
       def <<(decl)
-        if known_class_entry = @known_env.class_decls[decl.name.absolute!]
-          decl.type_params.replace(known_class_entry.primary.decl.type_params)
-        end
         @load_env << decl
+        @known_env << decl
       rescue RBS::DuplicatedDeclarationError => err
         Orthoses.logger.warn(err.inspect)
       end
@@ -20,13 +18,15 @@ module Orthoses
       def write_to(store:)
         each do |add_content|
           content = store[add_content.name]
-          content.header ||= add_content.header
+          content.header = add_content.header
           content.concat(add_content.body)
         end
       end
 
       def each
-        header_builder = HeaderBuilder.new(env: @load_env)
+        avoid_generic_parameter_mismatch_error
+
+        header_builder = HeaderBuilder.new(env: @known_env)
 
         @load_env.class_decls.each do |type_name, m_entry|
           name = type_name.relative!.to_s
@@ -46,6 +46,23 @@ module Orthoses
             content << line
           end
           yield content
+        end
+      end
+
+      private
+
+      # Avoid `RBS::GenericParameterMismatchError` from like rbs_prototype_rb
+      #     class Array # <= RBS::GenericParameterMismatchError
+      #     end
+      def avoid_generic_parameter_mismatch_error
+        @known_env.class_decls.each do |type_name, m_entry|
+          tmp_primary_d = m_entry.decls.find { |d| !d.decl.type_params.empty? }
+          next unless tmp_primary_d
+          m_entry.decls.each do |d|
+            if d.decl.type_params.empty?
+              d.decl.type_params.replace(tmp_primary_d.decl.type_params)
+            end
+          end
         end
       end
 

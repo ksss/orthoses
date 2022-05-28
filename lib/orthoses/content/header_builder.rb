@@ -48,10 +48,11 @@ module Orthoses
         context = primary.outer.length.times.map do |i|
           primary.outer[0, i + 1].map(&:name).inject(:+).to_namespace.absolute!
         end
+        context.push(RBS::Namespace.root)
 
-        super_class_name = @resolver.resolve(primary.decl.super_class.name, context: context) || primary.decl.super_class.name
+        super_class_name = @resolver.resolve(primary.decl.super_class.name, context: context) || primary.decl.super_class.name.absolute!
         if primary.decl.super_class.args.empty?
-          if super_class_entry = @env.class_decls[super_class_name.absolute!]
+          if super_class_entry = @env.class_decls[super_class_name]
             super_primary = super_class_entry.primary
             " < #{name_and_args(super_class_name, super_primary.decl.type_params.map { :untyped })}"
           else
