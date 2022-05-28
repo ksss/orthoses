@@ -43,44 +43,56 @@ module Orthoses
       store["Module"].body.delete("prepend Orthoses::Attribute::Hook")
 
       attr.result.each do |method, argument|
-        receiver_name = Utils.module_name(method.receiver) or next
+        m = method.receiver.to_s.match(/#<Class:([\w:]+)>/)
+        if m && m[1]
+          receiver_name = m[1]
+          prefix = "self."
+        else
+          receiver_name = Utils.module_name(method.receiver) or next
+          prefix = nil
+        end
         content = store[receiver_name]
         if argument[:names][1].equal?(true)
-          content << "attr_accessor #{argument[:names][0]}: untyped"
+          content << "attr_accessor #{prefix}#{argument[:names][0]}: untyped"
         elsif argument[:names][1].equal?(false)
-          content << "attr_reader #{argument[:names][0]}: untyped"
+          content << "attr_reader #{prefix}#{argument[:names][0]}: untyped"
         else
           argument[:names].each do |name|
-            content << "attr_reader #{name}: untyped"
+            content << "attr_reader #{prefix}#{name}: untyped"
           end
         end
       end
 
-      attr_accessor.result.each do |method, argument|
-        receiver_name = Utils.module_name(method.receiver) or next
-        content = store[receiver_name]
-        argument[:names].each do |name|
-          content << "attr_accessor #{name}: untyped"
-        end
+      each_definition(attr_accessor) do |receiver_name, name|
+        store[receiver_name] << "attr_accessor #{name}: untyped"
       end
-
-      attr_reader.result.each do |method, argument|
-        receiver_name = Utils.module_name(method.receiver) or next
-        content = store[receiver_name]
-        argument[:names].each do |name|
-          content << "attr_reader #{name}: untyped"
-        end
+      each_definition(attr_reader) do |receiver_name, name|
+        store[receiver_name] << "attr_reader #{name}: untyped"
       end
-
-      attr_writer.result.each do |method, argument|
-        receiver_name = Utils.module_name(method.receiver) or next
-        content = store[receiver_name]
-        argument[:names].each do |name|
-          content << "attr_writer #{name}: untyped"
-        end
+      each_definition(attr_writer) do |receiver_name, name|
+        store[receiver_name] << "attr_writer #{name}: untyped"
       end
 
       store
+    end
+
+    private
+
+    def each_definition(call_tracer)
+      call_tracer.result.each do |method, argument|
+        m = method.receiver.to_s.match(/#<Class:([\w:]+)>/)
+        if m && m[1]
+          receiver_name = m[1]
+          argument[:names].each do |name|
+            yield [receiver_name, "self.#{name}"]
+          end
+        else
+          receiver_name = Utils.module_name(method.receiver) or next
+          argument[:names].each do |name|
+            yield [receiver_name, name]
+          end
+        end
+      end
     end
   end
 end
