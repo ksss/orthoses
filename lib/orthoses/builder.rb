@@ -27,6 +27,7 @@ module Orthoses
     end
 
     def use(middleware, *args, **key, &block)
+      Orthoses.logger.debug("use #{middleware}")
       @use << proc do |loader|
         middleware.new(loader, *args, **key, &block).tap do |m|
           m.extend CallLogable
