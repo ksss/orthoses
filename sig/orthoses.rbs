@@ -1,9 +1,9 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 module Orthoses
-  VERSION: String
-
   attr_accessor self.logger: ::Logger
 
   type store = Hash[String, Orthoses::Content]
+
+  VERSION: "0.4.0"
 end
