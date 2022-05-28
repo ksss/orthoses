@@ -46,9 +46,9 @@ module Orthoses
       RBS::Namespace.parse(name).to_type_name
     end
 
-    def self.rbs_environment(library: nil, collection: false)
+    def self.rbs_environment(library: nil, collection: false, cache: true)
       @env_cache ||= {}
-      if hit = @env_cache[[library, collection]]
+      if cache && hit = @env_cache[[library, collection]]
         return hit
       end
 
@@ -71,8 +71,9 @@ module Orthoses
         end
       end
 
-      environment = RBS::Environment.from_loader(loader).resolve_type_names
-      @env_cache[[library, collection]] = environment
+      RBS::Environment.from_loader(loader).resolve_type_names.tap do |env|
+        @env_cache[[library, collection]] = env if cache
+      end
     end
 
     def self.object_to_rbs(object, strict:)

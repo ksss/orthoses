@@ -3,7 +3,7 @@ module Orthoses
     class Environment
       def initialize(constant_filter: nil, mixin_filter: nil)
         @load_env = RBS::Environment.new
-        @known_env = Utils.rbs_environment(collection: true).dup
+        @known_env = Utils.rbs_environment(collection: true, cache: false)
         @constant_filter = constant_filter
         @mixin_filter = mixin_filter
       end
