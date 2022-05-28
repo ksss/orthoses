@@ -3,11 +3,12 @@ module Orthoses
   #     use Orthoses::RBSPrototypeRB,
   #       paths: Dir.glob("lib/**/*.rb")
   class RBSPrototypeRB
-    def initialize(loader, paths:, constant_filter: nil, mixin_filter: nil)
+    def initialize(loader, paths:, constant_filter: nil, mixin_filter: nil, attribute_filter: nil)
       @loader = loader
       @paths = paths
       @constant_filter = constant_filter
       @mixin_filter = mixin_filter
+      @attribute_filter = attribute_filter
     end
 
     def call
@@ -24,6 +25,7 @@ module Orthoses
         env = Orthoses::Content::Environment.new(
           constant_filter: @constant_filter,
           mixin_filter: @mixin_filter,
+          attribute_filter: @attribute_filter,
         )
         parser.decls.each do |decl|
           env << decl

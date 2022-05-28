@@ -22,10 +22,12 @@ task :minitest => :src do
         !Orthoses::Utils.rbs_defined_const?("#{current}::#{const}")
       }
     use Orthoses::Mixin
+    use Orthoses::Attribute
     use Orthoses::RBSPrototypeRB,
       paths: Dir.glob('src/lib/minitest{.rb,/*.rb}'),
       constant_filter: ->(_) { false },
-      mixin_filter: ->(_) { false }
+      mixin_filter: ->(_) { false },
+      attribute_filter: ->(_) { false }
     run ->(){
       require_relative 'src/lib/minitest'
       require_relative 'src/lib/minitest/test'

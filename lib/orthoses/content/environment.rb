@@ -1,11 +1,12 @@
 module Orthoses
   class Content
     class Environment
-      def initialize(constant_filter: nil, mixin_filter: nil)
+      def initialize(constant_filter: nil, mixin_filter: nil, attribute_filter: nil)
         @load_env = RBS::Environment.new
         @known_env = Utils.rbs_environment(collection: true, cache: false)
         @constant_filter = constant_filter
         @mixin_filter = mixin_filter
+        @attribute_filter = attribute_filter
       end
 
       def <<(decl)
@@ -78,6 +79,8 @@ module Orthoses
               next unless @constant_filter.nil? || @constant_filter.call(member)
             when RBS::AST::Members::Mixin
               next unless @mixin_filter.nil? || @mixin_filter.call(member)
+            when RBS::AST::Members::Attribute
+              next unless @attribute_filter.nil? || @attribute_filter.call(member)
             end
             writer.write_member(member)
           end
