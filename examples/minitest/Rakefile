@@ -45,6 +45,12 @@ task :minitest => :src do
     dependencies:
       - name: mutex_m
   YAML
+  tmp = out.join("kernel.rbs").read
+  out.join("kernel.rbs").open("w") do |f|
+    f.puts "%a{annotate:rdoc:skip}"
+    f.write tmp
+  end
+  sh "rbs annotate --gems out"
 end
 
 task default: :minitest
