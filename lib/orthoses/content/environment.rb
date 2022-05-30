@@ -1,6 +1,20 @@
 module Orthoses
   class Content
     class Environment
+      class << self
+        def load_from_paths(paths)
+          new.tap do |env|
+            paths.each do |path|
+              Orthoses.logger.debug("Load #{path}")
+              buffer = RBS::Buffer.new(name: path.to_s, content: File.read(path.to_s, encoding: "UTF-8"))
+              RBS::Parser.parse_signature(buffer).each do |decl|
+                env << decl
+              end
+            end
+          end
+        end
+      end
+
       def initialize(constant_filter: nil, mixin_filter: nil, attribute_filter: nil)
         @load_env = RBS::Environment.new
         @known_env = Utils.rbs_environment(collection: true, cache: false)
