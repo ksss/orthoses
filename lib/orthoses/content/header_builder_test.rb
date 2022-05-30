@@ -34,7 +34,7 @@ module HeaderBuilderTest
       ["Baz",         "class Baz < ::Bar"],
       ["Qux",         "class Qux < ::Struct[untyped]"],
       ["Quux",        "class Quux < ::Hash[String, Integer]"],
-      ["Aaa",         "class Aaa < ::Bbb"],
+      ["Aaa",         "class Aaa < Bbb"],
     ].each do |input_name, expect_header|
       entry = env.class_decls[TypeName(input_name).absolute!] or raise "#{input_name} not found"
       output_header = header_builder.build(entry: entry)

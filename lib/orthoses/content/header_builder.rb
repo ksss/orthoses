@@ -50,7 +50,7 @@ module Orthoses
         end
         context.push(RBS::Namespace.root)
 
-        super_class_name = @resolver.resolve(primary.decl.super_class.name, context: context) || primary.decl.super_class.name.absolute!
+        super_class_name = @resolver.resolve(primary.decl.super_class.name, context: context) || primary.decl.super_class.name
         if primary.decl.super_class.args.empty?
           if super_class_entry = @env.class_decls[super_class_name]
             super_primary = super_class_entry.primary
