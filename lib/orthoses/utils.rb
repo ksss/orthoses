@@ -122,6 +122,9 @@ module Orthoses
             "Hash[#{keys.join(' | ')}, #{values.join(' | ')}]"
           end
         end
+      when Range
+        type = object_to_rbs(object.begin || object.end, strict: false)
+        "Range[#{type}]"
       when ARGF
         # see also https://github.com/ruby/rbs/pull/975
         'untyped'
