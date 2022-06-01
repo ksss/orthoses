@@ -2,5 +2,7 @@
 
 class Orthoses::CallTracer
   attr_accessor result: Array[[ Method, Hash[Symbol, untyped] ]]
+  def initialize: () -> void
+
   def trace: [T] (Method | UnboundMethod) ?{ () -> T } -> T
 end

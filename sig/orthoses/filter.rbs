@@ -1,7 +1,7 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 class Orthoses::Filter
-  @loader: Orthoses::_Call
-  include Orthoses::_MiddleWare
   def initialize: (Orthoses::_Call loader, if: ^(String, Orthoses::Content) -> boolish) -> void
+  def call: () -> Orthoses::store
+  @loader: Orthoses::_Call
 end

@@ -1,7 +1,7 @@
 module Orthoses
-  class Writer
+  class Attribute
     @loader: Orthoses::_Call
-    def initialize: (Orthoses::_Call loader, io: _Writer) -> void
+    def initialize: (Orthoses::_Call loader) -> void
     def call: () -> Orthoses::store
   end
 end

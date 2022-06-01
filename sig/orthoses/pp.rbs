@@ -1,4 +1,6 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 class Orthoses::PP
+  def initialize: (untyped loader) -> void
+  def call: () -> untyped
 end

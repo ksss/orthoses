@@ -1,13 +1,23 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 class Orthoses::Content::Environment
-  type constant_filter = ^(RBS::AST::Declarations::Constant) -> boolish
-  type mixin_filter = ^(RBS::AST::Members::Mixin) -> boolish
-  @env: RBS::Environment
-  @constant_filter: constant_filter?
-  @mixin_filter: mixin_filter?
-  def initialize: (?constant_filter: constant_filter?, ?mixin_filter: mixin_filter?) -> void
+  def self.load_from_paths: (untyped paths) -> untyped
+
+  def initialize: (?constant_filter: constant_filter?, ?mixin_filter: mixin_filter?, ?attribute_filter: attribute_filter?) -> void
   def <<: (RBS::AST::Declarations::t decl) -> RBS::Environment
   def write_to: (store: Orthoses::store) -> void
   def each: () { (Orthoses::Content) -> void } -> void
+  private
+  # Avoid `RBS::GenericParameterMismatchError` from like rbs_prototype_rb
+  #     class Array # <= RBS::GenericParameterMismatchError
+  #     end
+  def avoid_generic_parameter_mismatch_error: () -> untyped
+  def decls_to_lines: (untyped decls) -> untyped
+  type constant_filter = ^(RBS::AST::Declarations::Constant) -> boolish
+  type mixin_filter = ^(RBS::AST::Members::Mixin) -> boolish
+  type attribute_filter = ^(RBS::AST::Members::Attribute) -> boolish
+  @env: RBS::Environment
+  @constant_filter: constant_filter?
+  @mixin_filter: mixin_filter?
+  @attribute_filter: attribute_filter?
 end

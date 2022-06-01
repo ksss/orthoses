@@ -43,7 +43,7 @@ module LoadRBSTest
 
     expect = <<~RBS
       interface Orthoses::_Call
-        def call: () -> Hash[String, Orthoses::Content]
+        def call: () -> Orthoses::store
       end
     RBS
     actual = store["Orthoses::_Call"].to_rbs

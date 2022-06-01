@@ -1,7 +1,7 @@
 module Orthoses
   class Tap
     @loader: Orthoses::_Call
-    include Orthoses::_MiddleWare
     def initialize: (Orthoses::_Call loader) -> void
+    def call: () -> Orthoses::store
   end
 end

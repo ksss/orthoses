@@ -1,7 +1,8 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 class Orthoses::DelegateClass
-  @loader: Orthoses::_Call
-  include Orthoses::_MiddleWare
   def initialize: (Orthoses::_Call loader) -> void
+  def call: () -> Orthoses::store
+  def temporary_type_params: (untyped name) -> untyped
+  @loader: Orthoses::_Call
 end

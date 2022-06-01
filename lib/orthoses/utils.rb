@@ -77,7 +77,7 @@ module Orthoses
       loader = RBS::EnvironmentLoader.new
 
       if collection && rbs_collection_pathname
-        config = RBS::Collection::Config.lockfile_of(rbs_collection_pathname)
+        config = RBS::Collection::Config.lockfile_of(rbs_collection_pathname) or raise
         loader.add_collection(config)
       end
 

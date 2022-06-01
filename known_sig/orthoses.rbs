@@ -16,7 +16,7 @@ module Orthoses
   type store = Hash[String, Orthoses::Content]
 
   interface _Call
-    def call: () -> Hash[String, Orthoses::Content]
+    def call: () -> Orthoses::store
   end
   interface _MiddleWare
     include Orthoses::_Call

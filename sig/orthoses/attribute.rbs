@@ -1,4 +1,9 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 class Orthoses::Attribute
+  def initialize: (Orthoses::_Call loader) -> void
+  def call: () -> Orthoses::store
+  private
+  def each_definition: (untyped call_tracer) { (untyped) -> untyped } -> untyped
+  @loader: Orthoses::_Call
 end

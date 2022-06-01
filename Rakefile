@@ -9,8 +9,6 @@ task :test do
   Rgot::Cli.new(%w[-v lib integration_test]).run
 end
 
-task default: :test
-
 desc "generate self signature to `sig` dir"
 task :generate_self_sig do
   Pathname('sig').rmtree rescue nil
@@ -28,8 +26,16 @@ task :generate_self_sig do
     use Orthoses::Constant, strict: true
     use Orthoses::LoadRBS,
       paths: Dir.glob("known_sig/**/*.rbs")
+    use Orthoses::RBSPrototypeRB,
+      paths: Dir.glob("lib/**/*.rb").grep_v(/_test\.rb/)
     use Orthoses::Walk,
       root: "Orthoses"
     run ->() { }
   end.call
 end
+
+task :validate do
+  sh "rbs -I sig validate --silent"
+end
+
+task default: [:generate_self_sig, :validate, :test]

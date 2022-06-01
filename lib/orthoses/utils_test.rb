@@ -62,6 +62,8 @@ module UtilsTest
       [ [123, 234], "Array[Integer]" ],
       [ {}, "Hash[untyped, untyped]" ],
       [ { a: 1, b: 'c' }, 'Hash[Symbol, Integer | String]' ],
+      [ 1..2, 'Range[Integer]' ],
+      [ 1..nil, 'Range[Integer]' ],
       [ { 1 => 2, 3 => 4 }, 'Hash[Integer, Integer]' ],
       [ ARGF, 'untyped' ],
     ].each do |object, expect|

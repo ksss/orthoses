@@ -2,12 +2,14 @@ module Orthoses
   module Utils
     UNBOUND_NAME_METHOD: UnboundMethod
 
+    attr_accessor self.rbs_collection_pathname: Pathname
+
     def self.unautoload!: () -> void
-    def self.each_const_recursive: (Module root, ?cache: Hash[untyped, true], ?on_error: (^(Orthoses::ConstLoadError) -> void)?) ?{ (Module, Symbol, untyped) -> void } -> void
+    def self.each_const_recursive: (Module root, ?cache: Hash[untyped, true], ?on_error: ^(Orthoses::ConstLoadError) -> void) ?{ (Module, Symbol, untyped) -> void } -> void
     def self.rbs_defined_const?: (String name, ?library: (String | Array[String])?, ?collection: boolish) -> bool
     def self.rbs_defined_class?: (String name, ?library: (String | Array[String])?, ?collection: boolish) -> bool
     def self.rbs_type_name: (String) -> RBS::TypeName
-    def self.rbs_environment: (?library: String | Array[String] | nil, ?collection: boolish) -> RBS::Environment
+    def self.rbs_environment: (?library: String | Array[String] | nil, ?collection: boolish, ?cache: boolish) -> RBS::Environment
     def self.object_to_rbs: (untyped object, strict: bool) -> String
     def self.module_name: (Module mod) -> String?
     def self.module_to_type_name: (Module) -> RBS::TypeName?

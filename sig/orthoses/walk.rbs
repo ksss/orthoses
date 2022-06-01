@@ -1,8 +1,8 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 class Orthoses::Walk
+  def initialize: (Orthoses::_Call loader, root: Module | String) -> void
+  def call: () -> Orthoses::store
   @loader: Orthoses::_Call
   @root: Module | String
-  include Orthoses::_MiddleWare
-  def initialize: (Orthoses::_Call loader, root: Module | String) -> void
 end
