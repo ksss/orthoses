@@ -46,6 +46,28 @@ module Orthoses
       RBS::Namespace.parse(name).to_type_name
     end
 
+    class << self
+      # Generated scripts are not always located in the root.
+      # By default, it follows the upper level directory from the current directory
+      # to find the rbs_collection.yaml file and set it to `rbs_collection_pathname`.
+      # It can be reconfigured if necessary.
+      attr_accessor :rbs_collection_pathname
+    end
+    # set default
+    self.rbs_collection_pathname = ->() {
+      begin
+        start = here = Dir.pwd
+        until ok = RBS::Collection::Config::PATH.exist?
+          Dir.chdir("..")
+          return nil if Dir.pwd == here
+          here = Dir.pwd
+        end
+        Pathname(here) + RBS::Collection::Config::PATH
+      ensure
+        Dir.chdir(start)
+      end
+    }.call
+
     def self.rbs_environment(library: nil, collection: false, cache: true)
       @env_cache ||= {}
       if cache && hit = @env_cache[[library, collection]]
@@ -54,9 +76,9 @@ module Orthoses
 
       loader = RBS::EnvironmentLoader.new
 
-      if collection
-        lock = RBS::Collection::Config::PATH&.then { |p| RBS::Collection::Config.lockfile_of(p) }
-        loader.add_collection(lock) if lock
+      if collection && rbs_collection_pathname
+        config = RBS::Collection::Config.lockfile_of(rbs_collection_pathname)
+        loader.add_collection(config)
       end
 
       case library
