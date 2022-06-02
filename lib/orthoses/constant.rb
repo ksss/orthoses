@@ -27,9 +27,13 @@ module Orthoses
           Orthoses::Utils.each_const_recursive(base, on_error: @on_error) do |current, const, val|
             next if current.singleton_class?
             next if Utils.module_name(current).nil?
-            next if val.kind_of?(Module)
             next if cache[[current, const]]
             cache[[current, const]] = true
+
+            if val.kind_of?(Module)
+              will_add_key_and_content << [Utils.module_name(val), nil]
+              next
+            end
 
             rbs = Orthoses::Utils.object_to_rbs(val, strict: @strict)
             next unless rbs
@@ -38,8 +42,12 @@ module Orthoses
             will_add_key_and_content << [Utils.module_name(current), "#{const}: #{rbs}"]
           end
         end
+
         will_add_key_and_content.each do |name, line|
-          store[name] << line
+          next unless name
+          content = store[name]
+          next unless line
+          content << line
         end
       end
     end

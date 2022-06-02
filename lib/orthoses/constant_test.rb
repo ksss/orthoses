@@ -2,6 +2,10 @@
 
 module ConstantTest
   CONST = 0
+  StructClass = Struct.new(:foo)
+  const_set(:ConstSetClass, Class.new(StructClass))
+  NoSuperClass = Class.new
+  ModuleNew = Module.new
   module Foo
     CONST = 1
     module Bar
@@ -19,24 +23,44 @@ module ConstantTest
       end
     }, strict: true).call
 
-    unless store.length == 4
-      t.error("expect 4 constant decls, but got #{store.length}")
+    unless store.length == 8
+      t.error("expect 8 constant decls, but got #{store.length}")
     end
 
-    {
-      "ConstantTest" => ["CONST: 0"],
-      "ConstantTest::Foo" => ["CONST: 1"],
-      "ConstantTest::Foo::Bar" => ["CONST: 2"],
-      "ConstantTest::Foo::Baz" => ["CONST: 3"],
-    }.each do |name, expect|
-      content = store[name]
-      unless content
-        t.error("expect found name=#{name.inspect} in store, but nothing")
-        next
+    actual = store.sort.map do |name, content|
+      content.to_rbs
+    end.join("\n")
+    expect = <<~RBS
+      module ConstantTest
+        CONST: 0
       end
-      unless expect == content.body
-        t.error("expect=#{expect}, but got #{content.body}")
+
+      class ConstantTest::ConstSetClass < ::ConstantTest::StructClass
       end
+
+      module ConstantTest::Foo
+        CONST: 1
+      end
+
+      module ConstantTest::Foo::Bar
+        CONST: 2
+      end
+
+      class ConstantTest::Foo::Baz
+        CONST: 3
+      end
+
+      module ConstantTest::ModuleNew
+      end
+
+      class ConstantTest::NoSuperClass
+      end
+
+      class ConstantTest::StructClass < ::Struct[untyped]
+      end
+    RBS
+    unless expect == actual
+      t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
     end
   end
 end
