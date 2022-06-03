@@ -3,5 +3,6 @@
 class Orthoses::AvoidRecursiveAncestorError
   def initialize: (Orthoses::_Call loader) -> void
   def call: () -> Orthoses::store
+  def set_object_mixins_recursive: (untyped store, untyped name, untyped object_mixins) -> untyped
   @loader: Orthoses::_Call
 end

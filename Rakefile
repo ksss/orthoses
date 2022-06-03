@@ -27,7 +27,10 @@ task :generate_self_sig do
     use Orthoses::LoadRBS,
       paths: Dir.glob("known_sig/**/*.rbs")
     use Orthoses::RBSPrototypeRB,
-      paths: Dir.glob("lib/**/*.rb").grep_v(/_test\.rb/)
+      paths: Dir.glob("lib/**/*.rb").grep_v(/_test\.rb/),
+      constant_filter: ->(_) { false },
+      mixin_filter: ->(_) { false },
+      attribute_filter: ->(_) { false }
     use Orthoses::Walk,
       root: "Orthoses"
     run ->() { }

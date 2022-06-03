@@ -11,13 +11,9 @@ module Orthoses::Utils
 
   def self.rbs_type_name: (String) -> RBS::TypeName
 
-  attr_accessor self.rbs_collection_pathname: Pathname
-
   def self.rbs_environment: (?library: String | Array[String] | nil, ?collection: boolish, ?cache: boolish) -> RBS::Environment
 
   def self.object_to_rbs: (untyped object, strict: bool) -> String
-
-  UNBOUND_NAME_METHOD: UnboundMethod
 
   def self.module_name: (Module mod) -> String?
 
@@ -26,4 +22,8 @@ module Orthoses::Utils
   def self.known_type_params: (Module | String) -> Array[RBS::AST::TypeParam]
 
   def self.new_store: () -> Orthoses::store
+
+  UNBOUND_NAME_METHOD: UnboundMethod
+
+  attr_accessor self.rbs_collection_pathname: Pathname
 end
