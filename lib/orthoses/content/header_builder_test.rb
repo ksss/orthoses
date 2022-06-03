@@ -19,22 +19,28 @@ module HeaderBuilderTest
 
       class Aaa < Bbb
       end
+
+      ClassAlias: Foo
+
+      class SuperIsClassAlias < ClassAlias
+      end
     RBS
     decls.each { env << _1 }
     header_builder = Orthoses::Content::HeaderBuilder.new(env: env)
 
     [
-      ["BasicObject", "class BasicObject"],
-      ["Object",      "class Object < ::BasicObject"],
-      ["Random",      "class Random"],
-      ["Integer",     "class Integer < ::Numeric"],
-      ["Array",       "class Array[unchecked out Elem]"],
-      ["Foo",         "class Foo"],
-      ["Bar",         "class Bar"],
-      ["Baz",         "class Baz < ::Bar"],
-      ["Qux",         "class Qux < ::Struct[untyped]"],
-      ["Quux",        "class Quux < ::Hash[String, Integer]"],
-      ["Aaa",         "class Aaa < Bbb"],
+      ["BasicObject",       "class BasicObject"],
+      ["Object",            "class Object < ::BasicObject"],
+      ["Random",            "class Random"],
+      ["Integer",           "class Integer < ::Numeric"],
+      ["Array",             "class Array[unchecked out Elem]"],
+      ["Foo",               "class Foo"],
+      ["Bar",               "class Bar"],
+      ["Baz",               "class Baz < ::Bar"],
+      ["Qux",               "class Qux < ::Struct[untyped]"],
+      ["Quux",              "class Quux < ::Hash[String, Integer]"],
+      ["Aaa",               "class Aaa < Bbb"],
+      ["SuperIsClassAlias", "class SuperIsClassAlias < ClassAlias"],
     ].each do |input_name, expect_header|
       entry = env.class_decls[TypeName(input_name).absolute!] or raise "#{input_name} not found"
       output_header = header_builder.build(entry: entry)
