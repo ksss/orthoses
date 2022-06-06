@@ -1,6 +1,11 @@
 module Orthoses
   class CallTracer
-    attr_accessor result: Array[[Method, Hash[Symbol, untyped]]]
+    class Result < ::Struct[untyped]
+      def method: () -> Method
+      def argument: () -> Hash[Symbol, untyped]
+    end
+
+    attr_accessor results: Array[Result]
     def trace: [T] (Method | UnboundMethod) ?{ () -> T } -> T
   end
 end

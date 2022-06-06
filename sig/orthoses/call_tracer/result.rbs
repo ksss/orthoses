@@ -1,0 +1,6 @@
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+class Orthoses::CallTracer::Result < ::Struct[untyped]
+  def method: () -> Method
+  def argument: () -> Hash[Symbol, untyped]
+end

@@ -42,22 +42,23 @@ module Orthoses
 
       store["Module"].body.delete("prepend Orthoses::Attribute::Hook")
 
-      attr.result.each do |method, argument|
-        m = method.receiver.to_s.match(/#<Class:([\w:]+)>/)
+      attr.results.each do |result|
+        m = result.method.receiver.to_s.match(/#<Class:([\w:]+)>/)
         if m && m[1]
           receiver_name = m[1]
           prefix = "self."
         else
-          receiver_name = Utils.module_name(method.receiver) or next
+          receiver_name = Utils.module_name(result.method.receiver) or next
           prefix = nil
         end
         content = store[receiver_name]
-        if argument[:names][1].equal?(true)
-          content << "attr_accessor #{prefix}#{argument[:names][0]}: untyped"
-        elsif argument[:names][1].equal?(false)
-          content << "attr_reader #{prefix}#{argument[:names][0]}: untyped"
+        names = result.argument[:names]
+        if names[1].equal?(true)
+          content << "attr_accessor #{prefix}#{names[0]}: untyped"
+        elsif names[1].equal?(false)
+          content << "attr_reader #{prefix}#{names[0]}: untyped"
         else
-          argument[:names].each do |name|
+          names.each do |name|
             content << "attr_reader #{prefix}#{name}: untyped"
           end
         end
@@ -79,16 +80,17 @@ module Orthoses
     private
 
     def each_definition(call_tracer)
-      call_tracer.result.each do |method, argument|
-        m = method.receiver.to_s.match(/#<Class:([\w:]+)>/)
+      call_tracer.results.each do |result|
+        m = result.method.receiver.to_s.match(/#<Class:([\w:]+)>/)
+        names = result.argument[:names]
         if m && m[1]
           receiver_name = m[1]
-          argument[:names].each do |name|
+          names.each do |name|
             yield [receiver_name, "self.#{name}"]
           end
         else
-          receiver_name = Utils.module_name(method.receiver) or next
-          argument[:names].each do |name|
+          receiver_name = Utils.module_name(result.method.receiver) or next
+          names.each do |name|
             yield [receiver_name, name]
           end
         end

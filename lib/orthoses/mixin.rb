@@ -44,15 +44,15 @@ module Orthoses
     private
 
     def collect_definitions(store, call_tracer, how)
-      call_tracer.result.each do |method, argument|
-        base_mod = method.receiver
+      call_tracer.results.each do |result|
+        base_mod = result.method.receiver
         next unless base_mod.kind_of?(Module)
 
         base_mod_name = Utils.module_name(base_mod)
         next unless base_mod_name
 
         content = store[base_mod_name]
-        argument[:modules].each do |mod|
+        result.argument[:modules].each do |mod|
           mod_name = Utils.module_name(mod)
           next unless mod_name
 
