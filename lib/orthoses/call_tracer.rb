@@ -7,19 +7,19 @@ module Orthoses
   #     scope.trace(ActiveRecord::Base.method(:scope)) do
   #       @loader.call
   #     end
-  #     scope.results.each do |result|
-  #       result.argument[:name]
-  #       result.argument[:body]
-  #       result.argument[:block]
+  #     scope.captures.each do |capture|
+  #       capture.argument[:name]
+  #       capture.argument[:body]
+  #       capture.argument[:block]
   #     end
   class CallTracer
-    class Result < Struct.new(:method, :argument, keyword_init: true)
+    class Capture < Struct.new(:method, :argument, keyword_init: true)
     end
 
-    attr_accessor :results
+    attr_accessor :captures
 
     def initialize
-      @results = []
+      @captures = []
     end
 
     def trace(target, &block)
@@ -50,7 +50,7 @@ module Orthoses
           end
         end
 
-        @results << Result.new(
+        @captures << Capture.new(
           method: called_method,
           argument: argument,
         )

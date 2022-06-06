@@ -42,17 +42,17 @@ module Orthoses
 
       store["Module"].body.delete("prepend Orthoses::Attribute::Hook")
 
-      attr.results.each do |result|
-        m = result.method.receiver.to_s.match(/#<Class:([\w:]+)>/)
+      attr.captures.each do |capture|
+        m = capture.method.receiver.to_s.match(/#<Class:([\w:]+)>/)
         if m && m[1]
           receiver_name = m[1]
           prefix = "self."
         else
-          receiver_name = Utils.module_name(result.method.receiver) or next
+          receiver_name = Utils.module_name(capture.method.receiver) or next
           prefix = nil
         end
         content = store[receiver_name]
-        names = result.argument[:names]
+        names = capture.argument[:names]
         if names[1].equal?(true)
           content << "attr_accessor #{prefix}#{names[0]}: untyped"
         elsif names[1].equal?(false)
@@ -80,16 +80,16 @@ module Orthoses
     private
 
     def each_definition(call_tracer)
-      call_tracer.results.each do |result|
-        m = result.method.receiver.to_s.match(/#<Class:([\w:]+)>/)
-        names = result.argument[:names]
+      call_tracer.captures.each do |capture|
+        m = capture.method.receiver.to_s.match(/#<Class:([\w:]+)>/)
+        names = capture.argument[:names]
         if m && m[1]
           receiver_name = m[1]
           names.each do |name|
             yield [receiver_name, "self.#{name}"]
           end
         else
-          receiver_name = Utils.module_name(result.method.receiver) or next
+          receiver_name = Utils.module_name(capture.method.receiver) or next
           names.each do |name|
             yield [receiver_name, name]
           end
