@@ -1,6 +1,6 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
-module Orthoses::Mixin::Hook : Module
+module Orthoses::Mixin::Hook
   def include: (*untyped modules) -> untyped
 
   def extend: (*untyped modules) -> untyped

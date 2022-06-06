@@ -1,6 +1,6 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
-module Orthoses::Attribute::Hook : Module
+module Orthoses::Attribute::Hook
   def attr: (*untyped names) -> untyped
 
   def attr_accessor: (*untyped names) -> untyped
