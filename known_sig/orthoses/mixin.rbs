@@ -1,5 +1,8 @@
 module Orthoses
   class Mixin
+    module Hook : Module
+    end
+
     @loader: Orthoses::_Call
     def initialize: (Orthoses::_Call loader) -> void
     def call: () -> Orthoses::store
