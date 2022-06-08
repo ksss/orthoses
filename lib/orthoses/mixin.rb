@@ -26,9 +26,9 @@ module Orthoses
       extend = CallTracer.new
       prepend = CallTracer.new
 
-      store = include.trace(::Module.method(:include)) do
-        extend.trace(::Module.method(:extend)) do
-          prepend.trace(::Module.method(:prepend)) do
+      store = include.trace(Hook.instance_method(:include)) do
+        extend.trace(Hook.instance_method(:extend)) do
+          prepend.trace(Hook.instance_method(:prepend)) do
             @loader.call
           end
         end

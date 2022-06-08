@@ -23,17 +23,17 @@ module Orthoses
     end
 
     def call
-      Module.prepend(Hook)
+      ::Module.prepend(Hook)
 
       attr = CallTracer.new
       attr_accessor = CallTracer.new
       attr_reader = CallTracer.new
       attr_writer = CallTracer.new
 
-      store = attr.trace(Hook.method(:attr)) do
-        attr_accessor.trace(Hook.method(:attr_accessor)) do
-          attr_reader.trace(Hook.method(:attr_reader)) do
-            attr_writer.trace(Hook.method(:attr_writer)) do
+      store = attr.trace(Hook.instance_method(:attr)) do
+        attr_accessor.trace(Hook.instance_method(:attr_accessor)) do
+          attr_reader.trace(Hook.instance_method(:attr_reader)) do
+            attr_writer.trace(Hook.instance_method(:attr_writer)) do
               @loader.call
             end
           end
