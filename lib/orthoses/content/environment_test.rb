@@ -1,4 +1,41 @@
 module EnvironmentTest
+  def test_visibility(t)
+    input = <<~RBS
+      module Bar
+      end
+      class Foo
+        def publ1: () -> void
+      end
+      class Foo
+        private
+        def priv: () -> void
+        include Bar
+      end
+      class Foo
+        def publ2: () -> void
+      end
+    RBS
+    env = Orthoses::Content::Environment.new
+    RBS::Parser.parse_signature(input).each do |decl|
+      env << decl
+    end
+    store = Orthoses::Utils.new_store
+    env.write_to(store: store)
+
+    expect = <<~RBS
+      class Foo
+        def publ1: () -> void
+        private def priv: () -> void
+        include Bar
+        def publ2: () -> void
+      end
+    RBS
+    actual = store["Foo"].to_rbs
+    unless expect == actual
+      t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
+    end
+  end
+
   def test_name_resolving(t)
     input = <<~RUBY
       class Foo

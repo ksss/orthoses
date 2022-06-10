@@ -86,15 +86,29 @@ module Orthoses
         writer = RBS::Writer.new(out: out)
         decls.each do |decl|
           next unless decl.respond_to?(:members)
+          last_visibility = :public
           decl.members.each do |member|
             next if member.respond_to?(:members)
             case member
             when RBS::AST::Declarations::Constant
               next unless @constant_filter.nil? || @constant_filter.call(member)
+            when RBS::AST::Members::MethodDefinition
+              if last_visibility == :private && member.kind != :singleton_instance
+                member.instance_variable_set(:@visibility, :private)
+              end
             when RBS::AST::Members::Mixin
               next unless @mixin_filter.nil? || @mixin_filter.call(member)
             when RBS::AST::Members::Attribute
               next unless @attribute_filter.nil? || @attribute_filter.call(member)
+              if last_visibility == :private
+                member.instance_variable_set(:@visibility, :private)
+              end
+            when RBS::AST::Members::Public
+              last_visibility = :public
+              next
+            when RBS::AST::Members::Private
+              last_visibility = :private
+              next
             end
             writer.write_member(member)
           end
