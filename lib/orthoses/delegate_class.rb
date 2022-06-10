@@ -31,6 +31,8 @@ module Orthoses
         end
       end
 
+      store["Class"].body.delete("prepend Orthoses::DelegateClass::Hook")
+
       inherited.captures.each do |capture|
         superclass = capture.method.receiver
         if delegate_to_class = delegate_class_super_map[superclass]

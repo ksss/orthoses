@@ -34,6 +34,8 @@ module Orthoses
         end
       end
 
+      store["Module"].body.delete("prepend Orthoses::Mixin::Hook")
+
       collect_definitions(store, include, :include)
       collect_definitions(store, extend, :extend)
       collect_definitions(store, prepend, :prepend)
