@@ -10,20 +10,12 @@ gems:
   version: 2.5.0
   source:
     type: rubygems
-- name: activesupport
-  version: '6.0'
-  source:
-    type: git
-    name: ruby/gem_rbs_collection
-    revision: 21f137aea256d00165471ba3d5e103a78dc8d511
-    remote: https://github.com/ruby/gem_rbs_collection.git
-    repo_dir: gems
 - name: i18n
   version: '1.10'
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 21f137aea256d00165471ba3d5e103a78dc8d511
+    revision: 6f9f54a753a78c505e63e7f31a48b3f71f1b510d
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: ast
@@ -31,7 +23,7 @@ gems:
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 21f137aea256d00165471ba3d5e103a78dc8d511
+    revision: 6f9f54a753a78c505e63e7f31a48b3f71f1b510d
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: listen
@@ -39,7 +31,7 @@ gems:
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 21f137aea256d00165471ba3d5e103a78dc8d511
+    revision: 6f9f54a753a78c505e63e7f31a48b3f71f1b510d
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: parallel
@@ -47,7 +39,7 @@ gems:
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 21f137aea256d00165471ba3d5e103a78dc8d511
+    revision: 6f9f54a753a78c505e63e7f31a48b3f71f1b510d
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: rainbow
@@ -55,7 +47,7 @@ gems:
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 21f137aea256d00165471ba3d5e103a78dc8d511
+    revision: 6f9f54a753a78c505e63e7f31a48b3f71f1b510d
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: rubygems
@@ -87,22 +79,6 @@ gems:
   source:
     type: stdlib
 - name: monitor
-  version: '0'
-  source:
-    type: stdlib
-- name: date
-  version: '0'
-  source:
-    type: stdlib
-- name: singleton
-  version: '0'
-  source:
-    type: stdlib
-- name: mutex_m
-  version: '0'
-  source:
-    type: stdlib
-- name: time
   version: '0'
   source:
     type: stdlib

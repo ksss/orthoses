@@ -7,12 +7,11 @@ class Orthoses::Content::Environment
   def <<: (RBS::AST::Declarations::t decl) -> RBS::Environment
   def write_to: (store: Orthoses::store) -> void
   def each: () { (Orthoses::Content) -> void } -> void
-  private
   # Avoid `RBS::GenericParameterMismatchError` from like rbs_prototype_rb
   #     class Array # <= RBS::GenericParameterMismatchError
   #     end
-  def avoid_generic_parameter_mismatch_error: () -> untyped
-  def decls_to_lines: (untyped decls) -> untyped
+  private def avoid_generic_parameter_mismatch_error: () -> untyped
+  private def decls_to_lines: (untyped decls) -> untyped
   type constant_filter = ^(RBS::AST::Declarations::Constant) -> boolish
   type mixin_filter = ^(RBS::AST::Members::Mixin) -> boolish
   type attribute_filter = ^(RBS::AST::Members::Attribute) -> boolish

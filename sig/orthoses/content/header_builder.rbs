@@ -3,11 +3,10 @@
 class Orthoses::Content::HeaderBuilder
   def initialize: (env: untyped) -> void
   def build: (entry: untyped, ?name_hint: untyped?) -> untyped
-  private
-  def build_module: (entry: untyped, ?name_hint: untyped?) -> ::String
-  def build_class: (entry: untyped, ?name_hint: untyped?) -> ::String
-  def build_super_class: (untyped primary) -> (nil | untyped)
-  def build_interface: (entry: untyped, ?name_hint: untyped?) -> ::String
-  def name_and_params: (untyped name, untyped params) -> ::String
-  def name_and_args: (untyped name, untyped args) -> (::String | nil)
+  private def build_module: (entry: untyped, ?name_hint: untyped?) -> ::String
+  private def build_class: (entry: untyped, ?name_hint: untyped?) -> ::String
+  private def build_super_class: (untyped primary) -> (nil | untyped)
+  private def build_interface: (entry: untyped, ?name_hint: untyped?) -> ::String
+  private def name_and_params: (untyped name, untyped params) -> ::String
+  private def name_and_args: (untyped name, untyped args) -> (::String | nil)
 end

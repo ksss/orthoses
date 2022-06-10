@@ -6,15 +6,13 @@ class Orthoses::Content
   def concat: (Array[String]) -> void
   def to_rbs: () -> String
   def to_decl: () -> untyped
+  private def original_rbs: () -> ::String
 
-  private
-  def original_rbs: () -> ::String
-
-  def uniqed_body_string: () -> String
-  def uniqed_body_decl: () -> RBS::AST::Declarations::t
-  def auto_header: () -> (nil | untyped)
-  def temporary_type_params: (untyped name) -> untyped
-  def type_params: (untyped name) -> untyped
+  private def uniqed_body_string: () -> String
+  private def uniqed_body_decl: () -> RBS::AST::Declarations::t
+  private def auto_header: () -> (nil | untyped)
+  private def temporary_type_params: (untyped name) -> untyped
+  private def type_params: (untyped name) -> untyped
   attr_reader name: String
   attr_reader body: Array[String]
   attr_accessor header: String?

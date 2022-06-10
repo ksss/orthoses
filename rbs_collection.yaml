@@ -13,6 +13,7 @@ gems:
   - name: orthoses
     ignore: true
   - name: activesupport
+    ignore: true
   - name: i18n
   - name: ast
   - name: listen

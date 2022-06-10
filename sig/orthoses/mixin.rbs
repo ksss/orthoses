@@ -3,7 +3,6 @@
 class Orthoses::Mixin
   def initialize: (Orthoses::_Call loader) -> void
   def call: () -> Orthoses::store
-  private
-  def collect_definitions: (Orthoses::store store, Orthoses::CallTracer call_tracer, :include | :extend | :prepend how) -> void
+  private def collect_definitions: (Orthoses::store store, Orthoses::CallTracer call_tracer, :include | :extend | :prepend how) -> void
   @loader: Orthoses::_Call
 end

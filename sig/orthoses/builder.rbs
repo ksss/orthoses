@@ -1,8 +1,8 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 class Orthoses::Builder
-  def initialize: () { () -> untyped } -> void
-  def use: (untyped middleware, *untyped args, **untyped key) { () -> untyped } -> untyped
+  def initialize: () ?{ () -> untyped } -> void
+  def use: (untyped middleware, *untyped args, **untyped key) ?{ () -> untyped } -> untyped
   def run: (untyped loader) -> untyped
   def to_loader: () -> untyped
 
