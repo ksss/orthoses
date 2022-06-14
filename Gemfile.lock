@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    orthoses (0.8.0)
+    orthoses (0.9.0)
       rbs (~> 2.0)
 
 GEM
