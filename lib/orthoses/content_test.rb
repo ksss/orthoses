@@ -14,6 +14,8 @@ module ContentTest
     store["ContentTest::WithSuper"]
     store["ContentTest::SuperClassIsNoName"]
     store["Array"]
+    store["_Foo"]
+    store["_Bar"].header = "interface _Bar[T]"
 
     actual = store.map { |_, v| v.to_rbs }.join("\n")
 
@@ -29,6 +31,12 @@ module ContentTest
       end
 
       class Array[unchecked out Elem]
+      end
+
+      interface _Foo
+      end
+
+      interface _Bar[T]
       end
     RBS
     unless expect == actual

@@ -81,11 +81,6 @@ module Orthoses
     end
 
     def auto_header
-      if name.split('::').last.start_with?('_')
-        self.header = "interface #{name}"
-        return
-      end
-
       env = Utils.rbs_environment(collection: true)
       if entry = env.class_decls[TypeName(name).absolute!]
         @header = Content::HeaderBuilder.new(env: env).build(entry: entry)
@@ -93,6 +88,11 @@ module Orthoses
       end
 
       return unless @header.nil?
+
+      if name.split('::').last.start_with?('_')
+        self.header = "interface #{name}"
+        return
+      end
 
       val = Object.const_get(name)
 
