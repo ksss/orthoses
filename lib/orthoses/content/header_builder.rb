@@ -45,11 +45,7 @@ module Orthoses
       def build_super_class(primary)
         return nil if primary.decl.super_class.then { |s| s.nil? || s.name.relative!.to_s.then { |n| n == "Object" || n == "Random::Base" } }
 
-        context = primary.outer.length.times.map do |i|
-          primary.outer[0, i + 1].map(&:name).inject(:+).to_namespace.absolute!
-        end
-        context.push(RBS::Namespace.root)
-
+        context = build_context(entry: primary)
         super_class_name = @resolver.resolve(primary.decl.super_class.name, context: context) || primary.decl.super_class.name
         if primary.decl.super_class.args.empty?
           if super_class_entry = @env.class_decls[super_class_name]
@@ -65,7 +61,16 @@ module Orthoses
 
       def build_interface(entry:, name_hint: nil)
         full_name = name_hint || entry.decl.name.relative!
-        "interface #{name_and_params(full_name, entry.decl.type_params)}"
+        context = build_context(entry: entry)
+        resolved_name = @resolver.resolve(full_name, context: context) || full_name
+        "interface #{name_and_params(resolved_name.relative!, entry.decl.type_params)}"
+      end
+
+      def build_context(entry:)
+        context = entry.outer.length.times.map do |i|
+          entry.outer[0, i + 1].map(&:name).inject(:+).to_namespace.absolute!
+        end
+        context.push(RBS::Namespace.root)
       end
 
       def name_and_params(name, params)

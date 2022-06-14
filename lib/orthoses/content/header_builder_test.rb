@@ -49,4 +49,36 @@ module HeaderBuilderTest
       end
     end
   end
+
+  def test_interface(t)
+    env = Orthoses::Utils.rbs_environment
+    decls = RBS::Parser.parse_signature(<<~RBS)
+      module Mod
+        interface _Foo
+        end
+        interface _Bar[T]
+        end
+      end
+
+      interface _Foo
+      end
+      interface _Bar[T]
+      end
+    RBS
+    decls.each { env << _1 }
+    header_builder = Orthoses::Content::HeaderBuilder.new(env: env)
+
+    [
+      ["Mod::_Foo", "interface Mod::_Foo"],
+      ["Mod::_Bar", "interface Mod::_Bar[T]"],
+      ["_Foo", "interface _Foo"],
+      ["_Bar", "interface _Bar[T]"],
+    ].each do |input_name, expect_header|
+      entry = env.interface_decls[TypeName(input_name).absolute!] or raise "#{input_name} not found"
+      output_header = header_builder.build(entry: entry)
+      unless expect_header == output_header
+        t.error("expect=#{expect_header}, but got #{output_header}")
+      end
+    end
+  end
 end
