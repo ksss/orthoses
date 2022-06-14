@@ -101,12 +101,16 @@ module Orthoses
     def self.object_to_rbs(object, strict:)
       case object
       when Class, Module
-        "singleton(#{object})"
+        if name = module_name(object)
+          "singleton(#{name})"
+        else
+          "untyped"
+        end
       when Integer, Symbol, String
         if strict
           object.inspect
         else
-          Utils.module_name(object.class) || 'untyped'
+          module_name(object.class) || 'untyped'
         end
       when true, false, nil
         object.inspect
@@ -151,7 +155,7 @@ module Orthoses
         # see also https://github.com/ruby/rbs/pull/975
         'untyped'
       else
-        Utils.module_name(object.class) || 'untyped'
+        module_name(object.class) || 'untyped'
       end
     end
 

@@ -48,6 +48,7 @@ module UtilsTest
       [ Object, "singleton(Object)" ],
       [ Enumerable, "singleton(Enumerable)" ],
       [ Class, "singleton(Class)" ],
+      [ Class.new, "untyped" ],
       [ Object.new, "Object" ],
       [ 123, "Integer" ],
       [ true, "true" ],
