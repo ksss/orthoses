@@ -41,6 +41,38 @@ Orthoses::Builder.new do
 end.call
 ```
 
+## Utils
+
+`Orthoses::Utils` is a collection of useful methods.
+
+### Orthoses::Utils.unautoload!
+
+Load all const by recursive.
+
+### Orthoses::Utils.each_const_recursive
+
+Yield const by recursive.
+
+### Orthoses::Utils.rbs_defined_const?
+
+Checks if the const name is already defined.
+
+### Orthoses::Utils.rbs_defined_class?
+
+Checks if the class name is already defined.
+
+### Orthoses::Utils.rbs_environment
+
+Fetch cached `RBS::Environment`.
+
+### Orthoses::Utils.object_to_rbs
+
+Convert Ruby object to RBS string.
+
+### Orthoses::Utils.module_name
+
+Get true module name by `Module.instance_method(:name).bind(mod).call`.
+
 ## Middlewares
 
 ### Orthoses::Constant
@@ -48,10 +80,14 @@ end.call
 Add constant signature to class/module.
 Signatures are predicted from constant values.
 
+### Orthoses::Attribute
+
+Add `attr`, `attr_accessor`, `attr_reader` and `attr_writer` to output RBS.
+All type set `untyped`.
+
 ### Orthoses::Mixin
 
 Add module include/extend/prepend definition.
-It use `Module#{includeed,extended,prepended}` for capture.
 
 ### Orthoses::ObjectSpaceAll
 
