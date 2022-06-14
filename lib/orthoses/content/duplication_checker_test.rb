@@ -2,20 +2,35 @@ module DuplicationCheckerTest
   def test_update_decl(t)
     decl = RBS::Parser.parse_signature(<<~RBS).first
       class Foo
-        def foo: () -> void
-        attr_reader foo: untyped
-        attr_accessor foo: untyped
-        alias foo to_s
+        def foo: () -> void # remove
+        attr_reader foo: untyped # remove
+        attr_accessor foo: untyped # remove
+        alias foo to_s # alive
+
+        attr_accessor bar: untyped # remove
+        attr_accessor bar: untyped # ok
+
+        attr_reader baz: untyped # ok
+        attr_writer baz: untyped # ok
       end
     RBS
     checker = Orthoses::Content::DuplicationChecker.new(decl)
     checker.update_decl
-    unless decl.members.length == 1
-      t.error("expect drop duplicated method, bot #{decl.members.length}")
-      return
-    end
-    unless decl.members.first.instance_of?(RBS::AST::Members::Alias)
-      t.error("expect to remain alias, bot got #{decl.members.first.class}")
+    out = StringIO.new
+    RBS::Writer.new(out: out).write_decl(decl)
+    actual = out.string
+    expect = <<~RBS
+      class Foo
+        alias foo to_s
+
+        attr_accessor bar: untyped
+
+        attr_reader baz: untyped
+        attr_writer baz: untyped
+      end
+    RBS
+    unless expect == actual
+      t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
     end
   end
 
