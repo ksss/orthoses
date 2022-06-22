@@ -43,7 +43,7 @@ module Orthoses
       end
 
       def build_super_class(primary)
-        return nil if primary.decl.super_class.then { |s| s.nil? || s.name.relative!.to_s.then { |n| n == "Object" || n == "Random::Base" } }
+        return nil if primary.decl.super_class.then { |s| s.nil? || s.name.relative!.to_s.then { |n| n == "Object" || n == "Random::Base" || n.start_with?("RBS::Unnamed") } }
 
         context = build_context(entry: primary)
         super_class_name = @resolver.resolve(primary.decl.super_class.name, context: context) || primary.decl.super_class.name
