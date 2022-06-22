@@ -45,10 +45,6 @@ end.call
 
 `Orthoses::Utils` is a collection of useful methods.
 
-### Orthoses::Utils.unautoload!
-
-Load all const by recursive.
-
 ### Orthoses::Utils.each_const_recursive
 
 Yield const by recursive.
@@ -155,6 +151,10 @@ Run `rbs prototype rb` command process to `paths` option files.
 
 Mixin a module into an Object class raises `RBS::RecursiveAncestorError` when validation.
 Please add this middleware then.
+
+### Orthoses::UnAutoload
+
+Force load const defined by `autoload`.
 
 ## Development
 

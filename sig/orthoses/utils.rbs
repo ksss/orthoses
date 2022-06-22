@@ -1,7 +1,7 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 module Orthoses::Utils
-  def self.unautoload!: () -> void
+  def self.unautoload!: () -> untyped
 
   def self.each_const_recursive: (Module root, ?cache: Hash[untyped, true], ?on_error: ^(Orthoses::ConstLoadError) -> void) ?{ (Module, Symbol, untyped) -> void } -> void
 

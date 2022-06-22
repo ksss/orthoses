@@ -10,9 +10,9 @@ module ActiveSupportTest
       use Orthoses::Constant, strict: false
       use Orthoses::Mixin
       use Orthoses::ObjectSpaceAll
+      use Orthoses::UnAutoload
       run -> () {
         require 'active_support'
-        Orthoses::Utils.unautoload!
       }
     end.call
   ensure

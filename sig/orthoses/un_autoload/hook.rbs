@@ -1,0 +1,5 @@
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+module Orthoses::UnAutoload::Hook
+  def autoload: (untyped name, untyped path) -> untyped
+end

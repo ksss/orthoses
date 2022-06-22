@@ -3,6 +3,7 @@
 module Orthoses
   module Utils
     def self.unautoload!
+      warn "`Orthoses::Utils.unautoload!` is deprecated. please use `Orthoses::UnAutoload` middleware instead."
       ObjectSpace.each_object(Module) do |mod|
         each_const_recursive(mod)
       end
