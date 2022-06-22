@@ -34,8 +34,6 @@ module Orthoses
         end
       end
 
-      store["Module"].body.delete("prepend Orthoses::Mixin::Hook")
-
       collect_definitions(store, include, :include)
       collect_definitions(store, extend, :extend)
       collect_definitions(store, prepend, :prepend)
@@ -57,6 +55,8 @@ module Orthoses
         capture.argument[:modules].each do |mod|
           mod_name = Utils.module_name(mod)
           next unless mod_name
+
+          next if mod_name.start_with?("Orthoses")
 
           known_type_params = Utils.known_type_params(mod)
           next unless known_type_params.nil? || known_type_params.empty?

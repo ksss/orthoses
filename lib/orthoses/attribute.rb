@@ -40,8 +40,6 @@ module Orthoses
         end
       end
 
-      store["Module"].body.delete("prepend Orthoses::Attribute::Hook")
-
       attr.captures.each do |capture|
         m = capture.method.receiver.to_s.match(/#<Class:([\w:]+)>/)
         if m && m[1]
