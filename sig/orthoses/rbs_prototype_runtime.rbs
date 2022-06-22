@@ -1,0 +1,6 @@
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+class Orthoses::RBSPrototypeRuntime
+  def initialize: (untyped loader, patterns: untyped) -> void
+  def call: () -> untyped
+end

@@ -147,6 +147,10 @@ Run `rbs prototype rb` command process to `paths` option files.
 `content_filter` option could filter with content decl.
 `mixin_filter` option could filter with mixin(include, extend, prepend) decl.
 
+### Orthoses::RBSPrototypeRuntime
+
+Run `rbs prototype runtime` command process with `patterns` option string.
+
 ### Orthoses::AvoidRecursiveAncestorError
 
 Mixin a module into an Object class raises `RBS::RecursiveAncestorError` when validation.
