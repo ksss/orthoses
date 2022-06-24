@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Orthoses
-  class UnAutoload
+  class Autoload
     module Hook
       def autoload(name, path)
         super
@@ -27,7 +27,7 @@ module Orthoses
         begin
           base_mod.const_get(name)
         rescue LoadError, ArgumentError => e
-          Orthoses.logger.warn("[Orthoses::UnAutoload] raise `#{e.message} (#{e.class})` when try to unautoload `#{base_mod}::#{name}`")
+          Orthoses.logger.warn("[Orthoses::Autoload] raise `#{e.message} (#{e.class})` when try to unautoload `#{base_mod}::#{name}`")
         end
       end
 

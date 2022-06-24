@@ -156,7 +156,7 @@ Run `rbs prototype runtime` command process with `patterns` option string.
 Mixin a module into an Object class raises `RBS::RecursiveAncestorError` when validation.
 Please add this middleware then.
 
-### Orthoses::UnAutoload
+### Orthoses::Autoload
 
 Force load const defined by `autoload`.
 
