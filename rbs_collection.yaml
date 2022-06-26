@@ -21,3 +21,4 @@ gems:
   - name: rainbow
   - name: rubygems
   - name: optparse
+  - name: tmpdir
