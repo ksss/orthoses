@@ -26,7 +26,7 @@ module Orthoses
         name = capture.argument[:name]
         begin
           base_mod.const_get(name)
-        rescue LoadError, ArgumentError => e
+        rescue NameError, LoadError, ArgumentError => e
           Orthoses.logger.warn("[Orthoses::Autoload] raise `#{e.message} (#{e.class})` when try to unautoload `#{base_mod}::#{name}`")
         end
       end
