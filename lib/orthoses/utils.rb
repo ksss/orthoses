@@ -10,7 +10,7 @@ module Orthoses
     end
 
     def self.each_const_recursive(root, cache: {}, on_error: nil, &block)
-      root.constants(false).each do |const|
+      root.constants(false).sort.each do |const|
         val = root.const_get(const)
         next if cache[const].equal?(val)
         cache[const] = val
