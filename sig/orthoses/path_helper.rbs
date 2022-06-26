@@ -1,0 +1,9 @@
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+class Orthoses::PathHelper
+  def self.best_version_paths: (untyped current, untyped base_dir) -> untyped
+  def initialize: (untyped current, untyped base_dir) -> void
+  def best_version_paths: () -> untyped
+  def find_best_version: () -> untyped
+  def version_dir: () -> untyped
+end
