@@ -11,7 +11,9 @@ module Orthoses
 
     def call
       @loader.call.tap do |store|
-        env = Content::Environment.load_from_paths(@paths)
+        paths = @paths
+        paths = paths.call if paths.instance_of?(Proc)
+        env = Content::Environment.load_from_paths(paths.to_a)
         env.write_to(store: store)
       end
     end
