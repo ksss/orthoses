@@ -12,6 +12,9 @@ module DuplicationCheckerTest
 
         attr_reader baz: untyped # ok
         attr_writer baz: untyped # ok
+
+        include Bar # remove
+        include Bar # ok
       end
     RBS
     checker = Orthoses::Content::DuplicationChecker.new(decl)
@@ -27,6 +30,8 @@ module DuplicationCheckerTest
 
         attr_reader baz: untyped
         attr_writer baz: untyped
+
+        include Bar
       end
     RBS
     unless expect == actual

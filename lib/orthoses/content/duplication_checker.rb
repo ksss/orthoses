@@ -13,17 +13,7 @@ module Orthoses
           drop_member = uniq_map[key]
           uniq_map[key] = member
           if drop_member
-            name = if drop_member.respond_to?(:name)
-              kind = if drop_member.respond_to?(:kind)
-                drop_member.kind == :instance ? '#' : '.'
-              else
-                ''
-              end
-              "#{kind}#{drop_member.name}"
-            else
-              drop_member.class.to_s
-            end
-            Orthoses.logger.info("#{@decl.name}#{name} was droped since duplication")
+            Orthoses.logger.error("#{@decl.name} \"#{member.location.source}\" was droped since duplication")
           end
         end
         drop_known_method_definition(uniq_map)
