@@ -33,18 +33,13 @@ module Orthoses
           else
             hash[name] = tp.binding.local_variable_get(name).then do |var|
               case var
-              when Module
-                var # avoid missing name
+              when Module, Thread::Backtrace::Location
+                var
               else
                 var.dup
               end
             rescue => err
-              case var
-              when Thread::Backtrace::Location
-                # known
-              else
-                warn("#dup fail (#{err.class}) #{err.message}")
-              end
+              warn("#dup fail (#{err.class}) #{err.message}")
               var
             end
           end
