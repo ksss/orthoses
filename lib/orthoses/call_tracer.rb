@@ -22,9 +22,11 @@ module Orthoses
       @captures = []
     end
 
+    METHOD_METHOD = Kernel.instance_method(:method)
+
     def trace(target, &block)
       t = TracePoint.new(:call) do |tp|
-        called_method = tp.self.method(tp.method_id)
+        called_method = METHOD_METHOD.bind(tp.self).call(tp.method_id)
         argument = tp.parameters.each_with_object({}) do |op_name, hash|
           name = op_name[1]
           case name

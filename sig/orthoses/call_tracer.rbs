@@ -5,4 +5,6 @@ class Orthoses::CallTracer
 
   def trace: [T] (Method | UnboundMethod) ?{ () -> T } -> T
   attr_accessor captures: Array[Capture]
+
+  METHOD_METHOD: UnboundMethod
 end
