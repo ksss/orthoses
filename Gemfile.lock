@@ -51,7 +51,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport
   orthoses!
   rake (~> 13.0)
   rbs
