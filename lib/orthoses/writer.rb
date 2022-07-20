@@ -1,5 +1,7 @@
 module Orthoses
   class Writer
+    prepend Outputable
+
     def initialize(loader, io:)
       @loader = loader
       @io = io

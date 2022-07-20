@@ -1,8 +1,8 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
-class Orthoses::AvoidRecursiveAncestorError
+class Orthoses::Outputable::AvoidRecursiveAncestorError
   def initialize: (Orthoses::_Call loader) -> void
   def call: () -> Orthoses::store
-  def set_object_mixins_recursive: (untyped store, untyped name, untyped object_mixins) -> untyped
+  private def collect_mixin_recursive: (untyped store, untyped name, untyped mixins) -> untyped
   @loader: Orthoses::_Call
 end

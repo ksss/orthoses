@@ -1,6 +1,6 @@
 module AvoidRecursiveAncestorErrorTest
   def test_avoid_recursive_ancestor_error(t)
-    store = Orthoses::AvoidRecursiveAncestorError.new(->(){
+    store = Orthoses::Outputable::AvoidRecursiveAncestorError.new(->(){
       Orthoses::Utils.new_store.tap do |store|
         store["Nested"].header = "module Nested"
         store["Imod"].header = "module Imod"

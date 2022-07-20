@@ -28,6 +28,12 @@ module CreateFileByNameTest
             content << "# qux"
             content << "def qux: () -> void"
           end
+
+          store["OutputableTest"].tap do |content|
+            content.header = "module OutputableTest"
+          end
+
+          store["Object"] << "include OutputableTest"
         end
       },
       base_dir: "tmp",
@@ -38,8 +44,9 @@ module CreateFileByNameTest
     bar = Pathname("tmp/create_file_by_name_test/bar.rbs")
     baz = Pathname("tmp/create_file_by_name_test/virtual/baz.rbs")
     qux = Pathname("tmp/create_file_by_name_test/virtual/virtual/_qux.rbs")
+    outputable_test = Pathname("tmp/outputable_test.rbs")
 
-    [foo, bar, baz, qux].each do |file|
+    [foo, bar, baz, qux, outputable_test].each do |file|
       unless file.exist?
         t.error("file not created `#{file}`")
       end
@@ -77,12 +84,19 @@ module CreateFileByNameTest
         def qux: () -> void
       end
     CODE
+    outputable_test_expect = <<~CODE
+      # header
+
+      module OutputableTest : BasicObject
+      end
+    CODE
 
     [
       [foo.read, foo_expect],
       [bar.read, bar_expect],
       [baz.read, baz_expect],
       [qux.read, qux_expect],
+      [outputable_test.read, outputable_test_expect],
     ].each do |actual, expect|
       unless actual == expect
         t.error("[CreateFileByName] expect=\n#{expect.inspect}\n but got actual=\n#{actual.inspect}\n")

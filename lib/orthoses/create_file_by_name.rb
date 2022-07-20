@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require 'orthoses/outputable'
+
 module Orthoses
   class CreateFileByName
+    prepend Outputable
+
     def initialize(loader, base_dir:, header: nil)
       @loader = loader
       @base_dir = base_dir
