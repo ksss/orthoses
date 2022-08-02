@@ -35,6 +35,10 @@ module Orthoses
       @body.concat(other)
     end
 
+    def empty?
+      @body.empty?
+    end
+
     def to_rbs
       auto_header
       uniqed_body_string
