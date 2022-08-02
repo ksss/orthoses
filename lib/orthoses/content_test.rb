@@ -105,4 +105,15 @@ module ContentTest
       t.error("expect to same as parsed RBS, but not")
     end
   end
+
+  def test_uniq!(t)
+    content = Orthoses::Content.new(name: "Uniq")
+    content.header = "module Uniq"
+    content << "def foo: () -> void"
+    content << "def foo: () -> void"
+    content.uniq!
+    unless content.body == ["def foo: () -> void"]
+      t.error("expect unique body, but got #{content.body.inspect}")
+    end
+  end
 end
