@@ -1,9 +1,8 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 class Orthoses::Content::DuplicationChecker
-  def initialize: (untyped decl) -> void
-  def update_decl: () -> untyped
+  def initialize: (untyped decl, ?env: untyped?) -> void
+  def update_decl: () -> (nil | untyped)
   private def drop_known_method_definition: (untyped uniq_map) -> untyped
-  private def member_to_s: (untyped member) -> untyped
   private def member_key: (untyped member) -> untyped
 end

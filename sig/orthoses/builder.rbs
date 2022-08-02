@@ -5,6 +5,5 @@ class Orthoses::Builder
   def use: (untyped middleware, *untyped args, **untyped key) ?{ () -> untyped } -> untyped
   def run: (untyped loader) -> untyped
   def to_loader: () -> untyped
-
   def call: () { () -> void } -> Orthoses::store
 end

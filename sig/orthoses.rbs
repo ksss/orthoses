@@ -2,8 +2,6 @@
 
 module Orthoses
   VERSION: "0.10.0"
-
   attr_accessor self.logger: ::Logger
-
   type store = Hash[String, Orthoses::Content]
 end

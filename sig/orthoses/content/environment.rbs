@@ -2,7 +2,6 @@
 
 class Orthoses::Content::Environment
   def self.load_from_paths: (untyped paths) -> untyped
-
   def initialize: (?constant_filter: constant_filter?, ?mixin_filter: mixin_filter?, ?attribute_filter: attribute_filter?) -> void
   def <<: (RBS::AST::Declarations::t decl) -> RBS::Environment
   def write_to: (store: Orthoses::store) -> void

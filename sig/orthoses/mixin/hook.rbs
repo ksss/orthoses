@@ -2,8 +2,6 @@
 
 module Orthoses::Mixin::Hook
   def include: (*untyped modules) -> untyped
-
   def extend: (*untyped modules) -> untyped
-
   def prepend: (*untyped modules) -> untyped
 end

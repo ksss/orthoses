@@ -1,0 +1,7 @@
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+class Orthoses::Content::ArrayIO
+  def initialize: () -> void
+  def puts: (untyped line) -> untyped
+  def to_a: () -> untyped
+end

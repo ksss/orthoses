@@ -4,10 +4,11 @@ class Orthoses::Content
   def initialize: (name: String) -> void
   def <<: (String) -> void
   def concat: (Array[String]) -> void
+  def empty?: () -> untyped
   def to_rbs: () -> String
   def to_decl: () -> untyped
-  private def original_rbs: () -> ::String
-
+  def uniq!: () -> untyped
+  def original_rbs: () -> untyped
   private def uniqed_body_string: () -> String
   private def uniqed_body_decl: () -> RBS::AST::Declarations::t
   private def auto_header: () -> (nil | untyped)
