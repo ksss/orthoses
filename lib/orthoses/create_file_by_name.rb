@@ -6,10 +6,11 @@ module Orthoses
   class CreateFileByName
     prepend Outputable
 
-    def initialize(loader, base_dir:, header: nil)
+    def initialize(loader, base_dir:, header: nil, if: nil)
       @loader = loader
       @base_dir = base_dir
       @header = header
+      @if = binding.local_variable_get(:if)
     end
 
     using(Module.new {
@@ -38,6 +39,9 @@ module Orthoses
           Orthoses.logger.error(err.inspect)
           next
         end
+
+        next unless @if.nil? || @if.call(name, content)
+
         file_path = Pathname("#{@base_dir}/#{name.to_s.split('::').map(&:underscore).join('/')}.rbs")
         file_path.dirname.mkpath
         file_path.open('w+') do |out|
