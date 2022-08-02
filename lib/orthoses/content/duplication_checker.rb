@@ -2,11 +2,13 @@ module Orthoses
   class Content
     # Check and drop duplication method, const etc...
     class DuplicationChecker
-      def initialize(decl)
+      def initialize(decl, env: nil)
         @decl = decl
+        @env = env || Utils.rbs_environment(collection: true)
       end
 
       def update_decl
+        return unless @decl.respond_to?(:members)
         uniq_map = {}
         @decl.members.each do |member|
           key = member_key(member)
@@ -23,20 +25,24 @@ module Orthoses
       private
 
       def drop_known_method_definition(uniq_map)
-        env = Utils.rbs_environment(collection: true)
-        if m_entry = env.class_decls[@decl.name.absolute!]
+        decl_name = @decl.name.absolute!
+        if m_entry = @env.class_decls[decl_name]
           m_entry.decls.each do |d|
             d.decl.members.grep_v(RBS::AST::Members::LocationOnly).each do |member|
               uniq_map.delete(member_key(member))
             end
           end
         end
-      end
 
-      def member_to_s(member)
-        out = StringIO.new
-        RBS::Writer.new(out: out).write_member(member)
-        out.string.chomp
+        constants_in_uniq_map = uniq_map.select do |key, value|
+          value.kind_of?(RBS::AST::Declarations::Constant)
+        end
+        constants_in_uniq_map.each do |key, value|
+          type_name = decl_name + value.name
+          if @env.constant_decls[type_name]
+            uniq_map.delete(key)
+          end
+        end
       end
 
       def member_key(member)
