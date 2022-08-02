@@ -32,8 +32,8 @@ module Orthoses
       store = @loader.call
 
       store.each do |name, content|
-        rbs = begin
-          content.to_rbs
+        begin
+          content.uniq!
         rescue NameError, LoadError => err
           Orthoses.logger.error(err.inspect)
           next
@@ -45,7 +45,7 @@ module Orthoses
             out.puts @header
             out.puts
           end
-          out.puts rbs
+          out.puts content.original_rbs
         end
         Orthoses.logger.info("Generate file to #{file_path.to_s}")
       end

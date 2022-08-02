@@ -49,14 +49,36 @@ module Orthoses
       uniqed_body_decl
     end
 
-    private
+    def uniq!
+      out = ArrayIO.new
+      writer = RBS::Writer.new(out: out)
+      to_decl.members.each do |member|
+        writer.write_member(member)
+      end
+      @body.replace(out.to_a)
+    end
 
     def original_rbs
-      <<~RBS
-        #{@header}
-          #{@body.join("\n")}
-        end
-      RBS
+      a = [@header]
+      a << "  #{@body.join("\n  ")}" if @body.length > 0
+      a << "end"
+      a.join("\n")
+    end
+
+    private
+
+    class ArrayIO
+      def initialize
+        @outs = []
+      end
+
+      def puts(line)
+        @outs << line
+      end
+
+      def to_a
+        @outs
+      end
     end
 
     def uniqed_body_string
