@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CallTracerTest
   class Foo
     def method
@@ -11,7 +13,7 @@ module CallTracerTest
     end
 
     unless c.captures.length == 1
-      t.error("cannot capture method")
+      t.fatal("cannot capture method")
     end
     c.captures.each do |capture|
       unless capture.instance_of?(Orthoses::CallTracer::Capture)

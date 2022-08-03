@@ -28,6 +28,12 @@ require_relative 'orthoses/walk'
 require_relative 'orthoses/writer'
 
 module Orthoses
+  # Use autoload just in case there are side effects.
+  autoload :LazyTracePoint, 'orthoses/lazy_trace_point'
+
+  METHOD_METHOD = ::Kernel.instance_method(:method)
+  INSTANCE_METHOD_METHOD = ::Module.instance_method(:instance_method)
+
   class ConstLoadError < StandardError
     attr_reader :root
     attr_reader :const

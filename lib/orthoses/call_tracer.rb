@@ -16,43 +16,22 @@ module Orthoses
     class Capture < Struct.new(:method, :argument, keyword_init: true)
     end
 
+    autoload :Lazy, 'orthoses/call_tracer/lazy'
+    require_relative 'call_tracer/capturable'
+
+    include Capturable
+
     attr_accessor :captures
 
     def initialize
       @captures = []
+      @target_tp = TracePoint.new(:call) do |tp|
+        @captures << build_capture(tp)
+      end
     end
 
-    METHOD_METHOD = Kernel.instance_method(:method)
-
     def trace(target, &block)
-      t = TracePoint.new(:call) do |tp|
-        called_method = METHOD_METHOD.bind(tp.self).call(tp.method_id)
-        argument = tp.parameters.each_with_object({}) do |op_name, hash|
-          name = op_name[1]
-          case name
-          when :*, :**, :&, nil
-            # skip
-          else
-            hash[name] = tp.binding.local_variable_get(name).then do |var|
-              case var
-              when Module, Thread::Backtrace::Location
-                var
-              else
-                var.dup
-              end
-            rescue => err
-              warn("#dup fail (#{err.class}) #{err.message}")
-              var
-            end
-          end
-        end
-
-        @captures << Capture.new(
-          method: called_method,
-          argument: argument,
-        )
-      end
-      t.enable(target: target, &block)
+      @target_tp.enable(target: target, &block)
     end
   end
 end

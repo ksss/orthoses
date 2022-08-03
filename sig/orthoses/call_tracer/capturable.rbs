@@ -1,0 +1,7 @@
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+module Orthoses::CallTracer::Capturable
+  def build_capture: (untyped tp) -> untyped
+  private def build_method: (untyped tp) -> untyped
+  private def build_argument: (untyped tp) -> untyped
+end

@@ -1,0 +1,6 @@
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+class Orthoses::CallTracer::Lazy < ::Orthoses::LazyTracePoint
+  def initialize: () -> void
+  def trace: (untyped name) ?{ () -> untyped } -> untyped
+end
