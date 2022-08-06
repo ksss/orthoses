@@ -39,6 +39,10 @@ module Orthoses
       @body.empty?
     end
 
+    def delete(val)
+      @body.delete(val)
+    end
+
     def to_rbs
       auto_header
       uniqed_body_string
