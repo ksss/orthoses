@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 module Orthoses
-  # LazyTracePoint.new(:call) do |tp|
-  #   ...
-  # end.enable(target: 'Class#class_attribute') do
-  #   require 'active_support/core_ext/class/attribute'
-  #   ...
-  # end
-  class LazyTracePoint
+  # TracePoint wrapper that allows setting hooks
+  # even if the target is undefined
+  #   LazyTracePoint.new(:call) do |tp|
+  #     ...
+  #   end.enable(target: 'Class#class_attribute') do
+  #     require 'active_support/core_ext/class/attribute'
+  #     ...
+  #   end
+  class LazyTracePoint < TracePoint
     # for TracePoint target
     ::Module.prepend(Module.new{
       def method_added(id)
@@ -20,14 +22,22 @@ module Orthoses
       end
     })
 
+    METHOD_METHOD = ::Kernel.instance_method(:method)
+    INSTANCE_METHOD_METHOD = ::Module.instance_method(:instance_method)
+    UNBOUND_NAME_METHOD = ::Module.instance_method(:name)
+    METHOD_ADDED_METHOD = ::Module.instance_method(:method_added)
+    SINGLETON_METHOD_ADDED_METHOD = ::BasicObject.instance_method(:singleton_method_added)
+
     def initialize(*events, &block)
       @mod_name = nil
       @instance_method_id = nil
       @singleton_method_id = nil
-      @target_tp = TracePoint.new(*events, &block)
+      super
     end
 
-    def enable(target:, &block)
+    def enable(target: nil, target_line: nil, target_thread: nil, &block)
+      return super unless target.kind_of?(String)
+
       case
       when target.include?('#')
         @mod_name, instance_method_id = target.split('#', 2)
@@ -49,45 +59,45 @@ module Orthoses
     private
 
     def trace_instance_method(&block)
-      # load try
+      # try to load
       target = Object.const_get(@mod_name).instance_method(@instance_method_id)
-      @target_tp.enable(target: target, &block)
+      enable(target: target, &block)
     rescue NameError
       TracePoint.new(:call) do |tp|
         id = tp.binding.local_variable_get(:id)
         next unless id == @instance_method_id
 
-        mod_name = Utils.module_name(tp.self)
+        mod_name = UNBOUND_NAME_METHOD.bind(tp.self).call
 
         next unless mod_name
         next unless mod_name == @mod_name
 
-        @target_tp.enable(target: INSTANCE_METHOD_METHOD.bind(tp.self).call(id))
+        enable(target: INSTANCE_METHOD_METHOD.bind(tp.self).call(id))
         tp.disable
-      end.enable(target: ::Module.instance_method(:method_added), &block)
+      end.enable(target: METHOD_ADDED_METHOD, &block)
     ensure
-      @target_tp.disable
+      disable
     end
 
     def trace_singleton_method(&block)
-      # load try
+      # try to load
       target = Object.const_get(@mod_name).method(@singleton_method_id)
-      @target_tp.enable(target: target, &block)
+      enable(target: target, &block)
     rescue NameError
       TracePoint.new(:call) do |tp|
         id = tp.binding.local_variable_get(:id)
         next unless id == @singleton_method_id
 
-        mod_name = Utils.module_name(tp.self)
+        mod_name = UNBOUND_NAME_METHOD.bind(tp.self).call
 
         next unless mod_name
         next unless mod_name == @mod_name
 
-        @target_tp.enable(target: METHOD_METHOD.bind(tp.self).call(id))
+        enable(target: METHOD_METHOD.bind(tp.self).call(id))
         tp.disable
-      end.enable(target: ::BasicObject.instance_method(:singleton_method_added), &block)
+      end.enable(target: SINGLETON_METHOD_ADDED_METHOD, &block)
     ensure
-      @target_tp.disable
+      disable
     end
   end
 end

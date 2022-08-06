@@ -9,9 +9,10 @@ module LazyTracePointTest
   }
   def test_lazy_instance_method_trace(t)
     called = []
-    Orthoses::LazyTracePoint.new(:call) do |tp|
+    tp = Orthoses::LazyTracePoint.new(:call) do |tp|
       called << tp
-    end.enable(target: 'LazyTracePointTest::Bar#bar') do
+    end
+    tp.enable(target: 'LazyTracePointTest::Bar#bar') do
       called << self
       if Object.const_defined?('LazyTracePointTest::Bar')
         t.error("expect LazyTracePointTest::Bar is not defined here")
@@ -21,6 +22,9 @@ module LazyTracePointTest
     end
     Bar.new.bar(:bar) # to check out of scope
 
+    unless !tp.enabled?
+      t.fatal("expect to be disabled")
+    end
     unless called.length == 2
       t.fatal("expect to call block")
     end
@@ -33,14 +37,18 @@ module LazyTracePointTest
 
     # loaded
     called = []
-    Orthoses::LazyTracePoint.new(:call) do |tp|
+    tp = Orthoses::LazyTracePoint.new(:call) do |tp|
       called << tp
-    end.enable(target: 'LazyTracePointTest::Bar#bar') do
+    end
+    tp.enable(target: 'LazyTracePointTest::Bar#bar') do
       called << self
       Bar.new.bar(:bar)
     end
     Bar.new.bar(:bar) # to check out of scope
 
+    unless !tp.enabled?
+      t.fatal("expect to be disabled")
+    end
     unless called.length == 2
       t.fatal("expect to call block")
     end
@@ -60,9 +68,10 @@ module LazyTracePointTest
   }
   def test_lazy_singleton_method_trace(t)
     called = []
-    Orthoses::LazyTracePoint.new(:call) do |tp|
+    tp = Orthoses::LazyTracePoint.new(:call) do |tp|
       called << tp
-    end.enable(target: 'LazyTracePointTest::Baz.baz') do
+    end
+    tp.enable(target: 'LazyTracePointTest::Baz.baz') do
       called << self
       if Object.const_defined?('LazyTracePointTest::Baz')
         t.error("expect LazyTracePointTest::Baz is not defined here")
@@ -72,6 +81,9 @@ module LazyTracePointTest
     end
     Baz.baz(:baz) # to check out of scope
 
+    unless !tp.enabled?
+      t.fatal("expect to be disabled")
+    end
     unless called.length == 2
       t.fatal("expect to call block")
     end
@@ -84,14 +96,18 @@ module LazyTracePointTest
 
     # loaded
     called = []
-    Orthoses::LazyTracePoint.new(:call) do |tp|
+    tp = Orthoses::LazyTracePoint.new(:call) do |tp|
       called << tp
-    end.enable(target: 'LazyTracePointTest::Baz.baz') do
+    end
+    tp.enable(target: 'LazyTracePointTest::Baz.baz') do
       called << self
       Baz.baz(:baz)
     end
     Baz.baz(:baz) # to check out of scope
 
+    unless !tp.enabled?
+      t.fatal("expect to be disabled")
+    end
     unless called.length == 2
       t.fatal("expect to call block")
     end
