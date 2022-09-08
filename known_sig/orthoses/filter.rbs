@@ -1,7 +1,8 @@
 module Orthoses
   class Filter
     @loader: Orthoses::_Call
-    def initialize: (Orthoses::_Call loader, if: ^(String, Orthoses::Content) -> boolish) -> void
+    @block: ^(String, Orthoses::Content) -> boolish
+    def initialize: (Orthoses::_Call loader) { (String, Orthoses::Content) -> boolish } -> void
     def call: () -> Orthoses::store
   end
 end

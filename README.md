@@ -24,12 +24,11 @@ Orthoses::Builder.new do
   use Orthoses::CreateFileByName
     base_dir: Rails.root.join("sig/out"),
     header: "# !!! GENERATED CODE !!!"
-  use Orthoses::Filter,
-    if: -> (name, _content) {
-      path, _lineno = Object.const_source_location(name)
-      return false unless path
-      %r{app/models}.match?(path)
-    }
+  use Orthoses::Filter do |name, _content|
+    path, _lineno = Object.const_source_location(name)
+    return false unless path
+    %r{app/models}.match?(path)
+  end
   use YourCustom::Middleware
   use Orthoses::Mixin
   use Orthoses::Constant

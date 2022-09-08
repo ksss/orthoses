@@ -8,14 +8,21 @@ module FilterTest
         "Bar" => [],
         "Baz" => ["# Baz"],
       }
-    },
-    if: -> (name, content) {
+    }) do |name, content|
       /^Ba/.match?(name) && !content.empty?
-    }).call
+    end.call
 
     expect = { "Baz" => ["# Baz"] }
     unless store == expect
       t.error("[Filter] expect=#{expect.inspect}, but got #{store}")
     end
+  end
+
+  def test_error(t)
+    Orthoses::Filter.new(->(){})
+  rescue
+    # skip
+  else
+    t.error("expect raise error")
   end
 end

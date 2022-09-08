@@ -8,8 +8,9 @@ module ObjectSpaceAllTest
 
   def test_object_space_all(t)
     store = Orthoses::Builder.new do
-      use Orthoses::Filter,
-        if: -> (name, content) { name.to_s.start_with?("ObjectSpaceAllTest") }
+      use Orthoses::Filter do |name, content|
+        name.to_s.start_with?("ObjectSpaceAllTest")
+      end
       use Orthoses::ObjectSpaceAll
       run ->() {}
     end.call

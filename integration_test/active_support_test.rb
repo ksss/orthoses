@@ -3,10 +3,9 @@ module ActiveSupportTest
     Orthoses::Builder.new do
       use Orthoses::CreateFileByName,
         base_dir: 'integration_test/tmp'
-      use Orthoses::Filter,
-        if: ->(name, content) {
-          name.start_with?("ActiveSupport") || name.start_with?("Integer")
-        }
+      use Orthoses::Filter do |name, content|
+        name.start_with?("ActiveSupport") || name.start_with?("Integer")
+      end
       use Orthoses::Constant, strict: false
       use Orthoses::Mixin
       use Orthoses::ObjectSpaceAll

@@ -18,10 +18,9 @@ task :generate_self_sig do
     use Orthoses::CreateFileByName,
       base_dir: 'sig',
       header: "# THIS IS GENERATED CODE from `$ rake generate_self_sig`"
-    use Orthoses::Filter,
-      if: ->(name, _) {
-        name.start_with?("Orthoses")
-      }
+    use Orthoses::Filter do |name, _|
+      name.start_with?("Orthoses")
+    end
     use Orthoses::Mixin
     use Orthoses::Constant, strict: true
     use Orthoses::LoadRBS,
