@@ -4,7 +4,7 @@ module Orthoses
     @strict: bool
     @if: (^(Module mod, Symbol const, untyped val, String rbs) -> boolish)?
     @on_error: ^(Orthoses::ConstLoadError) -> void | nil
-    def initialize: (Orthoses::_Call loader, strict: bool, ?if: ^(Module, Symbol, untyped) -> boolish, ?on_error: ^(Orthoses::ConstLoadError) -> void) -> void
+    def initialize: (Orthoses::_Call loader, ?strict: bool, ?if: ^(Module, Symbol, untyped) -> boolish | nil, ?on_error: ^(Orthoses::ConstLoadError) -> void | nil) -> void
     def call: () -> Orthoses::store
   end
 end

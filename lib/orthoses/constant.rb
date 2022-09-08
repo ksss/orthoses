@@ -2,7 +2,7 @@
 
 module Orthoses
   class Constant
-    def initialize(loader, strict:, if: nil, on_error: nil)
+    def initialize(loader, strict: false, if: nil, on_error: nil)
       @loader = loader
       @strict = strict
       @if = binding.local_variable_get(:if)
