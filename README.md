@@ -3,6 +3,10 @@
 Orthoses is a framework for RBS generation.
 The Rack architecture keeps your code organized and extensible.
 
+You can choose which middleware to use.
+You can write your own middleware to use.
+You can publish your middleware and share it with the world.
+
 ## PoC
 
 https://gist.github.com/ksss/00592da24f28774bf8fc5db08331666e
@@ -19,26 +23,37 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
+For example, You can write script in Rakefile.
+
 ```rb
-Orthoses::Builder.new do
-  use Orthoses::CreateFileByName
-    base_dir: Rails.root.join("sig/out"),
-    header: "# !!! GENERATED CODE !!!"
-  use Orthoses::Filter do |name, _content|
-    path, _lineno = Object.const_source_location(name)
-    return false unless path
-    %r{app/models}.match?(path)
+require 'orthoses'
+
+namespace :rbs do
+  desc "build RBS to sig/out"
+  task :build do
+    Orthoses::Builder.new do
+      use Orthoses::CreateFileByName
+        base_dir: Rails.root.join("sig/out"),
+        header: "# !!! GENERATED CODE !!!"
+      use Orthoses::Filter do |name, _content|
+        path, _lineno = Object.const_source_location(name)
+        return false unless path
+        %r{app/models}.match?(path)
+      end
+      use YourCustom::Middleware
+      use Orthoses::Mixin
+      use Orthoses::Constant
+      use Orthoses::Walk,
+        root: "Foo"
+      run -> {
+        # load library or application
+      }
+    end.call
   end
-  use YourCustom::Middleware
-  use Orthoses::Mixin
-  use Orthoses::Constant
-  use Orthoses::Walk,
-    root: "Foo"
-  run -> () {
-    # load library or application
-  }
-end.call
+end
 ```
+
+Then, you can see the result files under `sig/out`.
 
 ## Utils
 
