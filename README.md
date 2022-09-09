@@ -3,9 +3,9 @@
 Orthoses is a framework for RBS generation.
 The Rack architecture keeps your code organized and extensible.
 
-You can choose which middleware to use.
-You can write your own middleware to use.
-You can publish your middleware and share it with the world.
+- You can choose which middleware to use.
+- You can write your own middleware to use.
+- You can publish your middleware and share it with the world.
 
 ## PoC
 
