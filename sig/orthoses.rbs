@@ -1,7 +1,7 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 module Orthoses
-  VERSION: "0.11.0"
+  VERSION: "1.0.0"
   attr_accessor self.logger: ::Logger
   type store = Hash[String, Orthoses::Content]
   INSTANCE_METHOD_METHOD: UnboundMethod
