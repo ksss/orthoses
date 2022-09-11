@@ -17,6 +17,10 @@ module DuplicationCheckerTest
         attr_reader baz: untyped # ok
         attr_writer baz: untyped # ok
 
+        def qux: () -> String # ok
+        def qux: (String) -> Integer # ok
+               | ...
+
         include Bar # remove
         include Bar # ok
       end
@@ -45,7 +49,11 @@ module DuplicationCheckerTest
         attr_reader baz: untyped
         attr_writer baz: untyped
 
+        def qux: () -> String
+
         include Bar
+        def qux: (String) -> Integer
+               | ...
       end
     RBS
     unless expect == actual
