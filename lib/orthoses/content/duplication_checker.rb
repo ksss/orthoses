@@ -10,10 +10,10 @@ module Orthoses
       def update_decl
         return unless @decl.respond_to?(:members)
         uniq_map = {}
-        overloads = []
         @decl.members.each do |member|
           if member.instance_of?(RBS::AST::Members::MethodDefinition) && member.overload
-            overloads << member
+            # avoid to duplicate and keep order
+            uniq_map[Object.new] = member
           else
             key = member_key(member)
             drop_member = uniq_map[key]
@@ -25,7 +25,6 @@ module Orthoses
         end
         drop_known_method_definition(uniq_map)
         @decl.members.replace(uniq_map.values)
-        @decl.members.concat(overloads)
       end
 
       private
