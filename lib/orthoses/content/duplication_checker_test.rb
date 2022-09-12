@@ -20,6 +20,8 @@ module DuplicationCheckerTest
         def qux: () -> String # ok
         def qux: (String) -> Integer # ok
                | ...
+        def qux: (String) -> Integer # ok
+               | ...
 
         include Bar # remove
         include Bar # ok
@@ -50,10 +52,12 @@ module DuplicationCheckerTest
         attr_writer baz: untyped
 
         def qux: () -> String
-
-        include Bar
         def qux: (String) -> Integer
                | ...
+        def qux: (String) -> Integer
+               | ...
+
+        include Bar
       end
     RBS
     unless expect == actual
