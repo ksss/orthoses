@@ -32,7 +32,7 @@ namespace :rbs do
   desc "build RBS to sig/out"
   task :build do
     Orthoses::Builder.new do
-      use Orthoses::CreateFileByName
+      use Orthoses::CreateFileByName,
         base_dir: Rails.root.join("sig/out"),
         header: "# !!! GENERATED CODE !!!"
       use Orthoses::Filter do |name, _content|
