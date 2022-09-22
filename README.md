@@ -165,7 +165,7 @@ Run `rbs prototype rb` command process to `paths` option files.
 
 Run `rbs prototype runtime` command process with `patterns` option string.
 
-### Orthoses::AvoidRecursiveAncestorError
+### Orthoses::Outputable::AvoidRecursiveAncestorError
 
 Mixin a module into an Object class raises `RBS::RecursiveAncestorError` when validation.
 Please add this middleware then.
