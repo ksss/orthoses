@@ -11,6 +11,9 @@ module Orthoses
 
       def call
         @loader.call.tap do |store|
+          next if !store.key?("Object")
+          next if store["Object"].body.empty?
+
           object_mixins = {}
           collect_mixin_recursive(store, "Object", object_mixins)
 
