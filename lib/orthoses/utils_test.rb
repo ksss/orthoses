@@ -15,7 +15,7 @@ module UtilsTest
       ["URI::HTTP::DEFAULT_PORT", 'uri', true],
       ["Nothing", 'uri', false],
     ].each do |klass, library, expect|
-      actual = Orthoses::Utils.rbs_defined_const?(klass, library: library)
+      actual = Orthoses::Utils.rbs_defined_const?(klass, library: library, collection: false)
       unless expect == actual
         t.error("Orthoses.rbs_defined_const?(#{klass}) expect=#{expect}, but got #{actual}")
       end
@@ -36,7 +36,7 @@ module UtilsTest
       ["URI", 'uri', true],
       ["Nothing", 'uri', false],
     ].each do |klass, library, expect|
-      actual = Orthoses::Utils.rbs_defined_class?(klass, library: library)
+      actual = Orthoses::Utils.rbs_defined_class?(klass, library: library, collection: false)
       unless expect == actual
         t.error("Orthoses.rbs_defined_class?(#{klass}) expect=#{expect}, but got #{actual}")
       end
