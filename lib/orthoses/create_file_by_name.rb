@@ -33,13 +33,6 @@ module Orthoses
       store = @loader.call
 
       store.each do |name, content|
-        begin
-          content.uniq!
-        rescue NameError, LoadError => err
-          Orthoses.logger.error(err.inspect)
-          next
-        end
-
         next unless @if.nil? || @if.call(name, content)
 
         file_path = Pathname("#{@base_dir}/#{name.to_s.split('::').map(&:underscore).join('/')}.rbs")
