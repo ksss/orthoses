@@ -27,7 +27,7 @@ module Orthoses
       end
     end
 
-    def self.rbs_defined_const?(name, library: nil, collection: false)
+    def self.rbs_defined_const?(name, library: nil, collection: true)
       return false if name.start_with?("#<")
       env = rbs_environment(library: library, collection: collection)
       name = name.sub(/Object::/, '')
@@ -35,7 +35,7 @@ module Orthoses
       env.constant_decls.has_key?(target)
     end
 
-    def self.rbs_defined_class?(name, library: nil, collection: false)
+    def self.rbs_defined_class?(name, library: nil, collection: true)
       return false if name.start_with?("#<")
       env = rbs_environment(library: library, collection: collection)
       target = rbs_type_name(name)
@@ -69,7 +69,7 @@ module Orthoses
       end
     }.call
 
-    def self.rbs_environment(library: nil, collection: false, cache: true)
+    def self.rbs_environment(library: nil, collection: true, cache: true)
       @env_cache ||= {}
       if cache && hit = @env_cache[[library, collection]]
         return hit
@@ -188,7 +188,7 @@ module Orthoses
         else
           raise TypeError
         end
-      rbs_environment(collection: true).class_decls[type_name]&.then do |entry|
+      rbs_environment.class_decls[type_name]&.then do |entry|
         entry.decls.first.decl.type_params
       end
     end

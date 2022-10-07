@@ -116,4 +116,15 @@ module ContentTest
       t.error("expect unique body, but got #{content.body.inspect}")
     end
   end
+
+  def test_comment(t)
+    content = Orthoses::Content.new(name: "Comment")
+    content.comment = "# comment"
+    content.header = "module Comment"
+    actual = content.to_rbs
+    expect = "# comment\nmodule Comment\nend\n"
+    unless expect == actual
+      t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
+    end
+  end
 end

@@ -17,7 +17,7 @@ module Orthoses
 
       def initialize(constant_filter: nil, mixin_filter: nil, attribute_filter: nil)
         @load_env = RBS::Environment.new
-        @known_env = Utils.rbs_environment(collection: true, cache: false)
+        @known_env = Utils.rbs_environment(cache: false)
         @constant_filter = constant_filter
         @mixin_filter = mixin_filter
         @attribute_filter = attribute_filter

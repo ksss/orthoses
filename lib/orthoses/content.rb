@@ -19,12 +19,14 @@ module Orthoses
     attr_reader :name
     attr_reader :body
     attr_accessor :header
+    attr_accessor :comment
 
     def initialize(name:)
       Orthoses.logger.debug("Create Orthoses::Content for #{name}")
       @name = name
       @body = []
       @header = nil
+      @comment = nil
     end
 
     def <<(line)
@@ -63,7 +65,9 @@ module Orthoses
     end
 
     def original_rbs
-      a = [@header]
+      a = []
+      a << @comment if @comment
+      a << @header
       a << "  #{@body.join("\n  ")}" if @body.length > 0
       a << "end"
       a.join("\n")
@@ -111,7 +115,7 @@ module Orthoses
     end
 
     def auto_header
-      env = Utils.rbs_environment(collection: true)
+      env = Utils.rbs_environment
       if entry = env.class_decls[TypeName(name).absolute!]
         @header = Content::HeaderBuilder.new(env: env).build(entry: entry)
         return

@@ -4,7 +4,7 @@ module Orthoses
     class DuplicationChecker
       def initialize(decl, env: nil)
         @decl = decl
-        @env = env || Utils.rbs_environment(collection: true)
+        @env = env || Utils.rbs_environment
       end
 
       def update_decl
