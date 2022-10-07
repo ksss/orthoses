@@ -10,7 +10,7 @@ task :test do
 end
 
 desc "generate self signature to `sig` dir"
-task :generate_self_sig do
+task :sig do
   Pathname('sig').rmtree rescue nil
   require_relative 'lib/orthoses'
   Orthoses.logger.level = :info
@@ -40,4 +40,4 @@ task :validate do
   sh "rbs -I sig validate --silent"
 end
 
-task default: [:generate_self_sig, :validate, :test]
+task default: [:sig, :validate, :test]
