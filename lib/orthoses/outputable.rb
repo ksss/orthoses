@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'orthoses/outputable/avoid_recursive_ancestor_error'
+require 'orthoses/outputable/uniq_content_body'
 
 module Orthoses
   # Module for output middleware.
@@ -15,6 +16,7 @@ module Orthoses
   module Outputable
     def call
       @loader = AvoidRecursiveAncestorError.new(@loader)
+      @loader = UniqContentBody.new(@loader)
       super
     end
   end
