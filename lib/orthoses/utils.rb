@@ -2,6 +2,8 @@
 
 module Orthoses
   module Utils
+    autoload :Underscore, "orthoses/utils/underscore"
+
     def self.unautoload!
       warn "`Orthoses::Utils.unautoload!` is deprecated. please use `Orthoses::Autoload` middleware instead."
       ObjectSpace.each_object(Module) do |mod|

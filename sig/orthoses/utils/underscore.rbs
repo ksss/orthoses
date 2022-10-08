@@ -1,0 +1,4 @@
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+module Orthoses::Utils::Underscore
+end
