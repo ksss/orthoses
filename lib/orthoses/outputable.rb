@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'orthoses/outputable/avoid_recursive_ancestor_error'
+require 'orthoses/outputable/constantizable_filter'
 require 'orthoses/outputable/uniq_content_body'
 
 module Orthoses
@@ -17,6 +18,7 @@ module Orthoses
     def call
       @loader = AvoidRecursiveAncestorError.new(@loader)
       @loader = UniqContentBody.new(@loader)
+      @loader = ConstantizableFilter.new(@loader)
       super
     end
   end

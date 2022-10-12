@@ -44,6 +44,10 @@ module Orthoses
       @body.empty?
     end
 
+    def interface?
+      @name.split('::').last.start_with?('_')
+    end
+
     def delete(val)
       @uniq = false
       @body.delete(val)
@@ -130,7 +134,7 @@ module Orthoses
 
       return unless @header.nil?
 
-      if name.split('::').last.start_with?('_')
+      if interface?
         self.header = "interface #{name}"
         return
       end
