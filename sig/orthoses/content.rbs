@@ -5,6 +5,7 @@ class Orthoses::Content
   def <<: (String) -> void
   def concat: (Array[String]) -> void
   def empty?: () -> untyped
+  def interface?: () -> untyped
   def delete: (untyped val) -> untyped
   def to_rbs: () -> String
   def to_decl: () -> untyped
