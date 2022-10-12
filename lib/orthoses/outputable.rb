@@ -17,8 +17,8 @@ module Orthoses
   module Outputable
     def call
       @loader = AvoidRecursiveAncestorError.new(@loader)
-      @loader = UniqContentBody.new(@loader)
       @loader = ConstantizableFilter.new(@loader)
+      @loader = UniqContentBody.new(@loader)
       super
     end
   end
