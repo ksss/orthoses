@@ -1,7 +1,7 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 module Orthoses
-  VERSION: "1.2.0"
+  VERSION: "1.3.0"
 
   attr_accessor self.logger: ::Logger
 
