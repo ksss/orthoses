@@ -28,7 +28,7 @@ module Orthoses
             out.puts @header
             out.puts
           end
-          out.puts content.original_rbs
+          out.puts content.to_rbs
         end
         Orthoses.logger.info("Generate file to #{file_path.to_s}")
       end
