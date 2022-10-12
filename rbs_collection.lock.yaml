@@ -7,62 +7,14 @@ sources:
 path: ".gem_rbs_collection"
 gems:
 - name: rbs
-  version: 2.6.0
+  version: 2.7.0
   source:
     type: rubygems
-- name: i18n
-  version: '1.10'
-  source:
-    type: git
-    name: ruby/gem_rbs_collection
-    revision: cd6db41310b911e1df3476246257510673f01b8a
-    remote: https://github.com/ruby/gem_rbs_collection.git
-    repo_dir: gems
-- name: ast
-  version: '2.4'
-  source:
-    type: git
-    name: ruby/gem_rbs_collection
-    revision: cd6db41310b911e1df3476246257510673f01b8a
-    remote: https://github.com/ruby/gem_rbs_collection.git
-    repo_dir: gems
-- name: listen
-  version: '3.2'
-  source:
-    type: git
-    name: ruby/gem_rbs_collection
-    revision: cd6db41310b911e1df3476246257510673f01b8a
-    remote: https://github.com/ruby/gem_rbs_collection.git
-    repo_dir: gems
-- name: parallel
-  version: '1.20'
-  source:
-    type: git
-    name: ruby/gem_rbs_collection
-    revision: cd6db41310b911e1df3476246257510673f01b8a
-    remote: https://github.com/ruby/gem_rbs_collection.git
-    repo_dir: gems
-- name: rainbow
-  version: '3.0'
-  source:
-    type: git
-    name: ruby/gem_rbs_collection
-    revision: cd6db41310b911e1df3476246257510673f01b8a
-    remote: https://github.com/ruby/gem_rbs_collection.git
-    repo_dir: gems
-- name: rubygems
-  version: '0'
-  source:
-    type: stdlib
-- name: optparse
-  version: '0'
-  source:
-    type: stdlib
-- name: tmpdir
-  version: '0'
-  source:
-    type: stdlib
 - name: minitest
+  version: '0'
+  source:
+    type: stdlib
+- name: securerandom
   version: '0'
   source:
     type: stdlib
@@ -82,7 +34,15 @@ gems:
   version: '0'
   source:
     type: stdlib
+- name: optparse
+  version: '0'
+  source:
+    type: stdlib
 - name: tsort
+  version: '0'
+  source:
+    type: stdlib
+- name: rdoc
   version: '0'
   source:
     type: stdlib
