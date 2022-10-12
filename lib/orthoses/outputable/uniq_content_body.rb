@@ -11,17 +11,9 @@ module Orthoses
 
       def call
         @loader.call.tap do |store|
-          fails = []
           store.each do |name, content|
-            begin
-              content.uniq!
-            rescue NameError, LoadError => err
-              Orthoses.logger.error(err.inspect)
-              fails << name
-              next
-            end
+            content.uniq!
           end
-          fails.each { |name| store.delete(name) }
         end
       end
     end
