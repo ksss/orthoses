@@ -14,11 +14,17 @@ gems:
     ignore: true
   - name: activesupport
     ignore: true
+  - name: steep
+    ignore: true
   - name: i18n
+    ignore: true
   - name: ast
+    ignore: true
   - name: listen
+    ignore: true
   - name: parallel
+    ignore: true
   - name: rainbow
-  - name: rubygems
-  - name: optparse
+    ignore: true
   - name: tmpdir
+    ignore: true
