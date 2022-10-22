@@ -27,16 +27,13 @@ module Orthoses
       @body = []
       @header = nil
       @comment = nil
-      @uniq = false
     end
 
     def <<(line)
-      @uniq = false
       @body << line
     end
 
     def concat(other)
-      @uniq = false
       @body.concat(other)
     end
 
@@ -49,7 +46,6 @@ module Orthoses
     end
 
     def delete(val)
-      @uniq = false
       @body.delete(val)
     end
 
@@ -115,10 +111,7 @@ module Orthoses
       end
       parsed_decl = parsed_decls.first or raise
       parsed_decl.tap do |decl|
-        if !@uniq
-          DuplicationChecker.new(decl).update_decl
-          @uniq = true
-        end
+        DuplicationChecker.new(decl).update_decl
       end
     rescue RBS::ParsingError
       Orthoses.logger.error "```rbs\n#{original_rbs}```"
