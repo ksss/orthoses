@@ -169,6 +169,10 @@ Run `rbs prototype runtime` command process with `patterns` option string.
 
 Force load const defined by `autoload`.
 
+### Orthoses::Sort
+
+Sort signatures by class/module.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

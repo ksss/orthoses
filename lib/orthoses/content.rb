@@ -60,12 +60,17 @@ module Orthoses
     end
 
     def uniq!
-      out = ArrayIO.new
-      writer = RBS::Writer.new(out: out)
-      to_decl.members.each do |member|
-        writer.write_member(member)
-      end
-      @body.replace(out.to_a)
+      lines = decl_to_lines(to_decl)
+      @body.replace(lines)
+    end
+
+    def sort!
+      require 'rbs/sorter'
+      sorter = ::RBS::Sorter.new(nil, stdout: nil)
+      decl = to_decl
+      sorter.sort_decl!(decl)
+      lines = decl_to_lines(decl)
+      @body.replace(lines)
     end
 
     def original_rbs
@@ -91,6 +96,15 @@ module Orthoses
       def to_a
         @outs
       end
+    end
+
+    def decl_to_lines(decl)
+      out = ArrayIO.new
+      writer = RBS::Writer.new(out: out)
+      decl.members.each do |member|
+        writer.write_member(member)
+      end
+      out.to_a
     end
 
     def uniqed_body_string

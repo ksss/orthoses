@@ -10,7 +10,9 @@ class Orthoses::Content
   def to_rbs: () -> String
   def to_decl: () -> untyped
   def uniq!: () -> untyped
+  def sort!: () -> untyped
   def original_rbs: () -> untyped
+  private def decl_to_lines: (untyped decl) -> untyped
   private def uniqed_body_string: () -> String
   private def uniqed_body_decl: () -> RBS::AST::Declarations::t
   private def auto_header: () -> (nil | untyped)

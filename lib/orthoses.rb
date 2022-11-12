@@ -21,6 +21,7 @@ module Orthoses
   autoload :PP, 'orthoses/pp'
   autoload :RBSPrototypeRB, 'orthoses/rbs_prototype_rb'
   autoload :RBSPrototypeRuntime, 'orthoses/rbs_prototype_runtime'
+  autoload :Sort, 'orthoses/sort'
   autoload :Store, 'orthoses/store'
   autoload :Tap, 'orthoses/tap'
   autoload :Autoload, 'orthoses/autoload'
