@@ -1,0 +1,9 @@
+# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+
+class Orthoses::Trace::Method
+  def initialize: (untyped loader, patterns: untyped) -> void
+  def call: () -> untyped
+  private def build_trace_point: () -> untyped
+  private def build_members: () -> untyped
+  include Orthoses::Trace::Targetable
+end

@@ -1,0 +1,7 @@
+module Orthoses
+  class Trace
+    class Attribute
+      include Orthoses::Trace::Targetable
+    end
+  end
+end
