@@ -9,7 +9,7 @@ module Orthoses
     def self.rbs_defined_class?: (String name, ?library: (String | Array[String])?, ?collection: boolish) -> bool
     def self.rbs_type_name: (String) -> RBS::TypeName
     def self.rbs_environment: (?library: String | Array[String] | nil, ?collection: boolish, ?cache: boolish) -> RBS::Environment
-    def self.object_to_rbs: (untyped object, strict: bool) -> String
+    def self.object_to_rbs: (untyped object, ?strict: bool) -> String
     def self.module_name: (Module mod) -> String?
     def self.module_to_type_name: (Module) -> RBS::TypeName?
     def self.known_type_params: (Module | String) -> Array[RBS::AST::TypeParam]?

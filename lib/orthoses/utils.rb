@@ -101,7 +101,7 @@ module Orthoses
       end
     end
 
-    def self.object_to_rbs(object, strict:)
+    def self.object_to_rbs(object, strict: false)
       case object
       when Class, Module
         if name = module_name(object)
