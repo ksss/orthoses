@@ -26,9 +26,9 @@ module Orthoses
         end
 
         @captured_dict.each do |mod_name, captures|
-          captures.each do |(visibility, kind, prefix, name), types|
+          captures.each do |(kind, prefix, name), types|
             injected = Utils::TypeList.new(types).inject
-            store[mod_name] << "#{visibility}#{kind} #{prefix}#{name}: #{injected}"
+            store[mod_name] << "#{kind} #{prefix}#{name}: #{injected}"
           end
         end
 
@@ -67,18 +67,14 @@ module Orthoses
 
             if [:attr_accessor, :attr_reader, :attr].include?(kind)
               TracePoint.new(:return) do |tp2|
-                tr = is_singleton ? tp2.self.method(name) : tp2.self.class.instance_method(name)
-                visibility = tr.super_method.private? ? "private " : ""
                 type = Utils.object_to_rbs(tp2.return_value)
-                @captured_dict[mod_name][[visibility, kind, prefix, name]] << type
+                @captured_dict[mod_name][[kind, prefix, name]] << type
               end.enable(target: attr_module.instance_method(name))
             end
             if [:attr_accessor, :attr_writer, :attr].include?(kind)
               TracePoint.new(:call) do |tp2|
-                tw = is_singleton ? tp2.self.method("#{name}=") : tp2.self.class.instance_method("#{name}=")
-                visibility = tw.super_method.private? ? "private " : ""
                 type = Utils.object_to_rbs(tp2.binding.local_variable_get(:object))
-                @captured_dict[mod_name][[visibility, kind, prefix, name]] << type
+                @captured_dict[mod_name][[kind, prefix, name]] << type
               end.enable(target: attr_module.instance_method("#{name}="))
             end
           end

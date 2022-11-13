@@ -40,8 +40,7 @@ module Orthoses
 
           next unless target?(mod_name)
 
-          method = tp.self.method(tp.method_id)
-          visibility = method.private? ? :private : nil
+          visibility = tp.self.private_methods.include?(tp.method_id) ? :private : nil
           key = [mod_name, kind, visibility, tp.method_id]
 
           case tp.event

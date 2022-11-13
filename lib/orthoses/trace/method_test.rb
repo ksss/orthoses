@@ -19,8 +19,8 @@ module TraceMethodTest
         priv(c)
       end
 
-      def dele(...)
-        priv(...)
+      def dele(*a, **k)
+        priv(*a, **k)
       end
 
       private
@@ -63,7 +63,7 @@ module TraceMethodTest
         def call_priv: (true c) -> Integer
                      | (false c) -> Symbol
 
-        def dele: (*untyped, **untyped) ?{ (*untyped) -> untyped } -> Integer
+        def dele: (*Array[bool] a, **Hash[untyped, untyped]) -> Integer
       end
     RBS
     unless expect == actual

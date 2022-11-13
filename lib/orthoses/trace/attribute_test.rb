@@ -29,7 +29,6 @@ module TraceAttributeTest
   def test_attribute(t)
     store = Orthoses::Trace::Attribute.new(->{
       LOADER_ATTRIBUTE.call
-
       foo = Foo.new
       foo.attr_acce_publ
       foo.attr_acce_publ = "str"
@@ -47,7 +46,7 @@ module TraceAttributeTest
     actual = store.map { |n, c| c.to_rbs }.join("\n")
     expect = <<~RBS
       class TraceAttributeTest::Foo
-        private attr_accessor attr_acce_priv: Integer
+        attr_accessor attr_acce_priv: Integer
         attr_accessor attr_acce_publ: Symbol | String
         attr_reader attr_read_publ: Symbol
         attr_writer attr_writ_publ: Integer
