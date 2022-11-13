@@ -1,0 +1,7 @@
+file :src do
+  sh "git clone --depth 1 https://github.com/rack/rack-test.git src"
+end
+
+task :generate => :src do
+  load "generate.rb"
+end

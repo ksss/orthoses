@@ -2,6 +2,7 @@
 
 module Orthoses
   module Utils
+    autoload :TypeList, "orthoses/utils/type_list"
     autoload :Underscore, "orthoses/utils/underscore"
 
     def self.unautoload!
@@ -136,7 +137,7 @@ module Orthoses
           if strict
             "[#{ary.join(', ')}]"
           else
-            "Array[#{ary.uniq.join(' | ')}]"
+            "Array[#{TypeList.new(ary).inject}]"
           end
         end
       when Hash
@@ -146,9 +147,9 @@ module Orthoses
           if strict && object.keys.all? { |key| key.is_a?(Symbol) && /\A\w+\z/.match?(key) }
             "{ #{object.map { |k, v| "#{k}: #{object_to_rbs(v, strict: strict)}" }.join(', ')} }"
           else
-            keys = object.keys.map { |k| object_to_rbs(k, strict: strict) }.uniq
-            values = object.values.map { |v| object_to_rbs(v, strict: strict) }.uniq
-            "Hash[#{keys.join(' | ')}, #{values.join(' | ')}]"
+            keys = object.keys.map { |k| object_to_rbs(k, strict: strict) }
+            values = object.values.map { |v| object_to_rbs(v, strict: strict) }
+            "Hash[#{TypeList.new(keys).inject}, #{TypeList.new(values).inject}]"
           end
         end
       when Range

@@ -173,6 +173,10 @@ Force load const defined by `autoload`.
 
 Sort signatures by class/module.
 
+## Orthoses::Trace
+
+Trace the argument and return value objects when the method is actually called and determine the type.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

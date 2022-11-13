@@ -3,6 +3,8 @@
 require 'rbs'
 require 'pathname'
 
+require 'orthoses/utils'
+
 module Orthoses
   autoload :Attribute, 'orthoses/attribute'
   autoload :Builder, 'orthoses/builder'
@@ -24,8 +26,8 @@ module Orthoses
   autoload :Sort, 'orthoses/sort'
   autoload :Store, 'orthoses/store'
   autoload :Tap, 'orthoses/tap'
+  autoload :Trace, 'orthoses/trace'
   autoload :Autoload, 'orthoses/autoload'
-  autoload :Utils, 'orthoses/utils'
   autoload :VERSION, 'orthoses/version'
   autoload :Walk, 'orthoses/walk'
   autoload :Writer, 'orthoses/writer'
