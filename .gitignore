@@ -10,3 +10,5 @@
 
 /examples/minitest/out
 /examples/minitest/src
+/examples/rack-test/out
+/examples/rack-test/src
