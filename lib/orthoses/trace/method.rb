@@ -3,13 +3,15 @@
 module Orthoses
   class Trace
     class Method
+      # internal
+      Info = Struct.new(:key, :op_name_types, :raised, keyword_init: true)
       include Targetable
 
       def initialize(loader, patterns:)
         @loader = loader
         @patterns = patterns
 
-        @stack = Hash.new { |h, k| h[k] = [] }
+        @stack = []
         @args_return_map = Hash.new { |h, k| h[k] = [] }
       end
 
@@ -29,7 +31,7 @@ module Orthoses
       private
 
       def build_trace_point
-        TracePoint.new(:call, :return) do |tp|
+        TracePoint.new(:call, :return, :raise) do |tp|
           if tp.defined_class.singleton_class?
             mod_name = Utils.module_name(tp.defined_class) or next
             kind = :singleton
@@ -55,10 +57,14 @@ module Orthoses
               end
             end
 
-            @stack[key].push(op_name_types)
+            @stack.push(Info.new(key: key, op_name_types: op_name_types))
+          when :raise
+            @stack.last.raised = true
           when :return
-            op_name_types = @stack[key].pop
-            @args_return_map[key] << [op_name_types, Utils.object_to_rbs(tp.return_value)]
+            info = @stack.pop
+            if !info.raised
+              @args_return_map[info.key] << [info.op_name_types, Utils.object_to_rbs(tp.return_value)]
+            end
           end
         end
       end

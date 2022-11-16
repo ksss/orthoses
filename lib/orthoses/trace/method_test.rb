@@ -23,6 +23,18 @@ module TraceMethodTest
         priv(*a, **k)
       end
 
+      def simple_raise
+        raise
+      end
+
+      def if_raise(a)
+        if a
+          raise
+        else
+          'ok'
+        end
+      end
+
       private
 
       def priv(bool)
@@ -45,6 +57,10 @@ module TraceMethodTest
       m.call_priv(false)
       m.dele(true)
 
+      m.simple_raise rescue nil
+      m.if_raise(false)
+      m.if_raise(true) rescue nil
+
       Orthoses::Utils.new_store
     }, patterns: ['TraceMethodTest::M']).call
 
@@ -57,13 +73,13 @@ module TraceMethodTest
 
         def b_ten: (Integer b) -> Integer
 
-        private def priv: (true `bool`) -> Integer
-                        | (false `bool`) -> Symbol
+        private def priv: (bool `bool`) -> (Integer | Symbol)
 
-        def call_priv: (true c) -> Integer
-                     | (false c) -> Symbol
+        def call_priv: (bool c) -> (Integer | Symbol)
 
         def dele: (*Array[bool] a, **Hash[untyped, untyped]) -> Integer
+
+        def if_raise: (bool a) -> String
       end
     RBS
     unless expect == actual
