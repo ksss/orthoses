@@ -116,8 +116,14 @@ module Orthoses
         else
           module_name(object.class) || 'untyped'
         end
-      when true, false, nil
-        object.inspect
+      when true, false
+        if strict
+          object.inspect
+        else
+          "bool"
+        end
+      when nil
+        "nil"
       when Set
         if object.empty?
           "Set[untyped]"
