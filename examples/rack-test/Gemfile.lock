@@ -7,17 +7,19 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    cgi (0.3.6)
     minitest (5.16.3)
     minitest-global_expectations (1.0.1)
       minitest (> 5)
-    rack (3.0.0)
+    rack (3.0.2)
     rake (13.0.6)
-    rbs (2.7.0)
+    rbs (2.8.1)
 
 PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
+  cgi
   minitest
   minitest-global_expectations
   orthoses!
