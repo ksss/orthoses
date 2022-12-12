@@ -10,7 +10,19 @@ gems:
   version: 2.8.1
   source:
     type: rubygems
-- name: cgi
+- name: csv
+  version: '0'
+  source:
+    type: stdlib
+- name: fileutils
+  version: '0'
+  source:
+    type: stdlib
+- name: json
+  version: '0'
+  source:
+    type: stdlib
+- name: logger
   version: '0'
   source:
     type: stdlib
@@ -18,15 +30,11 @@ gems:
   version: '0'
   source:
     type: stdlib
-- name: rack
-  version: '2.2'
+- name: securerandom
+  version: '0'
   source:
-    type: git
-    name: ruby/gem_rbs_collection
-    revision: 3cdcbea7f7a2a2ba5dffce3ee71f938f8b301687
-    remote: https://github.com/ruby/gem_rbs_collection.git
-    repo_dir: gems
-- name: logger
+    type: stdlib
+- name: strscan
   version: '0'
   source:
     type: stdlib
@@ -35,10 +43,6 @@ gems:
   source:
     type: stdlib
 - name: pathname
-  version: '0'
-  source:
-    type: stdlib
-- name: json
   version: '0'
   source:
     type: stdlib
@@ -54,15 +58,7 @@ gems:
   version: '0'
   source:
     type: stdlib
-- name: tempfile
-  version: '0'
-  source:
-    type: stdlib
-- name: mutex_m
-  version: '0'
-  source:
-    type: stdlib
-- name: uri
+- name: forwardable
   version: '0'
   source:
     type: stdlib
@@ -70,4 +66,8 @@ gems:
   version: '0'
   source:
     type: stdlib
-gemfile_lock_path: examples/rack-test/Gemfile.lock
+- name: mutex_m
+  version: '0'
+  source:
+    type: stdlib
+gemfile_lock_path: Gemfile.lock
