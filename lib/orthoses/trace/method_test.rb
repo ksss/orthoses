@@ -3,6 +3,12 @@
 module TraceMethodTest
   LOADER_METHOD = -> {
     class M
+      class << self
+        def singleton_method?
+          true
+        end
+      end
+
       def initialize(a)
         @a = a
       end
@@ -61,6 +67,8 @@ module TraceMethodTest
       m.if_raise(false)
       m.if_raise(true) rescue nil
 
+      M.singleton_method?
+
       Orthoses::Utils.new_store
     }, patterns: ['TraceMethodTest::M']).call
 
@@ -80,6 +88,8 @@ module TraceMethodTest
         def dele: (*Array[bool] a, **Hash[untyped, untyped]) -> Integer
 
         def if_raise: (bool a) -> String
+
+        def self.singleton_method?: () -> bool
       end
     RBS
     unless expect == actual

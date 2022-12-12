@@ -33,7 +33,9 @@ module Orthoses
       def build_trace_point
         TracePoint.new(:call, :return, :raise) do |tp|
           if tp.defined_class.singleton_class?
-            mod_name = Utils.module_name(tp.defined_class) or next
+            # e.g. `Minitest::Spec::DSL#to_s`` may return `nil` with `#to_s`
+            m = tp.defined_class.to_s&.match(/#<Class:([\w:]+)>/) or next
+            mod_name = m[1] or next
             kind = :singleton
           else
             mod_name = Utils.module_name(tp.defined_class) or next
@@ -72,7 +74,7 @@ module Orthoses
       def build_members
         untyped = ::RBS::Types::Bases::Any.new(location: nil)
 
-        members = @args_return_map.map do |(mod_name, kind, visibility, method_id), type_samples|
+        @args_return_map.map do |(mod_name, kind, visibility, method_id), type_samples|
           type_samples.uniq!
           method_types = type_samples.map do |(op_name_types, return_type)|
             required_positionals = []
