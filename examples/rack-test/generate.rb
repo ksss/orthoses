@@ -6,7 +6,6 @@ include FileUtils
 
 out = Pathname('out')
 out.rmtree rescue nil
-
 Orthoses.logger.level = :warn
 Orthoses::Builder.new do
   use Orthoses::CreateFileByName,
