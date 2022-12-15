@@ -74,9 +74,13 @@ module Orthoses
       end
 
       def build_members
+        build_method_definitions.concat(build_aliases)
+      end
+
+      def build_method_definitions
         untyped = ::RBS::Types::Bases::Any.new(location: nil)
 
-        method_definitions = @args_return_map.map do |(mod_name, kind, visibility, method_id), type_samples|
+        @args_return_map.map do |(mod_name, kind, visibility, method_id), type_samples|
           type_samples.uniq!
           method_types = type_samples.map do |(op_name_types, return_type)|
             required_positionals = []
@@ -172,8 +176,10 @@ module Orthoses
             )
           ]
         end
+      end
 
-        aliases = @alias_map.map do |(mod_name, kind, method_id), callee_id|
+      def build_aliases
+        @alias_map.map do |(mod_name, kind, method_id), callee_id|
           [
             mod_name,
             RBS::AST::Members::Alias.new(
@@ -186,8 +192,6 @@ module Orthoses
             )
           ]
         end
-
-        method_definitions.concat(aliases)
       end
     end
   end
