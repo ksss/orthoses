@@ -13,6 +13,7 @@ module Orthoses
 
         @stack = []
         @args_return_map = Hash.new { |h, k| h[k] = [] }
+        @alias_map = {}
       end
 
       def call
@@ -59,7 +60,8 @@ module Orthoses
               end
             end
 
-            @stack.push(Info.new(key: key, op_name_types: op_name_types))
+            @alias_map[[mod_name, kind, tp.method_id]] = tp.callee_id if tp.method_id != tp.callee_id
+            @stack.push(Info.new(key: key, op_name_types: op_name_types, raised: false))
           when :raise
             @stack.last.raised = true
           when :return
@@ -74,7 +76,7 @@ module Orthoses
       def build_members
         untyped = ::RBS::Types::Bases::Any.new(location: nil)
 
-        @args_return_map.map do |(mod_name, kind, visibility, method_id), type_samples|
+        method_definitions = @args_return_map.map do |(mod_name, kind, visibility, method_id), type_samples|
           type_samples.uniq!
           method_types = type_samples.map do |(op_name_types, return_type)|
             required_positionals = []
@@ -170,6 +172,22 @@ module Orthoses
             )
           ]
         end
+
+        aliases = @alias_map.map do |(mod_name, kind, method_id), callee_id|
+          [
+            mod_name,
+            RBS::AST::Members::Alias.new(
+              new_name: callee_id,
+              old_name: method_id,
+              kind: kind,
+              annotations: [],
+              location: nil,
+              comment: nil,
+            )
+          ]
+        end
+
+        method_definitions.concat(aliases)
       end
     end
   end

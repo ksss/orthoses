@@ -7,6 +7,7 @@ module TraceMethodTest
         def singleton_method?
           true
         end
+        alias alias_singleton_method? singleton_method?
       end
 
       def initialize(a)
@@ -20,6 +21,8 @@ module TraceMethodTest
       def b_ten(b)
         b * 10
       end
+
+      alias c_ten a_ten
 
       def call_priv(c)
         priv(c)
@@ -59,6 +62,7 @@ module TraceMethodTest
       m = M.new(100)
       m.a_ten
       m.b_ten(20)
+      m.c_ten
       m.call_priv(true)
       m.call_priv(false)
       m.dele(true)
@@ -68,6 +72,7 @@ module TraceMethodTest
       m.if_raise(true) rescue nil
 
       M.singleton_method?
+      M.alias_singleton_method?
 
       Orthoses::Utils.new_store
     }, patterns: ['TraceMethodTest::M']).call
@@ -90,6 +95,10 @@ module TraceMethodTest
         def if_raise: (bool a) -> String
 
         def self.singleton_method?: () -> bool
+
+        alias c_ten a_ten
+
+        alias self.alias_singleton_method? self.singleton_method?
       end
     RBS
     unless expect == actual
