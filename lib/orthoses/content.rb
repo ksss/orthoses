@@ -119,7 +119,7 @@ module Orthoses
         name: "orthoses/content.rb",
         content: original_rbs
       )
-      parsed_decls = RBS::Parser.parse_signature(buffer)
+      _, _, parsed_decls = RBS::Parser.parse_signature(buffer)
       unless parsed_decls.length == 1
         raise "expect decls.length == 1, but got #{parsed_decls.length}"
       end
