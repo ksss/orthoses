@@ -86,7 +86,7 @@ module TraceMethodTest
 
         def b_ten: (Integer b) -> Integer
 
-        private def priv: (bool `bool`) -> (Integer | Symbol)
+        private def priv: (bool bool) -> (Integer | Symbol)
 
         def call_priv: (bool c) -> (Integer | Symbol)
 
