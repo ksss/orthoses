@@ -5,5 +5,7 @@ class Orthoses::Trace::Method
   def call: () -> untyped
   private def build_trace_point: () -> untyped
   private def build_members: () -> untyped
+  private def build_method_definitions: () -> untyped
+  private def build_aliases: () -> untyped
   include Orthoses::Trace::Targetable
 end

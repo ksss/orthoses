@@ -33,23 +33,22 @@ module Orthoses
 
       def build_trace_point
         TracePoint.new(:call, :return, :raise) do |tp|
-          if tp.defined_class.singleton_class?
-            # e.g. `Minitest::Spec::DSL#to_s`` may return `nil` with `#to_s`
-            m = tp.defined_class.to_s&.match(/#<Class:([\w:]+)>/) or next
-            mod_name = m[1] or next
-            kind = :singleton
-          else
-            mod_name = Utils.module_name(tp.defined_class) or next
-            kind = :instance
-          end
-
-          next unless target?(mod_name)
-
-          visibility = tp.self.private_methods.include?(tp.method_id) ? :private : nil
-          key = [mod_name, kind, visibility, tp.method_id]
-
           case tp.event
           when :call
+            if tp.defined_class.singleton_class?
+              # e.g. `Minitest::Spec::DSL#to_s`` may return `nil` with `#to_s`
+              m = tp.defined_class.to_s&.match(/#<Class:([\w:]+)>/) or next
+              mod_name = m[1] or next
+              kind = :singleton
+            else
+              mod_name = Utils.module_name(tp.defined_class) or next
+              kind = :instance
+            end
+
+            next unless target?(mod_name)
+
+            visibility = tp.self.private_methods.include?(tp.method_id) ? :private : nil
+            key = [mod_name, kind, visibility, tp.method_id]
             op_name_types = tp.parameters.map do |op, name|
               case name
               when nil, :*, :**, :&
@@ -63,10 +62,10 @@ module Orthoses
             @alias_map[[mod_name, kind, tp.method_id]] = tp.callee_id if tp.method_id != tp.callee_id
             @stack.push(Info.new(key: key, op_name_types: op_name_types, raised: false))
           when :raise
-            @stack.last.raised = true
+            @stack.last&.raised = true
           when :return
             info = @stack.pop
-            if !info.raised
+            if info && !info.raised
               @args_return_map[info.key] << [info.op_name_types, Utils.object_to_rbs(tp.return_value)]
             end
           end

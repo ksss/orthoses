@@ -105,4 +105,11 @@ module TraceMethodTest
       t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
     end
   end
+
+  def test_raise_first(t)
+    Orthoses::Trace::Method.new(->{
+      raise rescue nil
+      Orthoses::Utils.new_store
+    }, patterns: ['TraceMethodTest']).call
+  end
 end

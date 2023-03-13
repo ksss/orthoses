@@ -1,4 +1,7 @@
 module Orthoses
+  # Collect argument and return types during code running
+  #     use Orthoses::Trace,
+  #         patterns: ['Foo::Bar*']
   class Trace
     autoload :Attribute, 'orthoses/trace/attribute'
     autoload :Method, 'orthoses/trace/method'
