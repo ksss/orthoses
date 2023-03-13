@@ -7,7 +7,8 @@ module Orthoses
             paths.each do |path|
               Orthoses.logger.debug("Load #{path}")
               buffer = RBS::Buffer.new(name: path.to_s, content: File.read(path.to_s, encoding: "UTF-8"))
-              RBS::Parser.parse_signature(buffer).each do |decl|
+              _, _, decls = RBS::Parser.parse_signature(buffer)
+              decls.each do |decl|
                 env << decl
               end
             end

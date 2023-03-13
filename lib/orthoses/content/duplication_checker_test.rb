@@ -1,6 +1,6 @@
 module DuplicationCheckerTest
   def test_update_decl(t)
-    decl = RBS::Parser.parse_signature(<<~RBS).first
+    _, _, decls = RBS::Parser.parse_signature(<<~RBS)
       class Foo
         CONST1: 1
         CONST2: 2
@@ -27,14 +27,16 @@ module DuplicationCheckerTest
         include Bar # ok
       end
     RBS
+    decl = decls.first
     env = RBS::Environment.new
-    RBS::Parser.parse_signature(<<~RBS).each { env << _1 }
+    _, _, decls = RBS::Parser.parse_signature(<<~RBS)
       ::Foo::CONST1: 1
 
       class Foo
         CONST3: 3
       end
     RBS
+    decls.each { env << _1 }
     checker = Orthoses::Content::DuplicationChecker.new(decl, env: env)
     checker.update_decl
     out = StringIO.new
@@ -66,12 +68,13 @@ module DuplicationCheckerTest
   end
 
   def test_drop_known_method_definition_method(t)
-    decl = RBS::Parser.parse_signature(<<~RBS).first
+    _, _, decls = RBS::Parser.parse_signature(<<~RBS)
       class Array[unchecked out Elem]
         def to_s: () -> void
         def sum: () -> void
       end
     RBS
+    decl = decls.first
     checker = Orthoses::Content::DuplicationChecker.new(decl)
     checker.update_decl
     unless decl.members.length == 0
@@ -80,11 +83,12 @@ module DuplicationCheckerTest
   end
 
   def test_drop_known_method_definition_const_in_class(t)
-    decl = RBS::Parser.parse_signature(<<~RBS).first
+    _, _, decls = RBS::Parser.parse_signature(<<~RBS)
       class IO::Buffer
         BIG_ENDIAN: Integer
       end
     RBS
+    decl = decls.first
     checker = Orthoses::Content::DuplicationChecker.new(decl)
     checker.update_decl
     unless decl.members.length == 0
@@ -93,11 +97,12 @@ module DuplicationCheckerTest
   end
 
   def test_drop_known_method_definition_single_const(t)
-    decl = RBS::Parser.parse_signature(<<~RBS).first
+    _, _, decls = RBS::Parser.parse_signature(<<~RBS)
       class Complex
         I: Complex
       end
     RBS
+    decl = decls.first
     checker = Orthoses::Content::DuplicationChecker.new(decl)
     checker.update_decl
     unless decl.members.length == 0

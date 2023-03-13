@@ -75,15 +75,17 @@ module ContentTest
     ])
     loader = RBS::EnvironmentLoader.new
     env = RBS::Environment.from_loader(loader)
-    RBS::Parser.parse_signature(<<~RBS).each do |decl|
+    _, _, decls = RBS::Parser.parse_signature(<<~RBS)
       module ContentTest
       end
       module Mod[T]
       end
     RBS
+    decls.each do |decl|
       env << decl
     end
-    RBS::Parser.parse_signature(store["ContentTest::Simple"].to_rbs).each do |decl|
+    _, _, decls = RBS::Parser.parse_signature(store["ContentTest::Simple"].to_rbs)
+    decls.each do |decl|
       env << decl
     end
 
@@ -99,7 +101,8 @@ module ContentTest
     content.header = "module Mod"
     content << "def foo: () -> void"
 
-    expect = RBS::Parser.parse_signature("module Mod\ndef foo: () -> void\nend").first
+    _, _, decls = RBS::Parser.parse_signature("module Mod\ndef foo: () -> void\nend")
+    expect = decls.first
     actual = content.to_decl
     unless expect == actual
       t.error("expect to same as parsed RBS, but not")
