@@ -169,8 +169,13 @@ module Orthoses
               kind: kind,
               location: nil,
               name: method_id,
-              overload: false,
-              types: types,
+              overloading: false,
+              overloads: types.map { |type|
+                RBS::AST::Members::MethodDefinition::Overload.new(
+                  annotations: [],
+                  method_type: type
+                )
+              },
               visibility: visibility
             )
           ]
