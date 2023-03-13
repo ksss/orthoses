@@ -3,7 +3,7 @@ module Orthoses
     class HeaderBuilder
       def initialize(env:)
         @env = env
-        @resolver = RBS::TypeNameResolver.from_env(env)
+        @resolver = RBS::Resolver::TypeNameResolver.new(env)
       end
 
       def build(entry:, name_hint: nil)
