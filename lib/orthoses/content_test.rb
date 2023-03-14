@@ -75,19 +75,17 @@ module ContentTest
     ])
     loader = RBS::EnvironmentLoader.new
     env = RBS::Environment.from_loader(loader)
-    _, _, decls = RBS::Parser.parse_signature(<<~RBS)
+
+    buffer, directives, decls = RBS::Parser.parse_signature(<<~RBS)
       module ContentTest
       end
       module Mod[T]
       end
     RBS
-    decls.each do |decl|
-      env << decl
-    end
-    _, _, decls = RBS::Parser.parse_signature(store["ContentTest::Simple"].to_rbs)
-    decls.each do |decl|
-      env << decl
-    end
+    env.add_signature(buffer: buffer, directives: directives, decls: decls)
+
+    buffer, directives, decls = RBS::Parser.parse_signature(store["ContentTest::Simple"].to_rbs)
+    env.add_signature(buffer: buffer, directives: directives, decls: decls)
 
     begin
       RBS::DefinitionBuilder.new(env: env.resolve_type_names).build_instance(TypeName("::ContentTest::Simple"))
