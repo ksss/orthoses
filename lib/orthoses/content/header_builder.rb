@@ -66,12 +66,10 @@ module Orthoses
         "interface #{name_and_params(resolved_name.relative!, entry.decl.type_params)}"
       end
 
-      def build_context(entry:)
-        return nil if entry.outer.empty?
+      include RBS::Environment::ContextUtil
 
-        entry.outer.length.times.map do |i|
-          entry.outer[0, i + 1].map(&:name).inject(:+).to_namespace.absolute!
-        end
+      def build_context(entry:)
+        calculate_context(entry.outer + [entry.decl])
       end
 
       def name_and_params(name, params)
