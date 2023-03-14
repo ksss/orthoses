@@ -67,10 +67,11 @@ module Orthoses
       end
 
       def build_context(entry:)
-        context = entry.outer.length.times.map do |i|
+        return nil if entry.outer.empty?
+
+        entry.outer.length.times.map do |i|
           entry.outer[0, i + 1].map(&:name).inject(:+).to_namespace.absolute!
         end
-        context.push(RBS::Namespace.root)
       end
 
       def name_and_params(name, params)
