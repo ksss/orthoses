@@ -10,4 +10,5 @@ class Orthoses::Content::HeaderBuilder
   private def build_context: (entry: untyped) -> untyped
   private def name_and_params: (untyped name, untyped params) -> ::String
   private def name_and_args: (untyped name, untyped args) -> (::String | nil)
+  include RBS::Environment::ContextUtil
 end

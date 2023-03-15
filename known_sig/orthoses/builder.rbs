@@ -1,5 +1,6 @@
 module Orthoses
   class Builder
+    def use: (untyped middleware, *untyped args, **untyped key) ?{ () -> untyped } -> untyped
     def call: () { () -> void } -> Orthoses::store
   end
 end

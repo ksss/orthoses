@@ -6,6 +6,12 @@ module Orthoses
     end
 
     attr_accessor captures: Array[Capture]
-    def trace: [T] (Method | UnboundMethod) ?{ () -> T } -> T
+    def trace: (Method | UnboundMethod) ?{ () -> untyped } -> untyped
+
+    class Lazy
+      attr_reader captures: Array[untyped]
+      def initialize: () -> void
+      def trace: (String name) ?{ () -> untyped } -> untyped
+    end
   end
 end
