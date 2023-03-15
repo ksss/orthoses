@@ -35,6 +35,10 @@ gems:
   version: '0'
   source:
     type: stdlib
+- name: rgot
+  version: 1.3.0
+  source:
+    type: rubygems
 - name: tsort
   version: '0'
   source:
