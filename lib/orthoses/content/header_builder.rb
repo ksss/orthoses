@@ -3,7 +3,7 @@ module Orthoses
     class HeaderBuilder
       def initialize(env:)
         @env = env
-        @resolver = RBS::TypeNameResolver.from_env(env)
+        @resolver = RBS::Resolver::TypeNameResolver.new(env)
       end
 
       def build(entry:, name_hint: nil)
@@ -66,11 +66,10 @@ module Orthoses
         "interface #{name_and_params(resolved_name.relative!, entry.decl.type_params)}"
       end
 
+      include RBS::Environment::ContextUtil
+
       def build_context(entry:)
-        context = entry.outer.length.times.map do |i|
-          entry.outer[0, i + 1].map(&:name).inject(:+).to_namespace.absolute!
-        end
-        context.push(RBS::Namespace.root)
+        calculate_context(entry.outer + [entry.decl])
       end
 
       def name_and_params(name, params)

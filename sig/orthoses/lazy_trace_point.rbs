@@ -3,7 +3,7 @@
 class Orthoses::LazyTracePoint < ::TracePoint
   def method_added: (untyped id) -> untyped
   def singleton_method_added: (untyped id) -> untyped
-  def initialize: (*untyped events) ?{ () -> untyped } -> void
+  def initialize: (*untyped events) { () -> untyped } -> void
   def enable: (?target: untyped?, ?target_line: untyped?, ?target_thread: untyped?) ?{ () -> untyped } -> untyped
   private def trace_instance_method: () ?{ () -> untyped } -> untyped
   private def trace_singleton_method: () ?{ () -> untyped } -> untyped

@@ -1,7 +1,7 @@
 module HeaderBuilderTest
   def test_class(t)
     env = Orthoses::Utils.rbs_environment(collection: false)
-    decls = RBS::Parser.parse_signature(<<~RBS)
+    _, _, decls = RBS::Parser.parse_signature(<<~RBS)
       class Foo
       end
 
@@ -52,7 +52,7 @@ module HeaderBuilderTest
 
   def test_interface(t)
     env = Orthoses::Utils.rbs_environment(collection: false)
-    decls = RBS::Parser.parse_signature(<<~RBS)
+    _, _, decls = RBS::Parser.parse_signature(<<~RBS)
       module Mod
         interface _Foo
         end

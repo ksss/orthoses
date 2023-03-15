@@ -8,4 +8,8 @@ gemspec
 gem "rbs"
 gem "rake", "~> 13.0"
 gem "rgot", "~> 1.1"
-gem "steep"
+gem "activesupport"
+
+group :steep do
+  gem "steep", "1.4.0.dev.2"
+end

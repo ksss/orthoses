@@ -16,7 +16,8 @@ module EnvironmentTest
       end
     RBS
     env = Orthoses::Content::Environment.new
-    RBS::Parser.parse_signature(input).each do |decl|
+    _, _, decls = RBS::Parser.parse_signature(input)
+    decls.each do |decl|
       env << decl
     end
     store = Orthoses::Utils.new_store

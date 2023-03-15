@@ -11,7 +11,7 @@ module Orthoses
         return unless @decl.respond_to?(:members)
         uniq_map = {}
         @decl.members.each do |member|
-          if member.instance_of?(RBS::AST::Members::MethodDefinition) && member.overload
+          if member.instance_of?(RBS::AST::Members::MethodDefinition) && member.overloading?
             # avoid to duplicate and keep order
             uniq_map[Object.new] = member
           else

@@ -27,7 +27,7 @@ module UtilsTest
       ["Object::RUBY_VERSION", nil, false],
       ["Integer", nil, true],
       ["#<Class:Integer>", nil, false],
-      ["Set", nil, false],
+      ["URI", nil, false],
       ["Nothing", nil, false],
 
       ["Object::RUBY_VERSION", 'uri', false],

@@ -24,6 +24,4 @@ module Orthoses::Utils
   def self.new_store: () -> Orthoses::store
 
   UNBOUND_NAME_METHOD: UnboundMethod
-
-  attr_accessor self.rbs_collection_pathname: Pathname
 end

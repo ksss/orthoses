@@ -1,0 +1,7 @@
+module Orthoses
+  class LazyTracePoint < ::TracePoint
+    def enable: (?target: untyped?, ?target_line: untyped?, ?target_thread: untyped?) ?{ () -> untyped } -> untyped
+    private def trace_instance_method: () ?{ () -> untyped } -> untyped
+    private def trace_singleton_method: () ?{ () -> untyped } -> untyped
+  end
+end
