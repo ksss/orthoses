@@ -1,0 +1,13 @@
+class Rack::Test::FakeApp
+  private def handle: (Hash[String, Rack::Lint::Wrapper::InputWrapper | Rack::Lint::Wrapper::ErrorWrapper | String | bool] env) -> nil
+                    | (Hash[String, Hash[Symbol, Symbol] | Rack::Lint::Wrapper::InputWrapper | Rack::Lint::Wrapper::ErrorWrapper | String | bool] env) -> nil
+                    | (Hash[String, Hash[Symbol, String] | Rack::Lint::Wrapper::InputWrapper | Rack::Lint::Wrapper::ErrorWrapper | String | bool] env) -> nil
+                    | (Hash[String, Hash[untyped, untyped] | Rack::Lint::Wrapper::InputWrapper | Rack::Lint::Wrapper::ErrorWrapper | String | bool] env) -> nil
+                    | (Hash[String, Hash[String, String] | Rack::Lint::Wrapper::InputWrapper | Rack::Lint::Wrapper::ErrorWrapper | String | bool] env) -> nil
+  def call: (Hash[String, Rack::Lint::Wrapper::InputWrapper | Rack::Lint::Wrapper::ErrorWrapper | String | bool] env) -> nil
+          | (Hash[String, Hash[Symbol, Symbol] | Rack::Lint::Wrapper::InputWrapper | Rack::Lint::Wrapper::ErrorWrapper | String | bool] env) -> nil
+          | (Hash[String, Hash[Symbol, String] | Rack::Lint::Wrapper::InputWrapper | Rack::Lint::Wrapper::ErrorWrapper | String | bool] env) -> nil
+          | (Hash[String, Hash[untyped, untyped] | Rack::Lint::Wrapper::InputWrapper | Rack::Lint::Wrapper::ErrorWrapper | String | bool] env) -> nil
+          | (Hash[String, Hash[String, String] | Rack::Lint::Wrapper::InputWrapper | Rack::Lint::Wrapper::ErrorWrapper | String | bool] env) -> nil
+  private def new_cookie_count: (Rack::Request req) -> Hash[untyped, untyped]
+end

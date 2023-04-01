@@ -1,0 +1,3 @@
+module Rack::Test
+  def self.encoding_aware_strings?: () -> String
+end

@@ -1,0 +1,98 @@
+module Rack::Test::Methods
+  attr_accessor _rack_test_current_session: Rack::Test::Session?
+
+  def build_rack_test_session: (Symbol _name) -> (Rack::Test::InputRewinder | Proc | Rack::Test::Session)
+                             | (bool _name) -> Rack::Test::InputRewinder
+                             | (nil _name) -> Rack::Test::InputRewinder
+
+  def rack_test_session: (?Symbol name) -> (Rack::Test::Session | String)
+                       | (?bool name) -> Rack::Test::Session
+                       | (?nil name) -> Rack::Test::Session
+
+  def current_session: () -> Rack::Test::Session
+
+  def request: (*Array[String] args, **untyped) ?{ (*untyped) -> untyped } -> (Array[nil] | Rack::Test::Session)
+             | (*Array[Hash[String, String] | String] args, **untyped) ?{ (*untyped) -> untyped } -> (Array[nil] | Rack::Test::Session)
+             | (*Array[Hash[Symbol, Hash[String, String]] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+             | (*Array[Hash[Symbol, Hash[untyped, untyped]] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+             | (*Array[Hash[Symbol, String] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+             | (*Array[Hash[Symbol, Hash[String, String] | Symbol] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+             | (*Array[Hash[Symbol, Hash[Symbol, Hash[Symbol, String]]] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+             | (*Array[Hash[Symbol, Symbol] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+             | (*Array[Hash[Symbol, Hash[Symbol, Hash[Symbol, String]] | Symbol] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+             | (*Array[Hash[Symbol, Symbol | String] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+             | (*Array[Hash[Symbol | String, Hash[String, String] | Symbol | String] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+             | (*Array[Hash[Symbol, Hash[String, String] | Symbol | bool] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+             | (*Array[Hash[Symbol, Hash[Symbol, Integer]] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+             | (*Array[Hash[Symbol, bool] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+             | (*Array[Hash[String, Hash[Symbol, Symbol]] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Array[nil]
+
+  def last_request: (*Array[untyped] args, **untyped) ?{ (*untyped) -> untyped } -> (Rack::Request | Rack::Test::Session)
+
+  def get: (*Array[String] args, **untyped) ?{ (*untyped) -> untyped } -> (Array[nil] | Rack::Test::Session)
+         | (*Array[Hash[String, String] | String] args, **untyped) ?{ (*untyped) -> untyped } -> (Array[nil] | Rack::Test::Session)
+         | (*Array[Hash[untyped, untyped] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+         | (*Array[String?] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+         | (*Array[Hash[Symbol, String] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+         | (*Array[Hash[String, Hash[String, String]] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+         | (*Array[(Hash[String, String] | String)?] args, **untyped) ?{ (*untyped) -> untyped } -> Array[nil]
+
+  def last_response: (*Array[untyped] args, **untyped) ?{ (*untyped) -> untyped } -> (Rack::MockResponse | Rack::Test::Session)
+
+  def options: (*Array[String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+             | (*Array[String?] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+             | (*Array[Hash[untyped, untyped] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+
+  def custom_request: (*Array[Hash[untyped, untyped] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+                    | (*Array[String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+
+  def delete: (*Array[Hash[untyped, untyped] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+            | (*Array[String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+            | (*Array[String?] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+            | (*Array[Hash[Symbol, String] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+
+  def patch: (*Array[String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+           | (*Array[Hash[untyped, untyped] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+           | (*Array[String?] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+
+  def put: (*Array[String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+         | (*Array[Hash[untyped, untyped] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+         | (*Array[String?] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+
+  def post: (*Array[Hash[String, String] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+          | (*Array[String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+          | (*Array[String?] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+          | (*Array[Hash[Symbol, String] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+          | (*Array[Hash[untyped, untyped] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+          | (*Array[Hash[String, Array[Rack::Test::UploadedFile]] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+          | (*Array[Hash[String, Hash[String, Hash[String, String]] | Rack::Test::UploadedFile] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+          | (*Array[Hash[String, Hash[String, String] | Rack::Test::UploadedFile] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+          | (*Array[Hash[String, Rack::Test::UploadedFile | String] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+          | (*Array[Hash[String, Rack::Test::UploadedFile] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+          | (*Array[Hash[String, Rack::Test::UploadedFile] | Hash[String, String] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+          | (*Array[Hash[String, Array[String] | Rack::Test::UploadedFile] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+
+  def env: (*Array[Hash[Symbol, String] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+         | (*Array[Hash[Symbol, Symbol] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Hash[Symbol, Symbol]
+         | (*Array[String?] args, **untyped) ?{ (*untyped) -> untyped } -> Hash[Symbol, String]
+
+  def follow_redirect!: (*Array[untyped] args, **untyped) ?{ (*untyped) -> untyped } -> (Rack::Test::Session | String)
+
+  def header: (*Array[String] args, **untyped) ?{ (*untyped) -> untyped } -> (Rack::Test::Session | String)
+            | (*Array[String?] args, **untyped) ?{ (*untyped) -> untyped } -> String
+
+  def head: (*Array[String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+          | (*Array[String?] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+          | (*Array[Hash[untyped, untyped] | String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+
+  def basic_authorize: (*Array[String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+
+  def set_cookie: (*Array[String] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+                | (*Array[Array[String]] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::Session
+
+  def with_session: (Symbol name) -> Rack::Test::Session?
+
+  def clear_cookies: (*Array[untyped] args, **untyped) ?{ (*untyped) -> untyped } -> Rack::Test::CookieJar
+
+  alias rack_mock_session rack_test_session
+end

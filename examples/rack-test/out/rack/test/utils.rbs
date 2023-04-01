@@ -1,0 +1,112 @@
+module Rack::Test::Utils
+  def build_nested_query: (Hash[Symbol, Hash[Symbol, Array[Integer]]] value, ?nil prefix) -> String
+                        | (Hash[Symbol, Array[Integer]] value, ?String prefix) -> String
+                        | (Array[Integer] value, ?String prefix) -> String
+                        | (Integer value, ?String prefix) -> String
+                        | (Hash[Symbol, nil] value, ?nil prefix) -> String
+                        | (nil value, ?String prefix) -> String
+                        | (Hash[Symbol, Integer] value, ?nil prefix) -> String
+                        | (Hash[String, Array[Integer]] value, ?nil prefix) -> String
+                        | (nil value, ?nil prefix) -> String
+                        | (Hash[Symbol, Array[Integer]] value, ?nil prefix) -> String
+                        | (Hash[Symbol, Hash[Symbol, Integer]] value, ?nil prefix) -> String
+                        | (Hash[Symbol, Integer] value, ?String prefix) -> String
+                        | (Hash[Symbol, Array[untyped]] value, ?nil prefix) -> String
+                        | (Array[untyped] value, ?String prefix) -> String
+                        | (String value, ?nil prefix) -> String
+                        | (Hash[Symbol, Array[Hash[Symbol, Integer]]] value, ?nil prefix) -> String
+                        | (Array[Hash[Symbol, Integer]] value, ?String prefix) -> String
+                        | (Hash[untyped, untyped] value, ?nil prefix) -> String
+                        | (Hash[Symbol, String] value, ?nil prefix) -> String
+                        | (String value, ?String prefix) -> String
+                        | (Hash[String, String] value, ?nil prefix) -> String
+                        | (Hash[String, Hash[String, String]] value, ?nil prefix) -> String
+                        | (Hash[String, String] value, ?String prefix) -> String
+                        | (Hash[Symbol, Hash[Symbol, String]] value, ?nil prefix) -> String
+                        | (Hash[Symbol, String] value, ?String prefix) -> String
+
+  def build_multipart: (Hash[untyped, untyped] params, ?bool _first, ?bool multipart) -> nil
+                     | (Hash[Symbol, String] params, ?bool _first, ?bool multipart) -> nil
+                     | (Hash[String, String] params, ?bool _first, ?bool multipart) -> String?
+                     | (Hash[String, Array[Rack::Test::UploadedFile]] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[Symbol, Hash[Symbol, String]] params, ?bool _first, ?bool multipart) -> nil
+                     | (Hash[String, Hash[String, Hash[String, String]] | Rack::Test::UploadedFile] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, Hash[String, String] | Rack::Test::UploadedFile] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, Rack::Test::UploadedFile | String] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, Rack::Test::UploadedFile] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, Array[String] | Rack::Test::UploadedFile] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, Array[Hash[String, String]]] params, ?bool _first, ?bool multipart) -> nil
+                     | (Hash[String, Array[Rack::Test::UploadedFile] | String] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, Array[Hash[String, String | Rack::Test::UploadedFile]] | Array[String]] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, Array[Rack::Test::UploadedFile | String]] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, Hash[String, String] | String | Rack::Test::UploadedFile] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, untyped] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, Hash[String, Array[Hash[String, String] | Hash[String, Array[Hash[String, String]] | String]]] | Rack::Test::UploadedFile] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, Array[Hash[String, String | Rack::Test::UploadedFile] | Hash[String, Array[String] | String]]] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, Array[Hash[String, String]] | Rack::Test::UploadedFile] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, String | Rack::Test::UploadedFile] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, Array[Hash[String, Rack::Test::UploadedFile | String]] | Array[String]] params, ?bool _first, ?bool multipart) -> bool
+                     | (Hash[String, Array[Hash[String, Array[String] | String]]] params, ?bool _first, ?bool multipart) -> String
+
+  private def normalize_multipart_params: (Hash[String, Array[Rack::Test::UploadedFile]] params, ?bool first) -> Hash[String, Array[Rack::Test::UploadedFile]]
+                                        | (Hash[String, String] params, ?bool first) -> Hash[String, String]
+                                        | (Hash[String, Hash[String, String]] params, ?bool first) -> Hash[String, String]
+                                        | (Hash[String, Hash[String, Hash[String, String]] | Rack::Test::UploadedFile] params, ?bool first) -> Hash[String, Rack::Test::UploadedFile | String]
+                                        | (Hash[String, Hash[String, String] | Rack::Test::UploadedFile] params, ?bool first) -> Hash[String, Rack::Test::UploadedFile | String]
+                                        | (Hash[String, Rack::Test::UploadedFile | String] params, ?bool first) -> Hash[String, Rack::Test::UploadedFile | String]
+                                        | (Hash[String, Rack::Test::UploadedFile] params, ?bool first) -> Hash[String, Rack::Test::UploadedFile]
+                                        | (Hash[String, Array[String] | Rack::Test::UploadedFile] params, ?bool first) -> Hash[String, Array[String] | Rack::Test::UploadedFile]
+                                        | (Hash[String, Array[Rack::Test::UploadedFile] | String] params, ?bool first) -> Hash[String, Array[Rack::Test::UploadedFile] | String]
+                                        | (Hash[String, String | Rack::Test::UploadedFile] params, ?bool first) -> Hash[String, String | Rack::Test::UploadedFile]
+                                        | (Hash[String, Array[Hash[String, String | Rack::Test::UploadedFile]] | Array[String]] params, ?bool first) -> Hash[String, Array[Hash[String, String | Rack::Test::UploadedFile]] | Array[String]]
+                                        | (Hash[String, Array[Rack::Test::UploadedFile | String]] params, ?bool first) -> Hash[String, Array[Rack::Test::UploadedFile | String]]
+                                        | (Hash[String, Hash[String, String] | String | Rack::Test::UploadedFile] params, ?bool first) -> Hash[String, String | Rack::Test::UploadedFile]
+                                        | (Hash[String, untyped] params, ?bool first) -> Hash[String, untyped]
+                                        | (Hash[String, Array[Hash[String, String]] | String] params, ?bool first) -> Hash[String, Array[Hash[String, String]] | String]
+                                        | (Hash[String, Array[Hash[String, String] | Hash[String, Array[Hash[String, String]] | String]]] params, ?bool first) -> Hash[String, Array[Hash[String, String] | Hash[String, Array[Hash[String, String]] | String]]]
+                                        | (Hash[String, Hash[String, Array[Hash[String, String] | Hash[String, Array[Hash[String, String]] | String]]] | Rack::Test::UploadedFile] params, ?bool first) -> Hash[String, Array[Hash[String, String] | Hash[String, Array[Hash[String, String]] | String]] | Rack::Test::UploadedFile]
+                                        | (Hash[String, Array[String] | String] params, ?bool first) -> Hash[String, Array[String] | String]
+                                        | (Hash[String, Array[Hash[String, String | Rack::Test::UploadedFile] | Hash[String, Array[String] | String]]] params, ?bool first) -> Hash[String, Array[Hash[String, String | Rack::Test::UploadedFile] | Hash[String, Array[String] | String]]]
+                                        | (Hash[String, Array[Hash[String, String]] | Rack::Test::UploadedFile] params, ?bool first) -> Hash[String, Array[Hash[String, String]] | Rack::Test::UploadedFile]
+                                        | (Hash[String, Array[Hash[String, Rack::Test::UploadedFile | String]] | Array[String]] params, ?bool first) -> Hash[String, Array[Hash[String, Rack::Test::UploadedFile | String]] | Array[String]]
+                                        | (Hash[String, Array[Hash[String, Array[String] | String]]] params, ?bool first) -> Hash[String, Array[Hash[String, Array[String] | String]]]
+
+  private def _build_parts: (String buffer, Hash[String, Array[Rack::Test::UploadedFile]] parameters) -> File
+                          | (String buffer, Hash[String, String] parameters) -> Array[Array[String]]
+                          | (String buffer, Hash[String, Rack::Test::UploadedFile | String] parameters) -> File
+                          | (String buffer, Hash[String, Rack::Test::UploadedFile] parameters) -> File
+                          | (String buffer, Hash[String, Array[String] | Rack::Test::UploadedFile] parameters) -> File
+                          | (String buffer, Hash[String, Array[Rack::Test::UploadedFile] | String] parameters) -> File
+                          | (String buffer, Hash[String, String | Rack::Test::UploadedFile] parameters) -> File
+                          | (String buffer, Hash[String, Array[Hash[String, String | Rack::Test::UploadedFile]] | Array[String]] parameters) -> singleton(Object)
+                          | (String buffer, Hash[String, Array[Rack::Test::UploadedFile | String]] parameters) -> File
+                          | (String buffer, Hash[String, untyped] parameters) -> bool
+                          | (String buffer, Hash[String, Array[Hash[String, String] | Hash[String, Array[Hash[String, String]] | String]] | Rack::Test::UploadedFile] parameters) -> File
+                          | (String buffer, Hash[String, Array[Hash[String, String]] | String] parameters) -> Array[Array[String] | Array[Hash[String, String]]]
+                          | (String buffer, Hash[String, Array[Hash[String, String | Rack::Test::UploadedFile] | Hash[String, Array[String] | String]]] parameters) -> singleton(Object)
+                          | (String buffer, Hash[String, Array[String] | String] parameters) -> Array[Array[String]]
+                          | (String buffer, Hash[String, Array[Hash[String, String]] | Rack::Test::UploadedFile] parameters) -> File
+                          | (String buffer, Hash[String, Array[Hash[String, Rack::Test::UploadedFile | String]] | Array[String]] parameters) -> singleton(Object)
+                          | (String buffer, Hash[String, Array[Hash[String, Array[String] | String]]] parameters) -> Array[Array[Hash[String, Array[String] | String]]]
+
+  private def build_parts: (String buffer, Hash[String, Array[Rack::Test::UploadedFile]] parameters) -> singleton(Object)
+                         | (String buffer, Hash[String, String] parameters) -> String
+                         | (String buffer, Hash[String, Rack::Test::UploadedFile | String] parameters) -> singleton(Object)
+                         | (String buffer, Hash[String, Rack::Test::UploadedFile] parameters) -> singleton(Object)
+                         | (String buffer, Hash[String, Array[String] | Rack::Test::UploadedFile] parameters) -> singleton(Object)
+                         | (String buffer, Hash[String, Array[Rack::Test::UploadedFile] | String] parameters) -> singleton(Object)
+                         | (String buffer, Hash[String, Array[Hash[String, String | Rack::Test::UploadedFile]] | Array[String]] parameters) -> bool
+                         | (String buffer, Hash[String, Array[Rack::Test::UploadedFile | String]] parameters) -> singleton(Object)
+                         | (String buffer, Hash[String, String | Rack::Test::UploadedFile] parameters) -> singleton(Object)
+                         | (String buffer, Hash[String, untyped] parameters) -> bool
+                         | (String buffer, Hash[String, Array[Hash[String, String] | Hash[String, Array[Hash[String, String]] | String]] | Rack::Test::UploadedFile] parameters) -> singleton(Object)
+                         | (String buffer, Hash[String, Array[Hash[String, String | Rack::Test::UploadedFile] | Hash[String, Array[String] | String]]] parameters) -> bool
+                         | (String buffer, Hash[String, Array[Hash[String, String]] | Rack::Test::UploadedFile] parameters) -> singleton(Object)
+                         | (String buffer, Hash[String, Array[Hash[String, Rack::Test::UploadedFile | String]] | Array[String]] parameters) -> bool
+                         | (String buffer, Hash[String, Array[Hash[String, Array[String] | String]]] parameters) -> String
+
+  private def build_file_part: (String buffer, String parameter_name, Rack::Test::UploadedFile uploaded_file) -> String
+                             | (String buffer, String parameter_name, untyped uploaded_file) -> String
+
+  private def build_primitive_part: (String buffer, String parameter_name, String value) -> String
+end

@@ -1,0 +1,8 @@
+class Rack::Test::InputRewinder
+  private def initialize: (Rack::Lint app) -> void
+  def call: (Hash[String, StringIO | String | bool] env) -> Integer
+          | (Hash[String, Hash[Symbol, Symbol] | StringIO | String | bool] env) -> Integer
+          | (Hash[String, Hash[Symbol, String] | StringIO | String | bool] env) -> Integer
+          | (Hash[String, Hash[untyped, untyped] | StringIO | String | bool] env) -> Integer
+          | (Hash[String, Hash[String, String] | StringIO | String | bool] env) -> Integer
+end

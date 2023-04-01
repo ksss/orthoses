@@ -1,0 +1,18 @@
+class Rack::Test::UploadedFile
+  attr_reader tempfile: Tempfile?
+  attr_reader original_filename: String
+  attr_accessor content_type: String
+  private def initialize_from_file_path: (String path) -> singleton(File)
+  private def initialize: (String content, ?String content_type, ?bool binary, ?original_filename: nil) -> void
+                        | (StringIO content, ?String content_type, ?bool binary, ?original_filename: String) -> void
+                        | (String content, ?String content_type, ?bool binary, ?original_filename: String) -> void
+                        | (StringIO content, ?String content_type, ?bool binary, ?original_filename: nil) -> void
+  def self.finalize: (Tempfile file) -> Proc
+  private def respond_to_missing?: (Symbol method_name, ?bool include_private) -> Tempfile?
+  def method_missing: (Symbol method_name, *Array[untyped] args) ?{ (*untyped) -> untyped } -> Tempfile
+                    | (Symbol method_name, *Array[Encoding] args) ?{ (*untyped) -> untyped } -> Tempfile
+  def append_to: (String buffer) -> Tempfile
+  private def initialize_from_stringio: (StringIO stringio) -> StringIO
+  def path: () -> Tempfile
+  def self.actually_finalize: (Tempfile file) -> nil
+end
