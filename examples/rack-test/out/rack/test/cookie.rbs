@@ -1,0 +1,28 @@
+class Rack::Test::Cookie
+  attr_reader name: String
+  attr_reader value: String
+  attr_reader raw: String
+  private def initialize: (String raw, ?URI::Generic uri, ?String default_host) -> void
+                        | (String raw, ?nil uri, ?String default_host) -> void
+                        | (String raw, ?URI::HTTPS uri, ?String default_host) -> void
+                        | (String raw, ?URI::HTTP uri, ?String default_host) -> void
+  def domain: () -> String
+  def secure?: () -> bool
+  def valid?: (URI::Generic uri) -> (bool | URI::RFC3986_Parser)
+            | (URI::HTTPS uri) -> bool
+            | (nil uri) -> nil
+            | (URI::HTTP uri) -> bool
+  private def default_uri: () -> Array[String?]
+  def http_only?: () -> bool
+  def empty?: () -> bool
+  def to_h: () -> Hash[String, String | bool]
+  def expires: () -> Time?
+  def expired?: () -> Integer?
+  def matches?: (URI::HTTPS uri) -> (Array[Integer] | bool)
+              | (URI::Generic uri) -> (Array[Integer] | bool)
+              | (URI::HTTP uri) -> (Array[Integer] | bool)
+  def path: () -> String
+  def replaces?: (Rack::Test::Cookie other) -> String
+  def <=>: (Rack::Test::Cookie other) -> String
+  alias to_hash to_h
+end

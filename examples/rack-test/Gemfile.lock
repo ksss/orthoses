@@ -1,8 +1,8 @@
 PATH
   remote: ../..
   specs:
-    orthoses (1.4.0)
-      rbs (~> 2.0)
+    orthoses (1.6.0)
+      rbs (~> 3.0)
 
 GEM
   remote: https://rubygems.org/
@@ -13,7 +13,7 @@ GEM
       minitest (> 5)
     rack (3.0.2)
     rake (13.0.6)
-    rbs (2.8.1)
+    rbs (3.0.4)
 
 PLATFORMS
   arm64-darwin-21

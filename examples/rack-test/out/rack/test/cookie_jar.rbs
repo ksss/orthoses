@@ -1,0 +1,28 @@
+class Rack::Test::CookieJar
+  private def initialize: (?Array[untyped] cookies, ?String default_host) -> void
+  private def each_cookie_for: (URI::Generic uri) -> (Array[untyped] | String | bool)
+                             | (URI::HTTP uri) -> (Array[untyped] | String | bool)
+                             | (nil uri) -> String
+                             | (URI::HTTPS uri) -> (Array[untyped] | String)
+  def for: (URI::Generic uri) -> (Array[Rack::Test::Cookie] | String | Time)
+         | (URI::HTTP uri) -> (Array[Rack::Test::Cookie] | String | Time)
+         | (nil uri) -> String
+         | (URI::HTTPS uri) -> (Array[Rack::Test::Cookie] | String)
+  def merge: (nil raw_cookies, ?URI::Generic uri) -> nil
+           | (String raw_cookies, ?URI::Generic uri) -> Rack::QueryParser::Params
+           | (nil raw_cookies, ?URI::HTTP uri) -> nil
+           | (String raw_cookies, ?nil uri) -> Array[nil]
+           | (nil raw_cookies, ?URI::HTTPS uri) -> nil
+           | (Array[String] raw_cookies, ?URI::Generic uri) -> Rack::QueryParser::Params
+           | (String raw_cookies, ?URI::HTTPS uri) -> Rack::QueryParser::Params
+           | (String raw_cookies, ?URI::HTTP uri) -> Rack::QueryParser::Params
+           | (Array[String] raw_cookies, ?nil uri) -> Array[nil]
+  def []: (String name) -> String?
+        | (Symbol name) -> String
+  private def initialize_copy: (Rack::Test::CookieJar other) -> Array[untyped]
+  def <<: (Rack::Test::Cookie new_cookie) -> (Array[Rack::Test::Cookie] | String)
+  def []=: (String name, String value) -> String
+  def to_hash: () -> (Hash[untyped, untyped] | String)
+  def get_cookie: (String name) -> String?
+  def delete: (String name) -> String
+end

@@ -1,0 +1,186 @@
+class Rack::Test::Session
+  attr_accessor cookie_jar: Rack::Test::CookieJar
+  def clear_cookies: () -> Rack::Test::CookieJar
+  private def initialize: (Rack::Test::InputRewinder app, ?String default_host) -> void
+                        | (Proc app, ?String default_host) -> void
+  def self.new: (Rack::Test::InputRewinder app, ?String default_host) -> Rack::Test::Session
+              | (Proc app, ?String default_host) -> Rack::Test::Session
+              | (Rack::Test::Session app, ?String default_host) -> Rack::Test::Session
+  private def parse_uri: (String path, Hash[untyped, untyped] env) -> Array[String?]
+                       | (String path, Hash[String, String] env) -> Array[String?]
+                       | (String path, Hash[Symbol, bool] env) -> Array[String?]
+                       | (String path, Hash[Symbol, Hash[String, String]] env) -> Array[String?]
+                       | (String path, Hash[Symbol, Hash[untyped, untyped]] env) -> Array[String?]
+                       | (String path, Hash[Symbol, String] env) -> Array[String?]
+                       | (String path, Hash[Symbol, Hash[String, String] | Symbol] env) -> Array[String?]
+                       | (String path, Hash[Symbol, Hash[Symbol, Hash[Symbol, String]]] env) -> Array[String?]
+                       | (String path, Hash[Symbol, Symbol] env) -> Array[String?]
+                       | (String path, Hash[Symbol, Hash[Symbol, Hash[Symbol, String]] | Symbol] env) -> Array[String?]
+                       | (String path, Hash[Symbol, Symbol | String] env) -> Array[String?]
+                       | (String path, Hash[Symbol | String, Hash[String, String] | Symbol | String] env) -> Array[String?]
+                       | (String path, Hash[Symbol, Hash[String, String] | Symbol | bool] env) -> Array[String?]
+                       | (String path, Hash[Symbol, Hash[Symbol, Integer]] env) -> Array[String?]
+                       | (String path, Hash[String, Hash[Symbol, Symbol]] env) -> Array[String?]
+                       | (String path, Hash[String, Hash[untyped, untyped] | String] env) -> Array[String?]
+                       | (String path, Hash[String, Hash[String, String]] env) -> Array[String?]
+  def request: (String uri, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> String?
+             | (String uri, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> nil
+             | (String uri, ?Hash[Symbol, Hash[String, String]] env) ?{ (*untyped) -> untyped } -> nil
+             | (String uri, ?Hash[Symbol, Hash[untyped, untyped]] env) ?{ (*untyped) -> untyped } -> nil
+             | (String uri, ?Hash[Symbol, String] env) ?{ (*untyped) -> untyped } -> nil
+             | (String uri, ?Hash[Symbol, Hash[String, String] | Symbol] env) ?{ (*untyped) -> untyped } -> nil
+             | (String uri, ?Hash[Symbol, Hash[Symbol, Hash[Symbol, String]]] env) ?{ (*untyped) -> untyped } -> nil
+             | (String uri, ?Hash[Symbol, Symbol] env) ?{ (*untyped) -> untyped } -> nil
+             | (String uri, ?Hash[Symbol, Hash[Symbol, Hash[Symbol, String]] | Symbol] env) ?{ (*untyped) -> untyped } -> nil
+             | (String uri, ?Hash[Symbol, Symbol | String] env) ?{ (*untyped) -> untyped } -> nil
+             | (String uri, ?Hash[Symbol | String, Hash[String, String] | Symbol | String] env) ?{ (*untyped) -> untyped } -> nil
+             | (String uri, ?Hash[Symbol, Hash[String, String] | Symbol | bool] env) ?{ (*untyped) -> untyped } -> nil
+             | (String uri, ?Hash[Symbol, Hash[Symbol, Integer]] env) ?{ (*untyped) -> untyped } -> nil
+             | (String uri, ?Hash[Symbol, bool] env) ?{ (*untyped) -> untyped } -> nil
+             | (String uri, ?Hash[String, Hash[Symbol, Symbol]] env) ?{ (*untyped) -> untyped } -> nil
+  private def env_for: (URI::Generic uri, Hash[untyped, untyped] env) -> (singleton(URI::Generic) | String)
+                     | (URI::Generic uri, Hash[Symbol, Hash[untyped, untyped] | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, String?] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[String | Symbol, Hash[untyped, untyped] | String] env) -> singleton(URI::Generic)
+                     | (URI::HTTP uri, Hash[Symbol, Hash[untyped, untyped] | String] env) -> singleton(URI::HTTP)
+                     | (URI::Generic uri, Hash[Symbol, Hash[untyped, untyped] | bool | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, Hash[Symbol, String] | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, Hash[String, String] | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, Hash[String, Array[Rack::Test::UploadedFile]] | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[String, String] env) -> (singleton(URI::Generic) | String)
+                     | (URI::Generic uri, Hash[Symbol, Hash[String, String]] env) -> singleton(URI::Generic)
+                     | (URI::HTTPS uri, Hash[untyped, untyped] env) -> singleton(URI::HTTPS)
+                     | (URI::Generic uri, Hash[Symbol, Hash[untyped, untyped]] env) -> singleton(URI::Generic)
+                     | (URI::HTTP uri, Hash[untyped, untyped] env) -> singleton(URI::HTTP)
+                     | (URI::Generic uri, Hash[Symbol, Hash[String, String] | Symbol] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, Hash[Symbol, Hash[Symbol, String]]] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, Symbol] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, Hash[Symbol, Hash[Symbol, String]] | Symbol] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, Symbol | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol | String, Hash[String, String] | Symbol | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, Hash[String, String] | Symbol | bool] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, Hash[Symbol, Integer]] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, bool] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, Hash[String, Hash[String, Hash[String, String]] | Rack::Test::UploadedFile] | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, Hash[String, Hash[String, String] | Rack::Test::UploadedFile] | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, Hash[String, Rack::Test::UploadedFile | String] | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, Hash[String, Rack::Test::UploadedFile] | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[String | Symbol, Hash[String, Rack::Test::UploadedFile] | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[Symbol, Hash[String, Array[String] | Rack::Test::UploadedFile] | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[String, Hash[Symbol, Symbol]] env) -> singleton(URI::Generic)
+                     | (URI::HTTP uri, Hash[String | Symbol, Hash[untyped, untyped] | String] env) -> singleton(URI::HTTP)
+                     | (URI::HTTPS uri, Hash[String | Symbol, Hash[untyped, untyped] | String] env) -> singleton(URI::HTTPS)
+                     | (URI::Generic uri, Hash[Symbol, Hash[String, Hash[String, String]] | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[String | Symbol, Hash[String, String] | String] env) -> singleton(URI::Generic)
+                     | (URI::Generic uri, Hash[String | Symbol, String?] env) -> singleton(URI::Generic)
+                     | (URI::HTTPS uri, Hash[Symbol, Hash[String, String] | String] env) -> singleton(URI::HTTPS)
+                     | (URI::HTTPS uri, Hash[Symbol, Hash[untyped, untyped] | String] env) -> singleton(URI::HTTPS)
+                     | (URI::HTTP uri, Hash[Symbol, Hash[String, String] | String] env) -> singleton(URI::HTTP)
+  private def process_request: (URI::Generic uri, Hash[String, StringIO | String | bool] env) -> Rack::Test::CookieJar
+                             | (URI::HTTP uri, Hash[String, StringIO | String | bool] env) -> Rack::Test::CookieJar
+                             | (URI::HTTPS uri, Hash[String, StringIO | String | bool] env) -> Rack::Test::CookieJar
+                             | (URI::Generic uri, Hash[String, Hash[Symbol, Symbol] | StringIO | String | bool] env) -> Rack::Test::CookieJar
+                             | (URI::Generic uri, Hash[String, Hash[Symbol, String] | StringIO | String | bool] env) -> Rack::Test::CookieJar
+                             | (URI::HTTP uri, Hash[String, Hash[untyped, untyped] | StringIO | String | bool] env) -> Rack::Test::CookieJar
+                             | (URI::HTTPS uri, Hash[String, Hash[untyped, untyped] | StringIO | String | bool] env) -> Rack::Test::CookieJar
+                             | (URI::Generic uri, Hash[String, Hash[String, String] | StringIO | String | bool] env) -> Rack::Test::CookieJar
+  private def close_body: (Rack::Lint::Wrapper body) -> nil
+                        | (untyped body) -> nil
+                        | (Array[String] body) -> nil
+                        | (Array[untyped] body) -> nil
+  def last_response: () -> Rack::MockResponse
+  def last_request: () -> Rack::Request
+  def after_request: () ?{ (*untyped) -> untyped } -> Array[Proc]
+  def custom_request: (String verb, String uri, ?Hash[untyped, untyped] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> String?
+                    | (String verb, String uri, ?nil params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?Hash[untyped, untyped] params, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?Hash[untyped, untyped] params, ?Hash[Symbol, bool] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?String params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?Hash[Symbol, String] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?Hash[String, String] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> String?
+                    | (String verb, String uri, ?Hash[String, Array[Rack::Test::UploadedFile]] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?Hash[String, Hash[String, Hash[String, String]] | Rack::Test::UploadedFile] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?Hash[String, Hash[String, String] | Rack::Test::UploadedFile] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?Hash[String, Rack::Test::UploadedFile | String] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?Hash[String, Rack::Test::UploadedFile] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?Hash[String, Rack::Test::UploadedFile] params, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?Hash[String, Array[String] | Rack::Test::UploadedFile] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?Hash[untyped, untyped] params, ?Hash[String, Hash[untyped, untyped] | String] env) ?{ (*untyped) -> untyped } -> String
+                    | (String verb, String uri, ?Hash[String, String] params, ?Hash[String, Hash[untyped, untyped] | String] env) ?{ (*untyped) -> untyped } -> String
+                    | (String verb, String uri, ?Hash[untyped, untyped] params, ?Hash[String, Hash[String, String]] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?Hash[String, Hash[String, String]] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?Hash[String, String] params, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> nil
+                    | (String verb, String uri, ?nil params, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> nil
+  def get: (String uri, ?Hash[untyped, untyped] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+         | (String uri, ?Hash[String, String] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+         | (String uri, ?Hash[untyped, untyped] params, ?Hash[String, Hash[String, String]] env) ?{ (*untyped) -> untyped } -> Array[nil]
+         | (String uri, ?nil params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+         | (String uri, ?Hash[untyped, untyped] params, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> Array[nil]
+         | (String uri, ?Hash[Symbol, String] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+         | (String uri, ?Hash[untyped, untyped] params, ?Hash[Symbol, bool] env) ?{ (*untyped) -> untyped } -> Array[nil]
+         | (String uri, ?Hash[String, Hash[String, String]] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+         | (String uri, ?Hash[String, String] params, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> Array[nil]
+         | (String uri, ?nil params, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> Array[nil]
+  private def append_query_params: (Array[nil] query_array, Hash[untyped, untyped] query_params) -> Array[String?]
+                                 | (Array[String] query_array, Hash[untyped, untyped] query_params) -> Array[String]
+                                 | (Array[nil] query_array, Hash[String, String] query_params) -> String
+                                 | (Array[String] query_array, String query_params) -> Hash[untyped, untyped]
+                                 | (Array[String?] query_array, Hash[String, String] query_params) -> String
+                                 | (Array[String] query_array, Hash[Symbol, Hash[Symbol, String]] query_params) -> String
+                                 | (Array[String] query_array, Hash[Symbol, Integer] query_params) -> String
+                                 | (Array[nil] query_array, Hash[Symbol, String] query_params) -> String
+                                 | (Array[nil] query_array, Hash[String, Hash[String, String]] query_params) -> String
+  def restore_state: () -> nil
+  def options: (String uri, ?Hash[untyped, untyped] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+             | (String uri, ?nil params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+             | (String uri, ?Hash[untyped, untyped] params, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> Array[nil]
+             | (String uri, ?Hash[untyped, untyped] params, ?Hash[Symbol, bool] env) ?{ (*untyped) -> untyped } -> Array[nil]
+  def delete: (String uri, ?Hash[untyped, untyped] params, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> Array[nil]
+            | (String uri, ?Hash[untyped, untyped] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+            | (String uri, ?String params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+            | (String uri, ?Hash[untyped, untyped] params, ?Hash[Symbol, bool] env) ?{ (*untyped) -> untyped } -> Array[nil]
+            | (String uri, ?nil params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+            | (String uri, ?Hash[Symbol, String] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+  def patch: (String uri, ?String params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+           | (String uri, ?Hash[untyped, untyped] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+           | (String uri, ?Hash[untyped, untyped] params, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> Array[nil]
+           | (String uri, ?nil params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+           | (String uri, ?Hash[untyped, untyped] params, ?Hash[Symbol, bool] env) ?{ (*untyped) -> untyped } -> Array[nil]
+  def put: (String uri, ?Hash[untyped, untyped] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+         | (String uri, ?Hash[untyped, untyped] params, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> Array[nil]
+         | (String uri, ?nil params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+         | (String uri, ?Hash[untyped, untyped] params, ?Hash[Symbol, bool] env) ?{ (*untyped) -> untyped } -> Array[nil]
+         | (String uri, ?String params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+  def post: (String uri, ?Hash[String, String] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?Hash[untyped, untyped] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?nil params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?Hash[Symbol, String] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?Hash[untyped, untyped] params, ?Hash[Symbol, bool] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?Hash[untyped, untyped] params, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?String params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?Hash[String, Array[Rack::Test::UploadedFile]] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?Hash[String, Hash[String, Hash[String, String]] | Rack::Test::UploadedFile] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?Hash[String, Hash[String, String] | Rack::Test::UploadedFile] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?Hash[String, Rack::Test::UploadedFile | String] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?Hash[String, Rack::Test::UploadedFile] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?Hash[String, Rack::Test::UploadedFile] params, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?Hash[String, Array[String] | Rack::Test::UploadedFile] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+  private def multipart_content_type: (Hash[String | Symbol, bool | String] env) -> String
+                                    | (Hash[String | Symbol, bool | String | Symbol] env) -> String
+  def env: (String name, Hash[Symbol, String] value) -> Hash[Symbol, String]
+         | (String name, Hash[Symbol, Symbol] value) -> Hash[Symbol, Symbol]
+         | (String name, nil value) -> (Hash[Symbol, String] | String)
+         | (String name, String value) -> String
+  def follow_redirect!: () -> bool?
+  def header: (String name, String value) -> String
+            | (String name, nil value) -> String
+  def head: (String uri, ?Hash[untyped, untyped] params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?nil params, ?Hash[untyped, untyped] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?Hash[untyped, untyped] params, ?Hash[String, String] env) ?{ (*untyped) -> untyped } -> Array[nil]
+          | (String uri, ?Hash[untyped, untyped] params, ?Hash[Symbol, bool] env) ?{ (*untyped) -> untyped } -> Array[nil]
+  def basic_authorize: (String username, String password) -> String
+  def set_cookie: (String cookie, ?nil uri) -> Rack::Test::CookieJar
+                | (String cookie, ?URI::Generic uri) -> Rack::Test::CookieJar
+                | (Array[String] cookie, ?nil uri) -> Rack::Test::CookieJar
+end
