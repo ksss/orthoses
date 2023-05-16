@@ -16,9 +16,15 @@ module Orthoses
         end
       end
 
-      def initialize(constant_filter: nil, mixin_filter: nil, attribute_filter: nil)
+      def initialize(
+        method_definition_filter: nil,
+        constant_filter: nil,
+        mixin_filter: nil,
+        attribute_filter: nil
+      )
         @load_env = RBS::Environment.new
         @known_env = Utils.rbs_environment(cache: false)
+        @method_definition_filter = method_definition_filter
         @constant_filter = constant_filter
         @mixin_filter = mixin_filter
         @attribute_filter = attribute_filter
@@ -94,6 +100,7 @@ module Orthoses
             when RBS::AST::Declarations::Constant
               next unless @constant_filter.nil? || @constant_filter.call(member)
             when RBS::AST::Members::MethodDefinition
+              next unless @method_definition_filter.nil? || @method_definition_filter.call(member)
               if last_visibility == :private && member.kind != :singleton_instance
                 member.instance_variable_set(:@visibility, :private)
               end

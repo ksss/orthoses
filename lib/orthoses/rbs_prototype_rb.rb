@@ -3,9 +3,10 @@ module Orthoses
   #     use Orthoses::RBSPrototypeRB,
   #       paths: Dir.glob("lib/**/*.rb")
   class RBSPrototypeRB
-    def initialize(loader, paths:, constant_filter: nil, mixin_filter: nil, attribute_filter: nil)
+    def initialize(loader, paths:, method_definition_filter: nil, constant_filter: nil, mixin_filter: nil, attribute_filter: nil)
       @loader = loader
       @paths = paths
+      @method_definition_filter = method_definition_filter
       @constant_filter = constant_filter
       @mixin_filter = mixin_filter
       @attribute_filter = attribute_filter
@@ -23,6 +24,7 @@ module Orthoses
           end
         end
         env = Orthoses::Content::Environment.new(
+          method_definition_filter: @method_definition_filter,
           constant_filter: @constant_filter,
           mixin_filter: @mixin_filter,
           attribute_filter: @attribute_filter,
