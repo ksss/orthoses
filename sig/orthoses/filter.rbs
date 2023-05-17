@@ -1,5 +1,10 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
+# Filter current store.
+# filter stored key and value if proc return true
+#   use Orthoses::Filter do |name, content|
+#     Orthoses.rbs_defined_class?(name)
+#   end
 class Orthoses::Filter
   def initialize: (Orthoses::_Call loader) { (String, Orthoses::Content) -> boolish } -> void
   def call: () -> Orthoses::store

@@ -1,5 +1,8 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
+# Call `rbs prototype runtime` and add to store
+#     use Orthoses::RBSPrototypeRuntime,
+#       patterns: ['Foo::*']
 class Orthoses::RBSPrototypeRuntime
   def initialize: (untyped loader, patterns: untyped) -> void
   def call: () -> untyped

@@ -1,5 +1,7 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
+# UniqContentBody is an internal middleware
+# It's using on orthoses/outputable.rb
 class Orthoses::Outputable::UniqContentBody
   def initialize: (untyped loader) -> void
   def call: () -> untyped

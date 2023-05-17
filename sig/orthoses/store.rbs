@@ -1,5 +1,7 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
+# Internal middleware for return store object
+# Builder set this middleware on last stack by default
 class Orthoses::Store
   def initialize: (untyped loader) -> void
   def call: () -> untyped

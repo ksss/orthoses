@@ -1,5 +1,6 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
+# internal
 class Orthoses::Utils::TypeList
   def initialize: (untyped types) -> void
   def inject: () -> untyped

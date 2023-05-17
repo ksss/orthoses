@@ -2,11 +2,19 @@
 sources:
 - type: git
   name: ruby/gem_rbs_collection
-  revision: e2b79a0eb3acdaf36c53ec1af631387afb452d94
+  revision: d0d7aeed98fa74427b30b336fc402ea86d526f35
   remote: https://github.com/ruby/gem_rbs_collection.git
   repo_dir: gems
 path: ".gem_rbs_collection"
 gems:
+- name: abbrev
+  version: '0'
+  source:
+    type: stdlib
+- name: io-console
+  version: '0'
+  source:
+    type: stdlib
 - name: json
   version: '0'
   source:
@@ -28,7 +36,7 @@ gems:
   source:
     type: stdlib
 - name: rbs
-  version: 3.0.4
+  version: 3.1.0
   source:
     type: rubygems
 - name: rdoc

@@ -1,5 +1,8 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
+# use Orthoses::Tap do |store|
+#   store["Foo::Bar"] << "def baz: () -> void"
+# end
 class Orthoses::Tap
   def initialize: (Orthoses::_Call loader) -> void
   def call: () -> Orthoses::store
