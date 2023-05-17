@@ -6,7 +6,7 @@ require "rgot/cli"
 task :test do
   require 'orthoses'
   Orthoses.logger.level = :error
-  Rgot::Cli.new(%w[-v lib integration_test]).run
+  exit Rgot::Cli.new(%w[-v lib integration_test]).run
 end
 
 desc "generate self signature to `sig` dir"
