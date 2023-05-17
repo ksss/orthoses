@@ -16,8 +16,8 @@ module Orthoses
     def call
       @loader.call.tap do |store|
         store.filter! do |name, content|
-          @block.call(name, content).tap do
-            Orthoses.logger.debug("Filter pass [#{name}]")
+          @block.call(name, content).tap do |bool|
+            Orthoses.logger.debug("[Filter] #{bool ? "Pass" : "Reject"} [#{name}]")
           end
         end
       end
