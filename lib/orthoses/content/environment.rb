@@ -40,7 +40,8 @@ module Orthoses
       def write_to(store:)
         each do |add_content|
           content = store[add_content.name]
-          content.header = add_content.header
+          content.header ||= add_content.header
+          content.comment ||= add_content.comment
           content.concat(add_content.body)
         end
       end
@@ -53,6 +54,7 @@ module Orthoses
         @load_env.class_decls.each do |type_name, m_entry|
           name = type_name.relative!.to_s
           content = Content.new(name: name)
+          content.comment = m_entry.primary.decl.comment&.string&.gsub(/^/, "# ")
           content.header = header_builder.build(entry: m_entry, name_hint: name)
           decls_to_lines(m_entry.decls.map(&:decl)).each do |line|
             content << line

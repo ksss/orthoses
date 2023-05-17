@@ -1,5 +1,13 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
+# TracePoint wrapper that allows setting hooks
+# even if the target is undefined
+#   LazyTracePoint.new(:call) do |tp|
+#     ...
+#   end.enable(target: 'Class#class_attribute') do
+#     require 'active_support/core_ext/class/attribute'
+#     ...
+#   end
 class Orthoses::LazyTracePoint < ::TracePoint
   def method_added: (untyped id) -> untyped
   def singleton_method_added: (untyped id) -> untyped

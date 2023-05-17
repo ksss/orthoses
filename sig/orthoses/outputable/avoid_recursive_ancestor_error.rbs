@@ -1,5 +1,7 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
+# AvoidRecursiveAncestorError is an internal middleware
+# It's using on orthoses/outputable.rb
 class Orthoses::Outputable::AvoidRecursiveAncestorError
   def initialize: (Orthoses::_Call loader) -> void
   def call: () -> Orthoses::store

@@ -1,5 +1,14 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
+# Middleware builder like the Rack
+#   Builder.new do
+#     use Orthoses::CreateFileByName
+#     use Orthoses::Constant
+#     use Orthoses::Mixin
+#     use Orthoses::Walk,
+#       root: "Foo"
+#     run ->() { require 'foo' }
+#   end
 class Orthoses::Builder
   def initialize: () ?{ () -> untyped } -> void
   def use: (untyped middleware, *untyped args, **untyped key) ?{ () -> untyped } -> untyped

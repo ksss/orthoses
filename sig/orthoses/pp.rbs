@@ -1,5 +1,7 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
+# Debug current stored values
+#   use Orthoses::PP
 class Orthoses::PP
   def initialize: (untyped loader) -> void
   def call: () -> untyped

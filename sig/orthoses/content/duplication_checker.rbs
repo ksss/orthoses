@@ -1,5 +1,6 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
+# Check and drop duplication method, const etc...
 class Orthoses::Content::DuplicationChecker
   def initialize: (untyped decl, ?env: untyped?) -> void
   def update_decl: () -> (nil | untyped)
