@@ -74,12 +74,14 @@ module Orthoses
     end
 
     def original_rbs
-      a = []
-      a << @comment if @comment
-      a << @header
-      a << "  #{@body.join("\n  ")}" if @body.length > 0
-      a << "end"
-      a.join("\n")
+      io = StringIO.new
+      io.puts @comment if @comment
+      io.puts @header
+      @body.each do |line|
+        io.puts "  #{line}"
+      end
+      io.puts "end"
+      io.string
     end
 
     private

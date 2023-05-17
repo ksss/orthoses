@@ -81,23 +81,14 @@ module TraceMethodTest
     expect = <<~RBS
       class TraceMethodTest::M
         private def initialize: (Integer a) -> void
-
         def a_ten: () -> Integer
-
         def b_ten: (Integer b) -> Integer
-
         private def priv: (bool bool) -> (Integer | Symbol)
-
         def call_priv: (bool c) -> (Integer | Symbol)
-
         def dele: (*Array[bool] a, **Hash[untyped, untyped]) -> Integer
-
         def if_raise: (bool a) -> String
-
         def self.singleton_method?: () -> bool
-
         alias c_ten a_ten
-
         alias self.alias_singleton_method? self.singleton_method?
       end
     RBS
