@@ -84,6 +84,44 @@ module Orthoses
       io.string
     end
 
+    def auto_header
+      env = Utils.rbs_environment
+      if entry = env.class_decls[TypeName(name).absolute!]
+        @header = Content::HeaderBuilder.new(env: env).build(entry: entry)
+        return
+      end
+
+      return unless @header.nil?
+
+      if interface?
+        self.header = "interface #{name}"
+        return
+      end
+
+      val = Object.const_get(name)
+
+      case val
+      when Class
+        superclass =
+          if val.superclass && val.superclass != Object
+            super_module_name = Utils.module_name(val.superclass)
+
+            if super_module_name && super_module_name != "Random::Base" # https://github.com/ruby/rbs/pull/977
+              " < ::#{super_module_name}#{temporary_type_params(super_module_name)}"
+            else
+              nil
+            end
+          else
+            nil
+          end
+        self.header = "class #{Utils.module_name(val)}#{type_params(name)}#{superclass}"
+      when Module
+        self.header = "module #{Utils.module_name(val)}#{type_params(name)}"
+      else
+        raise "#{val.inspect} is not class/module"
+      end
+    end
+
     private
 
     class ArrayIO
@@ -132,44 +170,6 @@ module Orthoses
     rescue RBS::ParsingError
       Orthoses.logger.error "```rbs\n#{original_rbs}```"
       raise
-    end
-
-    def auto_header
-      env = Utils.rbs_environment
-      if entry = env.class_decls[TypeName(name).absolute!]
-        @header = Content::HeaderBuilder.new(env: env).build(entry: entry)
-        return
-      end
-
-      return unless @header.nil?
-
-      if interface?
-        self.header = "interface #{name}"
-        return
-      end
-
-      val = Object.const_get(name)
-
-      case val
-      when Class
-        superclass =
-          if val.superclass && val.superclass != Object
-            super_module_name = Utils.module_name(val.superclass)
-
-            if super_module_name && super_module_name != "Random::Base" # https://github.com/ruby/rbs/pull/977
-              " < ::#{super_module_name}#{temporary_type_params(super_module_name)}"
-            else
-              nil
-            end
-          else
-            nil
-          end
-        self.header = "class #{Utils.module_name(val)}#{type_params(name)}#{superclass}"
-      when Module
-        self.header = "module #{Utils.module_name(val)}#{type_params(name)}"
-      else
-        raise "#{val.inspect} is not class/module"
-      end
     end
 
     def temporary_type_params(name)
