@@ -1,12 +1,23 @@
 module Orthoses
   # Call `rbs prototype rb` and add to store
   #     use Orthoses::RBSPrototypeRB,
-  #       paths: Dir.glob("lib/**/*.rb")
+  #       paths: Dir.glob("lib/**/*.rb"),
+  #       method_definition_filter: ->(member) { false }
+  #       alias_filter: ->(member) { false }
   class RBSPrototypeRB
-    def initialize(loader, paths:, method_definition_filter: nil, constant_filter: nil, mixin_filter: nil, attribute_filter: nil)
+    def initialize(
+      loader,
+      paths:,
+      method_definition_filter: nil,
+      alias_filter: nil,
+      constant_filter: nil,
+      mixin_filter: nil,
+      attribute_filter: nil
+    )
       @loader = loader
       @paths = paths
       @method_definition_filter = method_definition_filter
+      @alias_filter = alias_filter
       @constant_filter = constant_filter
       @mixin_filter = mixin_filter
       @attribute_filter = attribute_filter
@@ -25,6 +36,7 @@ module Orthoses
         end
         env = Orthoses::Content::Environment.new(
           method_definition_filter: @method_definition_filter,
+          alias_filter: @alias_filter,
           constant_filter: @constant_filter,
           mixin_filter: @mixin_filter,
           attribute_filter: @attribute_filter,
