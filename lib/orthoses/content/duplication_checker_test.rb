@@ -8,11 +8,15 @@ module DuplicationCheckerTest
 
         def foo: () -> void # remove
         attr_reader foo: untyped # remove
-        attr_accessor foo: untyped # remove
         alias foo to_s # alive
 
         attr_accessor bar: untyped # remove
+        def bar: () -> untyped # remove
+        def bar=: (untyped) -> untyped # remove
         attr_accessor bar: untyped # ok
+
+        def self.a: () -> untyped # remove
+        def self.a=: (untyped) -> untyped # remove
 
         attr_reader baz: untyped # ok
         attr_writer baz: untyped # ok
@@ -33,6 +37,7 @@ module DuplicationCheckerTest
       ::Foo::CONST1: 1
 
       class Foo
+        attr_accessor self.a: untyped # ok
         CONST3: 3
       end
     RBS
