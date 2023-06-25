@@ -2,7 +2,7 @@ module Orthoses
   # Call `rbs prototype rb` and add to store
   #     use Orthoses::RBSPrototypeRB,
   #       paths: Dir.glob("lib/**/*.rb"),
-  #       method_definition_filter: ->(member) { false }
+  #       method_definition_filter: ->(member) { false },
   #       alias_filter: ->(member) { false }
   class RBSPrototypeRB
     def initialize(
