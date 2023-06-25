@@ -2,7 +2,9 @@
 
 # Call `rbs prototype rb` and add to store
 #     use Orthoses::RBSPrototypeRB,
-#       paths: Dir.glob("lib/**/*.rb")
+#       paths: Dir.glob("lib/**/*.rb"),
+#       method_definition_filter: ->(member) { false },
+#       alias_filter: ->(member) { false }
 class Orthoses::RBSPrototypeRB
   def initialize: (Orthoses::_Call loader, paths: Array[_ToS], ?constant_filter: Orthoses::Content::Environment::constant_filter?, ?mixin_filter: Orthoses::Content::Environment::mixin_filter?, ?attribute_filter: Orthoses::Content::Environment::attribute_filter?) -> void
   def call: () -> Orthoses::store

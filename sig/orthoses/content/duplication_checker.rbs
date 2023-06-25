@@ -4,6 +4,8 @@
 class Orthoses::Content::DuplicationChecker
   def initialize: (untyped decl, ?env: untyped?) -> void
   def update_decl: () -> (nil | untyped)
+  private def uniq_members: () -> untyped
+  private def drop_set_method_definition: (untyped uniq_map) -> untyped
   private def drop_known_method_definition: (untyped uniq_map) -> untyped
   private def member_key: (untyped member) -> untyped
 end
