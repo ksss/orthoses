@@ -177,6 +177,11 @@ Sort signatures by class/module.
 
 Trace the argument and return value objects when the method is actually called and determine the type.
 
+## Orthoses::MissingName
+
+Completes undefined class/module names.
+If it is unknown whether it is a class or a module, it is defined as an empty module, and if it is a superclass, it is defined as an empty class.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
