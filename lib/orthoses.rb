@@ -17,6 +17,7 @@ module Orthoses
   autoload :Mixin, 'orthoses/mixin'
   autoload :LazyTracePoint, 'orthoses/lazy_trace_point'
   autoload :LoadRBS, 'orthoses/load_rbs'
+  autoload :MissingName, 'orthoses/missing_name'
   autoload :ObjectSpaceAll, 'orthoses/object_space_all'
   autoload :Outputable, 'orthoses/outputable'
   autoload :PathHelper, 'orthoses/path_helper'
