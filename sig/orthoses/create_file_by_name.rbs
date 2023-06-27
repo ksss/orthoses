@@ -1,7 +1,7 @@
 # THIS IS GENERATED CODE from `$ rake generate_self_sig`
 
 class Orthoses::CreateFileByName
-  def initialize: (Orthoses::_Call loader, base_dir: String, ?header: String?) -> void
+  def initialize: (Orthoses::_Call loader, base_dir: String, ?header: String?, ?depth: Integer?) -> void
   def call: () -> Orthoses::store
   @loader: Orthoses::_Call
 end
