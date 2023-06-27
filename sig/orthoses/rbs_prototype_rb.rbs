@@ -1,4 +1,4 @@
-# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+# THIS IS GENERATED CODE from `$ rake sig`
 
 # Call `rbs prototype rb` and add to store
 #     use Orthoses::RBSPrototypeRB,

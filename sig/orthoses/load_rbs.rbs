@@ -1,4 +1,4 @@
-# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+# THIS IS GENERATED CODE from `$ rake sig`
 
 class Orthoses::LoadRBS
   def initialize: (Orthoses::_Call loader, paths: paths) -> void
