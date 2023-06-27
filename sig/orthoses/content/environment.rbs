@@ -1,4 +1,4 @@
-# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+# THIS IS GENERATED CODE from `$ rake sig`
 
 class Orthoses::Content::Environment
   def self.load_from_paths: (untyped paths) -> untyped

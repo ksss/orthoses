@@ -1,4 +1,4 @@
-# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+# THIS IS GENERATED CODE from `$ rake sig`
 
 # Check and drop duplication method, const etc...
 class Orthoses::Content::DuplicationChecker

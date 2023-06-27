@@ -32,6 +32,7 @@ module Orthoses
         content.auto_header
         if content.header && content.header.include?("<")
           _, superclass = content.header.split(/\s*<\s*/, 2)
+          superclass.sub!(/\[.*/, "")
           missings.concat missing_names(store, superclass)
         end
       end

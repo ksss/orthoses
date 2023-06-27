@@ -1,4 +1,4 @@
-# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+# THIS IS GENERATED CODE from `$ rake sig`
 
 # use Orthoses::Tap do |store|
 #   store["Foo::Bar"] << "def baz: () -> void"

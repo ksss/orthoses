@@ -1,4 +1,4 @@
-# THIS IS GENERATED CODE from `$ rake generate_self_sig`
+# THIS IS GENERATED CODE from `$ rake sig`
 
 # Middleware builder like the Rack
 #   Builder.new do
