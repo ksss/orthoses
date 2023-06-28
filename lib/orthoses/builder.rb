@@ -13,7 +13,7 @@ module Orthoses
   class Builder
     def initialize(&block)
       @use = []
-      @run = nil
+      @runner = nil
       instance_eval(&block) if block
     end
 
@@ -37,7 +37,11 @@ module Orthoses
 
     def run(loader)
       use Store
-      @run = proc do
+      reset_runner(loader)
+    end
+
+    def reset_runner(loader)
+      @runner = proc do
         Orthoses.logger.info("[loader].call start")
         loader.call.tap do
           Orthoses.logger.info("[loader].call end")
@@ -46,7 +50,7 @@ module Orthoses
     end
 
     def to_loader
-      @use.reverse.inject(@run) { |current, next_proc| next_proc[current] }
+      @use.reverse.inject(@runner) { |current, next_proc| next_proc[current] }
     end
 
     def call
