@@ -29,12 +29,13 @@ For example, You can write script in Rakefile.
 require 'orthoses'
 
 namespace :rbs do
-  desc "build RBS to sig/out"
+  desc "build RBS to sig/orthoses"
   task :build do
     Orthoses::Builder.new do
       use Orthoses::CreateFileByName,
         depth: 1,
-        base_dir: Rails.root.join("sig/out"),
+        to: "sig/orthoses",
+        rmtree: true,
         header: "# !!! GENERATED CODE !!!"
       use Orthoses::Filter do |name, _content|
         path, _lineno = Object.const_source_location(name)
@@ -54,7 +55,7 @@ namespace :rbs do
 end
 ```
 
-Then, you can see the result files under `sig/out`.
+Then, you can see the result files under `sig/orthoses`.
 
 ## Utils
 

@@ -6,14 +6,23 @@ module Orthoses
   class CreateFileByName
     prepend Outputable
 
-    def initialize(loader, base_dir:, header: nil, if: nil, depth: nil, rmtree: false)
-      relative_path_from_pwd = Pathname(base_dir).expand_path.relative_path_from(Pathname.pwd).to_s
+    def initialize(loader, base_dir: nil, to: nil, header: nil, if: nil, depth: nil, rmtree: false)
+      unless base_dir.nil?
+        warn "[Orthoses::CreateFileByName] base_dir: option is deprecated. Please use to: option instead."
+      end
+
+      to = to || base_dir
+      unless to
+        raise ArgumentError, "should set to: option"
+      end
+
+      relative_path_from_pwd = Pathname(to).expand_path.relative_path_from(Pathname.pwd).to_s
       unless relative_path_from_pwd == "." || !relative_path_from_pwd.match?(%r{\A[/\.]})
-        raise ArgumentError, "base_dir=\"#{base_dir}\" should be under current dir=\"#{Pathname.pwd}\"."
+        raise ArgumentError, "to=\"#{to}\" should be under current dir=\"#{Pathname.pwd}\"."
       end
 
       @loader = loader
-      @base_dir = base_dir
+      @to = to
       @header = header
       @depth = depth
       @rmtree = rmtree
@@ -34,12 +43,12 @@ module Orthoses
       end
 
       if @rmtree
-        Orthoses.logger.debug("Remove dir #{@base_dir} since `rmtree: true`")
-        Pathname(@base_dir).rmtree rescue nil
+        Orthoses.logger.debug("Remove dir #{@to} since `rmtree: true`")
+        Pathname(@to).rmtree rescue nil
       end
 
       grouped.each do |group_name, group|
-        file_path = Pathname("#{@base_dir}/#{group_name.split('::').map(&:underscore).join('/')}.rbs")
+        file_path = Pathname("#{@to}/#{group_name.split('::').map(&:underscore).join('/')}.rbs")
         file_path.dirname.mkpath
         file_path.open('w+') do |out|
           if @header
