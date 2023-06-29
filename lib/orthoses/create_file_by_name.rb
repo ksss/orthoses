@@ -6,11 +6,17 @@ module Orthoses
   class CreateFileByName
     prepend Outputable
 
-    def initialize(loader, base_dir:, header: nil, if: nil, depth: nil)
+    def initialize(loader, base_dir:, header: nil, if: nil, depth: nil, rmtree: false)
+      relative_path_from_pwd = Pathname(base_dir).expand_path.relative_path_from(Pathname.pwd).to_s
+      unless relative_path_from_pwd == "." || !relative_path_from_pwd.match?(%r{\A[/\.]})
+        raise ArgumentError, "base_dir=\"#{base_dir}\" should be under current dir=\"#{Pathname.pwd}\"."
+      end
+
       @loader = loader
       @base_dir = base_dir
       @header = header
       @depth = depth
+      @rmtree = rmtree
       @if = binding.local_variable_get(:if)
     end
 
@@ -26,6 +32,12 @@ module Orthoses
         splitted = name.to_s.split('::')
         (@depth ? splitted[0, @depth] : splitted).join('::')
       end
+
+      if @rmtree
+        Orthoses.logger.debug("Remove dir #{@base_dir} since `rmtree: true`")
+        Pathname(@base_dir).rmtree rescue nil
+      end
+
       grouped.each do |group_name, group|
         file_path = Pathname("#{@base_dir}/#{group_name.split('::').map(&:underscore).join('/')}.rbs")
         file_path.dirname.mkpath
