@@ -16,7 +16,7 @@ task :sig do
   Orthoses.logger.level = :info
   Orthoses::Builder.new do
     use Orthoses::CreateFileByName,
-      base_dir: 'sig',
+      to: 'sig',
       header: "# THIS IS GENERATED CODE from `$ rake sig`"
     use Orthoses::Filter do |name, _|
       name.start_with?("Orthoses")

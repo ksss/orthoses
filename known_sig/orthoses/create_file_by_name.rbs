@@ -1,7 +1,7 @@
 module Orthoses
   class CreateFileByName
     @loader: Orthoses::_Call
-    def initialize: (Orthoses::_Call loader, base_dir: String, ?header: String?, ?depth: Integer?, ?rmtree: boolish) -> void
+    def initialize: (Orthoses::_Call loader, to: String, ?header: String?, ?depth: Integer?, ?rmtree: boolish) -> void
     def call: () -> Orthoses::store
   end
 end

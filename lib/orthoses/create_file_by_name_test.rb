@@ -36,7 +36,7 @@ module CreateFileByNameTest
           store["Object"] << "include OutputableTest"
         end
       },
-      base_dir: "tmp",
+      to: "tmp",
       header: "# header"
     ).call
 

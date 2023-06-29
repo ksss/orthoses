@@ -2,7 +2,7 @@ module ActiveSupportTest
   def test_active_support(t)
     Orthoses::Builder.new do
       use Orthoses::CreateFileByName,
-        base_dir: 'integration_test/tmp'
+        to: 'integration_test/tmp'
       use Orthoses::Filter do |name, content|
         name.start_with?("ActiveSupport") || name.start_with?("Integer")
       end

@@ -9,7 +9,7 @@ out.rmtree rescue nil
 Orthoses.logger.level = :warn
 Orthoses::Builder.new do
   use Orthoses::CreateFileByName,
-    base_dir: out.to_s
+    to: out.to_s
   # use Orthoses::Sort
   use Orthoses::Filter do |name, content|
     name.start_with?("Rack::Test")
