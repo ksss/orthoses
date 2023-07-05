@@ -42,7 +42,7 @@ module Orthoses
       def write_to(store:)
         each do |add_content|
           content = store[add_content.name]
-          content.header ||= add_content.header
+          content.header = add_content.header
           content.comment ||= add_content.comment
           content.concat(add_content.body)
         end
