@@ -4,6 +4,6 @@
 #     use Orthoses::RBSPrototypeRuntime,
 #       patterns: ['Foo::*']
 class Orthoses::RBSPrototypeRuntime
-  def initialize: (untyped loader, patterns: untyped) -> void
+  def initialize: (untyped loader, patterns: untyped, ?method_definition_filter: untyped?, ?alias_filter: untyped?, ?constant_filter: untyped?, ?mixin_filter: untyped?, ?attribute_filter: untyped?) -> void
   def call: () -> untyped
 end
