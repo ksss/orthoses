@@ -58,7 +58,11 @@ module EnvironmentTest
       end
     end
     store = Orthoses::Utils.new_store
+    store["Foo::Bar"].header = "class Foo::Bug"
     env.write_to(store: store)
+    unless store["Foo::Bar"].header == "class Foo::Bar"
+      t.error("header should overwrite by env")
+    end
 
     expect = <<~RBS
       class Foo::Baz < ::Foo::Bar
