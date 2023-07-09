@@ -177,7 +177,7 @@ module Orthoses
         when String
           TypeName(name).absolute!
         when Module
-          module_to_type_name(name)
+          module_to_type_name(name).absolute!
         else
           raise TypeError
         end
