@@ -18,14 +18,11 @@ Gem::Specification.new do |spec|
   spec.metadata["source_code_uri"] = spec.homepage
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    `git ls-files -z`.split("\x0").reject do |f|
-      next true if (f == __FILE__)
-      next true if f.match?(%r{\A(?:bin|known_sig)/}) # dir
-      next true if f.match?(%r{\A\.(?:git)}) # git
-      next true if f.match?(%r{\A(?:rbs_collection|Steepfile|Rakefile)}) # top file
-      next true if f.match?(%r{_test\.rb\z}) # test
-      false
-    end
+    [
+      %w[CODE_OF_CONDUCT.md LICENSE.txt README.md],
+      Dir.glob("lib/**/*.rb").grep_v(/_test\.rb\z/),
+      Dir.glob("sig/**/*.rbs")
+    ].flatten
   end
 
   spec.bindir = "exe"
