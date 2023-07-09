@@ -50,6 +50,7 @@ module Orthoses
 
         base_mod_name = Utils.module_name(base_mod)
         next unless base_mod_name
+        next if base_mod_name.include?("#")
 
         content = store[base_mod_name]
         capture.argument[:modules].each do |mod|
