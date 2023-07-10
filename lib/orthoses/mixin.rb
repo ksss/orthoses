@@ -50,6 +50,7 @@ module Orthoses
 
         base_mod_name = Utils.module_name(base_mod)
         next unless base_mod_name
+        next if base_mod_name.include?("#")
 
         content = store[base_mod_name]
         capture.argument[:modules].each do |mod|
@@ -58,13 +59,17 @@ module Orthoses
 
           next if mod_name.start_with?("Orthoses")
 
-          known_type_params = Utils.known_type_params(mod)
-          next unless known_type_params.nil? || known_type_params.empty?
+          type_params_sig = ""
+          if type_params = Utils.known_type_params(mod)
+            if !type_params.empty?
+              type_params_sig = "[#{type_params.map{"untyped"}.join(", ")}]"
+            end 
+          end
 
           next unless @if.nil? || @if.call(base_mod, how, mod)
 
-          store[mod_name]
-          content << "#{how} #{mod_name}"
+          store[mod_name].header = "module #{mod_name}"
+          content << "#{how} #{mod_name}#{type_params_sig}"
         end
       end
     end

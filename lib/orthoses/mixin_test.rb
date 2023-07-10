@@ -9,6 +9,7 @@ module MixinTest
       extend Mod
       prepend Mod
       include Module.new
+      include Enumerable
     end
     class ::Object
       include Mod
@@ -32,6 +33,7 @@ module MixinTest
     expect = <<~RBS
       class MixinTest::Foo
         include MixinTest::Mod
+        include Enumerable[untyped]
         extend MixinTest::Mod
         prepend MixinTest::Mod
       end
