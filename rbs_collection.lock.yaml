@@ -2,7 +2,7 @@
 sources:
 - type: git
   name: ruby/gem_rbs_collection
-  revision: d0d7aeed98fa74427b30b336fc402ea86d526f35
+  revision: 1b744707c4a3d722e231a34b4e7c2afa01116e6d
   remote: https://github.com/ruby/gem_rbs_collection.git
   repo_dir: gems
 path: ".gem_rbs_collection"
@@ -44,7 +44,7 @@ gems:
   source:
     type: stdlib
 - name: rgot
-  version: 1.3.0
+  version: 1.4.0
   source:
     type: rubygems
 - name: tsort
