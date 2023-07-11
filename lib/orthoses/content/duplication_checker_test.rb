@@ -1,6 +1,6 @@
 module DuplicationCheckerTest
   def test_update_decl(t)
-    _, _, decls = RBS::Parser.parse_signature(<<~RBS)
+    buffer, directives, decls = RBS::Parser.parse_signature(<<~RBS)
       class Foo
         CONST1: 1
         CONST2: 2
@@ -29,20 +29,26 @@ module DuplicationCheckerTest
 
         include Bar # remove
         include Bar # ok
+
+        def inter: () -> void # remove
       end
     RBS
     decl = decls.first
-    env = RBS::Environment.new
-    _, _, decls = RBS::Parser.parse_signature(<<~RBS)
+    env = RBS::Environment.from_loader(RBS::EnvironmentLoader.new)
+    buffer, directives, decls = RBS::Parser.parse_signature(<<~RBS)
       ::Foo::CONST1: 1
 
       class Foo
         attr_accessor self.a: untyped # ok
         CONST3: 3
+        interface _I
+          def inter: () -> void
+        end
+        include _I
       end
     RBS
-    decls.each { env << _1 }
-    checker = Orthoses::Content::DuplicationChecker.new(decl, env: env)
+    env.add_signature(buffer: buffer, directives: directives, decls: decls)
+    checker = Orthoses::Content::DuplicationChecker.new(decl, env: env.resolve_type_names)
     checker.update_decl
     out = StringIO.new
     RBS::Writer.new(out: out).write_decl(decl)
