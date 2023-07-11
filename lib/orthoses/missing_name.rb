@@ -27,20 +27,17 @@ module Orthoses
     end
 
     def missing_class(store)
-      missings = []
-      store.each do |name, content|
+      recur = ->(content) {
         content.auto_header
         if content.header && content.header.include?("<")
           _, superclass = content.header.split(/\s*<\s*/, 2)
           superclass.sub!(/\[.*/, "")
-          missings.concat missing_names(store, superclass)
+          new_name = TypeName(superclass).relative!.to_s
+          recur.call(store[new_name])
         end
-      end
-      missings.uniq!
-      missings.each do |missing|
-        if !store.has_key?(missing)
-          store[missing].auto_header
-        end
+      }
+      store.values.each do |content|
+        recur.call(content)
       end
     end
 
