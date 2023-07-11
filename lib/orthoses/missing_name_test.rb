@@ -2,7 +2,9 @@
 
 module MissingNameTest
   LOADER = -> {
-    class C1
+    class C0
+    end
+    class C1 < C0
       class C2 < C1
       end
     end
@@ -43,8 +45,11 @@ module MissingNameTest
     unless store.has_key?("MissingNameTest::C1")
       t.error("MissingNameTest::C1 not found in store")
     end
-    unless store["MissingNameTest::C1"].header == "class MissingNameTest::C1"
-      t.error("MissingNameTest::C1 should be class")
+    unless store["MissingNameTest::C1"].header == "class MissingNameTest::C1 < ::MissingNameTest::C0"
+      t.error("MissingNameTest::C1 should be class. but got #{store["MissingNameTest::C1"].header }")
+    end
+    unless store["MissingNameTest::C0"].header == "class MissingNameTest::C0"
+      t.error("MissingNameTest::C0 should be class")
     end
     unless store.has_key?("MissingNameTest")
       t.error("MissingNameTest not found in store")
