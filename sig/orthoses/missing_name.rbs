@@ -3,7 +3,4 @@
 class Orthoses::MissingName
   def initialize: (untyped loader) -> void
   def call: () -> untyped
-  private def missing_module: (untyped store) -> untyped
-  private def missing_class: (untyped store) -> untyped
-  private def missing_names: (untyped store, untyped key_name) -> untyped
 end
