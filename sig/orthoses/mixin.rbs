@@ -1,7 +1,7 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
 class Orthoses::Mixin
-  def initialize: (Orthoses::_Call loader) -> void
+  def initialize: (Orthoses::_Call loader, ?if: nil | ^(Module base_mod, :include | :extend | :prepend how, Module mod) -> boolish) -> void
   def call: () -> Orthoses::store
   private def collect_definitions: (Orthoses::store store, Orthoses::CallTracer call_tracer, :include | :extend | :prepend how) -> void
   @loader: Orthoses::_Call

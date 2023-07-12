@@ -6,11 +6,13 @@
 #       method_definition_filter: ->(member) { false },
 #       alias_filter: ->(member) { false }
 class Orthoses::RBSPrototypeRB
-  def initialize: (Orthoses::_Call loader, paths: Array[_ToS], ?constant_filter: Orthoses::Content::Environment::constant_filter?, ?mixin_filter: Orthoses::Content::Environment::mixin_filter?, ?attribute_filter: Orthoses::Content::Environment::attribute_filter?) -> void
+  def initialize: (Orthoses::_Call loader, paths: Array[_ToS], ?method_definition_filter: Orthoses::Content::Environment::method_definition_filter?, ?alias_filter: Orthoses::Content::Environment::alias_filter?, ?constant_filter: Orthoses::Content::Environment::constant_filter?, ?mixin_filter: Orthoses::Content::Environment::mixin_filter?, ?attribute_filter: Orthoses::Content::Environment::attribute_filter?) -> void
   def call: () -> Orthoses::store
   @loader: Orthoses::_Call
   @paths: Array[_ToS]
+  @method_definition_filter: Orthoses::Content::Environment::method_definition_filter?
+  @alias_filter: Orthoses::Content::Environment::alias_filter?
   @constant_filter: Orthoses::Content::Environment::constant_filter?
   @mixin_filter: Orthoses::Content::Environment::mixin_filter?
-  @attribute_filter: Orthoses::Content::Environment::mixin_filter?
+  @attribute_filter: Orthoses::Content::Environment::attribute_filter?
 end

@@ -2,7 +2,7 @@
 
 class Orthoses::Content::Environment
   def self.load_from_paths: (untyped paths) -> untyped
-  def initialize: (?constant_filter: constant_filter?, ?mixin_filter: mixin_filter?, ?attribute_filter: attribute_filter?) -> void
+  def initialize: (?method_definition_filter: method_definition_filter?, ?alias_filter: alias_filter?, ?constant_filter: constant_filter?, ?mixin_filter: mixin_filter?, ?attribute_filter: attribute_filter?) -> void
   def <<: (RBS::AST::Declarations::t decl) -> RBS::Environment
   def write_to: (store: Orthoses::store) -> void
   def each: () { (Orthoses::Content) -> void } -> void
@@ -11,10 +11,15 @@ class Orthoses::Content::Environment
   #     end
   private def avoid_generic_parameter_mismatch_error: () -> untyped
   private def decls_to_lines: (untyped decls) -> untyped
+  type method_definition_filter = ^(RBS::AST::Members::MethodDefinition) -> boolish
+  type alias_filter = ^(RBS::AST::Members::Alias) -> boolish
   type constant_filter = ^(RBS::AST::Declarations::Constant) -> boolish
   type mixin_filter = ^(RBS::AST::Members::Mixin) -> boolish
   type attribute_filter = ^(RBS::AST::Members::Attribute) -> boolish
-  @env: RBS::Environment
+  @load_env: RBS::Environment
+  @known_env: RBS::Environment
+  @method_definition_filter: method_definition_filter?
+  @alias_filter: alias_filter?
   @constant_filter: constant_filter?
   @mixin_filter: mixin_filter?
   @attribute_filter: attribute_filter?

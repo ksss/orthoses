@@ -21,4 +21,5 @@ class Orthoses::Content
   attr_reader name: String
   attr_reader body: Array[String]
   attr_accessor header: String?
+  attr_accessor comment: String?
 end

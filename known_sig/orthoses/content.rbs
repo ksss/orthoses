@@ -3,6 +3,7 @@ module Orthoses
     attr_reader name: String
     attr_reader body: Array[String]
     attr_accessor header: String?
+    attr_accessor comment: String?
 
     def initialize: (name: String) -> void
     def <<: (String) -> void

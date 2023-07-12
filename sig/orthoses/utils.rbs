@@ -3,7 +3,7 @@
 module Orthoses::Utils
   def self.unautoload!: () -> untyped
 
-  def self.each_const_recursive: (Module root, ?cache: Hash[untyped, true], ?on_error: ^(Orthoses::ConstLoadError) -> void) ?{ (Module, Symbol, untyped) -> void } -> void
+  def self.each_const_recursive: (Module root, ?cache: Hash[untyped, true], ?on_error: nil | ^(Orthoses::ConstLoadError) -> void) ?{ (Module, Symbol, untyped) -> void } -> void
 
   def self.rbs_defined_const?: (String name, ?library: (String | Array[String])?, ?collection: boolish) -> bool
 

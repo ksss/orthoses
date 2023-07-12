@@ -1,7 +1,7 @@
 module Orthoses
   class Builder
     def initialize: () ?{ () [self: Orthoses::Builder] -> untyped } -> void
-    def use: (untyped middleware, *untyped args, **untyped key) ?{ () -> untyped } -> untyped
+    def use: (untyped middleware, *untyped args, **untyped key) ?{ (*untyped, **untyped) -> untyped } -> untyped
     def call: () -> Orthoses::store
   end
 end
