@@ -32,6 +32,11 @@ module Orthoses
     using Utils::Underscore
 
     def call
+      if @rmtree
+        Orthoses.logger.debug("Remove dir #{@to} since `rmtree: true`")
+        Pathname(@to).rmtree rescue nil
+      end
+
       store = @loader.call
 
       store.select! do |name, content|
@@ -40,11 +45,6 @@ module Orthoses
       grouped = store.group_by do |name, _|
         splitted = name.to_s.split('::')
         (@depth ? splitted[0, @depth] : splitted).join('::')
-      end
-
-      if @rmtree
-        Orthoses.logger.debug("Remove dir #{@to} since `rmtree: true`")
-        Pathname(@to).rmtree rescue nil
       end
 
       grouped.each do |group_name, group|

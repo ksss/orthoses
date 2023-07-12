@@ -105,4 +105,29 @@ module CreateFileByNameTest
   ensure
     Pathname("tmp").rmtree rescue nil
   end
+
+  def test_rmtree(t)
+    Pathname("tmp").mkdir
+    FileUtils.touch("tmp/a.rbs")
+
+    Orthoses::CreateFileByName.new(
+      -> {
+        unless !Pathname("tmp/a.rbs").exist?
+          t.error("should not exist file before call")
+        end
+
+        Orthoses::Utils.new_store.tap do |store|
+          store["A"].header = "class A"
+        end
+      },
+      rmtree: true,
+      to: "tmp",
+    ).call
+
+    unless Pathname("tmp/a.rbs").exist?
+      t.error("should exist file after call")
+    end
+  ensure
+    Pathname("tmp").rmtree rescue nil
+  end
 end

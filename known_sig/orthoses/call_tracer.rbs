@@ -12,6 +12,7 @@ module Orthoses
       attr_reader captures: Array[untyped]
       def initialize: () -> void
       def trace: (String name) ?{ () -> untyped } -> untyped
+      attr_reader captures: Array[Orthoses::CallTracer::Capture]
     end
   end
 end

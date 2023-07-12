@@ -15,5 +15,5 @@
 class Orthoses::CallTracer::Lazy
   def initialize: () -> void
   def trace: (String name) ?{ () -> untyped } -> untyped
-  attr_reader captures: Array[untyped]
+  attr_reader captures: Array[Orthoses::CallTracer::Capture]
 end
