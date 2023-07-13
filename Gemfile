@@ -12,5 +12,5 @@ gem "activesupport"
 gem "debug"
 
 group :steep do
-  gem "steep", "1.4.0.dev.2"
+  gem "steep"
 end
