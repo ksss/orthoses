@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+begin
+  require 'test_helper'
+rescue LoadError
+end
+
 module LazyTracePointTest
   LOADER1 = ->{
     class Bar
@@ -26,13 +31,13 @@ module LazyTracePointTest
       t.fatal("expect to be disabled")
     end
     unless called.length == 2
-      t.fatal("expect to call block")
+      t.error("expect to call block twice. But #{called.length}")
     end
     unless called[0] == LazyTracePointTest
       t.error("expect LazyTracePointTest, but got #{called[0].inspect}")
     end
-    unless called[1].kind_of?(TracePoint)
-      t.error("expect TracePoint instance, but got #{called[1].inspect}")
+    unless called[1].instance_of?(Orthoses::LazyTracePoint)
+      t.error("expect Orthoses::LazyTracePoint instance, but got #{called[1].inspect}")
     end
 
     # loaded
@@ -55,8 +60,8 @@ module LazyTracePointTest
     unless called[0] == LazyTracePointTest
       t.error("expect LazyTracePointTest, but got #{called[0].inspect}")
     end
-    unless called[1].kind_of?(TracePoint)
-      t.error("expect TracePoint instance, but got #{called[1].inspect}")
+    unless called[1].instance_of?(Orthoses::LazyTracePoint)
+      t.error("expect Orthoses::LazyTracePoint instance, but got #{called[1].inspect}")
     end
   end
 
@@ -90,8 +95,8 @@ module LazyTracePointTest
     unless called[0] == LazyTracePointTest
       t.error("expect LazyTracePointTest, but got #{called[0].inspect}")
     end
-    unless called[1].kind_of?(TracePoint)
-      t.error("expect TracePoint instance, but got #{called[1].inspect}")
+    unless called[1].instance_of?(Orthoses::LazyTracePoint)
+      t.error("expect Orthoses::LazyTracePoint instance, but got #{called[1].inspect}")
     end
 
     # loaded
@@ -114,8 +119,8 @@ module LazyTracePointTest
     unless called[0] == LazyTracePointTest
       t.error("expect LazyTracePointTest, but got #{called[0].inspect}")
     end
-    unless called[1].kind_of?(TracePoint)
-      t.error("expect TracePoint instance, but got #{called[1].inspect}")
+    unless called[1].instance_of?(Orthoses::LazyTracePoint)
+      t.error("expect Orthoses::LazyTracePoint instance, but got #{called[1].inspect}")
     end
   end
 end

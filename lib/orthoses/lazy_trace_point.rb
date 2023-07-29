@@ -10,23 +10,42 @@ module Orthoses
   #     ...
   #   end
   class LazyTracePoint < TracePoint
-    # for TracePoint target
-    ::Module.prepend(Module.new{
-      def method_added(id)
-        super
-      end
-    })
-    ::BasicObject.prepend(Module.new{
-      def singleton_method_added(id)
-        super
-      end
-    })
-
     METHOD_METHOD = ::Kernel.instance_method(:method)
     INSTANCE_METHOD_METHOD = ::Module.instance_method(:instance_method)
     UNBOUND_NAME_METHOD = ::Module.instance_method(:name)
-    METHOD_ADDED_METHOD = ::Module.instance_method(:method_added)
-    SINGLETON_METHOD_ADDED_METHOD = ::BasicObject.instance_method(:singleton_method_added)
+    METHOD_ADDED_HOOKS = {}
+    SINGLETON_METHOD_ADDED_HOOKS = {}
+
+    # for TracePoint target
+    module MethodAddedHook
+      def method_added(id)
+        begin
+          if h = METHOD_ADDED_HOOKS[id]
+            if mod_name = UNBOUND_NAME_METHOD.bind(self).call
+              h[mod_name]&.call(self, id)
+            end
+          end
+        rescue TypeError => e
+        end
+        super
+      end
+    end
+    ::Module.prepend MethodAddedHook
+
+    module SignletonMethodAddedHook
+      def singleton_method_added(id)
+        begin
+          if h = SINGLETON_METHOD_ADDED_HOOKS[id]
+            if mod_name = UNBOUND_NAME_METHOD.bind(self).call
+              h[mod_name]&.call(self, id)
+            end
+          end
+        rescue TypeError => e
+        end
+        super
+      end
+    end
+    ::BasicObject.prepend SignletonMethodAddedHook
 
     def initialize(*events, &block)
       @mod_name = nil
@@ -35,7 +54,7 @@ module Orthoses
       super
     end
 
-    def enable(target: nil, target_line: nil, target_thread: nil, &block)
+    def enable(target: nil, &block)
       return super unless target.kind_of?(String)
 
       case
@@ -59,43 +78,25 @@ module Orthoses
     private
 
     def trace_instance_method(&block)
-      # try to load
       target = Object.const_get(@mod_name).instance_method(@instance_method_id)
       enable(target: target, &block)
     rescue NameError
-      TracePoint.new(:call) do |tp|
-        id = tp.binding.local_variable_get(:id)
-        next unless id == @instance_method_id
-
-        mod_name = UNBOUND_NAME_METHOD.bind(tp.self).call
-
-        next unless mod_name
-        next unless mod_name == @mod_name
-
-        enable(target: INSTANCE_METHOD_METHOD.bind(tp.self).call(id))
-        tp.disable
-      end.enable(target: METHOD_ADDED_METHOD, &block)
+      (METHOD_ADDED_HOOKS[@instance_method_id] ||= {})[@mod_name] = ->(const, id) {
+        enable(target: INSTANCE_METHOD_METHOD.bind(const).call(id))
+      }
+      block&.call
     ensure
       disable
     end
 
     def trace_singleton_method(&block)
-      # try to load
       target = Object.const_get(@mod_name).method(@singleton_method_id)
       enable(target: target, &block)
     rescue NameError
-      TracePoint.new(:call) do |tp|
-        id = tp.binding.local_variable_get(:id)
-        next unless id == @singleton_method_id
-
-        mod_name = UNBOUND_NAME_METHOD.bind(tp.self).call
-
-        next unless mod_name
-        next unless mod_name == @mod_name
-
-        enable(target: METHOD_METHOD.bind(tp.self).call(id))
-        tp.disable
-      end.enable(target: SINGLETON_METHOD_ADDED_METHOD, &block)
+      (SINGLETON_METHOD_ADDED_HOOKS[@singleton_method_id] ||= {})[@mod_name] = ->(const, id) {
+        enable(target: METHOD_METHOD.bind(const).call(id))
+      }
+      block&.call
     ensure
       disable
     end
