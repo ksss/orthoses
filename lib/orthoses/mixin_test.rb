@@ -1,13 +1,18 @@
 # frozen_string_literal: true
 
+begin
+  require 'test_helper'
+rescue LoadError
+end
+
 module MixinTest
   LOADER = ->(){
     module Mod
     end
     class Foo
-      include Mod
-      extend Mod
       prepend Mod
+      extend Mod
+      include Mod
       include Module.new
       include Enumerable
     end
@@ -32,10 +37,10 @@ module MixinTest
 
     expect = <<~RBS
       class MixinTest::Foo
+        prepend MixinTest::Mod
+        extend MixinTest::Mod
         include MixinTest::Mod
         include Enumerable[untyped]
-        extend MixinTest::Mod
-        prepend MixinTest::Mod
       end
     RBS
     actual = store["MixinTest::Foo"].to_rbs
