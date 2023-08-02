@@ -21,10 +21,10 @@ task :sig do
     use Orthoses::Filter do |name, _|
       name.start_with?("Orthoses")
     end
-    use Orthoses::Mixin
-    use Orthoses::Constant, strict: true
     use Orthoses::LoadRBS,
       paths: Dir.glob("known_sig/**/*.rbs")
+    use Orthoses::Mixin
+    use Orthoses::Constant
     use Orthoses::RBSPrototypeRB,
       paths: Dir.glob("lib/**/*.rb").grep_v(/_test\.rb/),
       constant_filter: ->(_) { false },

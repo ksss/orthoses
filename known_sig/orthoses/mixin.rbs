@@ -1,5 +1,7 @@
 module Orthoses
   class Mixin
+    CALL_GRAPH: Hash[untyped, Array[:include | :extend | :prepend, untyped]]
+
     module Hook : Module
     end
 

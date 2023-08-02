@@ -1,13 +1,13 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
 module Orthoses
-  VERSION: "1.8.0"
+  INSTANCE_METHOD_METHOD: UnboundMethod
+
+  METHOD_METHOD: UnboundMethod
+
+  VERSION: String
 
   attr_accessor self.logger: ::Logger
 
   type store = Hash[String, Orthoses::Content]
-
-  INSTANCE_METHOD_METHOD: UnboundMethod
-
-  METHOD_METHOD: UnboundMethod
 end
