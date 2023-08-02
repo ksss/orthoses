@@ -1,0 +1,6 @@
+# THIS IS GENERATED CODE from `$ rake sig`
+
+# for TracePoint target
+module Orthoses::LazyTracePoint::MethodAddedHook
+  def method_added: (untyped id) -> untyped
+end

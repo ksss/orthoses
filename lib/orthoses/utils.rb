@@ -182,7 +182,7 @@ module Orthoses
           raise TypeError
         end
       rbs_environment.class_decls[type_name]&.then do |entry|
-        entry.decls.first.decl.type_params
+        entry.type_params
       end
     end
 

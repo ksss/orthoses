@@ -1,5 +1,7 @@
 module Orthoses
   class Mixin
+    CALL_GRAPH: Hash[untyped, [:include | :extend | :prepend, untyped]]
+
     module Hook : Module
     end
 
@@ -7,8 +9,6 @@ module Orthoses
     def initialize: (Orthoses::_Call loader, ?if: nil | ^(Module base_mod, (:include | :extend | :prepend) how, Module mod) -> boolish) -> void
     def call: () -> Orthoses::store
 
-    private
-
-    def collect_definitions: (Orthoses::store store, Orthoses::CallTracer call_tracer, (:include | :extend | :prepend) how) -> void
+    private def type_params_sig: (untyped mod) -> String
   end
 end
