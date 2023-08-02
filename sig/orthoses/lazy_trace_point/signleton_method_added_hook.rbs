@@ -1,0 +1,5 @@
+# THIS IS GENERATED CODE from `$ rake sig`
+
+module Orthoses::LazyTracePoint::SignletonMethodAddedHook
+  def singleton_method_added: (untyped id) -> untyped
+end
