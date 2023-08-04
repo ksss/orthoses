@@ -1,19 +1,25 @@
 module Orthoses
   class Attribute
+    CALL_GRAPH = {}
+
     module Hook
       def attr(*names)
+        (CALL_GRAPH[self]||=[]) << [:attr, names]
         super
       end
 
       def attr_accessor(*names)
+        (CALL_GRAPH[self]||=[]) << [:attr_accessor, names]
         super
       end
 
       def attr_reader(*names)
+        (CALL_GRAPH[self]||=[]) << [:attr_reader, names]
         super
       end
 
       def attr_writer(*names)
+        (CALL_GRAPH[self]||=[]) << [:attr_writer, names]
         super
       end
     end
@@ -25,74 +31,40 @@ module Orthoses
     def call
       ::Module.prepend(Hook)
 
-      attr = CallTracer.new
-      attr_accessor = CallTracer.new
-      attr_reader = CallTracer.new
-      attr_writer = CallTracer.new
+      store = @loader.call
 
-      store = attr.trace(Hook.instance_method(:attr)) do
-        attr_accessor.trace(Hook.instance_method(:attr_accessor)) do
-          attr_reader.trace(Hook.instance_method(:attr_reader)) do
-            attr_writer.trace(Hook.instance_method(:attr_writer)) do
-              @loader.call
+      CALL_GRAPH.dup.each do |base_mod, calls|
+        m = base_mod.to_s.match(/#<Class:([\w:]+)>/)
+        if m && m[1]
+          receiver_name = m[1]
+          prefix = "self."
+        else
+          receiver_name = Utils.module_name(base_mod) or next
+          prefix = nil
+        end
+        content = store[receiver_name]
+
+        calls.each do |(a, names)|
+          case a
+          when :attr
+            if names[1].equal?(true)
+              content << "attr_accessor #{prefix}#{names[0]}: untyped"
+            elsif names[1].equal?(false)
+              content << "attr_reader #{prefix}#{names[0]}: untyped"
+            else
+              names.each do |name|
+                content << "attr_reader #{prefix}#{name}: untyped"
+              end
+            end
+          else
+            names.each do |name|
+              content << "#{a} #{prefix}#{name}: untyped"
             end
           end
         end
       end
 
-      attr.captures.each do |capture|
-        m = capture.method.receiver.to_s.match(/#<Class:([\w:]+)>/)
-        if m && m[1]
-          receiver_name = m[1]
-          prefix = "self."
-        else
-          receiver_name = Utils.module_name(capture.method.receiver) or next
-          prefix = nil
-        end
-        content = store[receiver_name]
-        names = capture.argument[:names]
-        if names[1].equal?(true)
-          content << "attr_accessor #{prefix}#{names[0]}: untyped"
-        elsif names[1].equal?(false)
-          content << "attr_reader #{prefix}#{names[0]}: untyped"
-        else
-          names.each do |name|
-            content << "attr_reader #{prefix}#{name}: untyped"
-          end
-        end
-      end
-
-      each_definition(attr_accessor) do |receiver_name, name|
-        store[receiver_name] << "attr_accessor #{name}: untyped"
-      end
-      each_definition(attr_reader) do |receiver_name, name|
-        store[receiver_name] << "attr_reader #{name}: untyped"
-      end
-      each_definition(attr_writer) do |receiver_name, name|
-        store[receiver_name] << "attr_writer #{name}: untyped"
-      end
-
       store
-    end
-
-    private
-
-    def each_definition(call_tracer)
-      call_tracer.captures.each do |capture|
-        m = capture.method.receiver.to_s.match(/#<Class:([\w:]+)>/)
-        names = capture.argument[:names]
-        if m && m[1]
-          receiver_name = m[1]
-          names.each do |name|
-            yield [receiver_name, "self.#{name}"]
-          end
-        else
-          receiver_name = Utils.module_name(capture.method.receiver) or next
-          names.each do |name|
-            yield [receiver_name, name]
-          end
-        end
-      end
     end
   end
 end
