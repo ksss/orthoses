@@ -1,3 +1,8 @@
+begin
+  require 'test_helper'
+rescue LoadError
+end
+
 module AttributeTest
   LOADER = ->{
     class Foo
@@ -22,12 +27,12 @@ module AttributeTest
     expect = <<~RBS
       class AttributeTest::Foo
         attr_reader attr: untyped
-        attr_reader self.self_attr: untyped
         attr_accessor attr_accessor: untyped
-        attr_accessor self.self_attr_accessor: untyped
         attr_reader attr_reader: untyped
-        attr_reader self.self_attr_reader: untyped
         attr_writer attr_writer: untyped
+        attr_reader self.self_attr: untyped
+        attr_accessor self.self_attr_accessor: untyped
+        attr_reader self.self_attr_reader: untyped
         attr_writer self.self_attr_writer: untyped
       end
     RBS
