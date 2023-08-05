@@ -25,6 +25,7 @@ module Orthoses
     end
 
     def initialize(loader)
+      CALL_GRAPH.clear
       @loader = loader
     end
 

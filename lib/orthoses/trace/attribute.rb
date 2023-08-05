@@ -3,6 +3,24 @@
 module Orthoses
   class Trace
     class Attribute
+      module Hook
+        def attr(*names)
+          super
+        end
+
+        def attr_accessor(*names)
+          super
+        end
+
+        def attr_reader(*names)
+          super
+        end
+
+        def attr_writer(*names)
+          super
+        end
+      end
+
       include Targetable
 
       def initialize(loader, patterns:)
@@ -13,17 +31,17 @@ module Orthoses
       end
 
       def call
-        ::Module.prepend(Orthoses::Attribute::Hook)
-        store = nil
-        build_trace_hook.enable(target: Orthoses::Attribute::Hook.instance_method(:attr)) do
-          build_trace_hook.enable(target: Orthoses::Attribute::Hook.instance_method(:attr_accessor)) do
-            build_trace_hook.enable(target: Orthoses::Attribute::Hook.instance_method(:attr_reader)) do
-              build_trace_hook.enable(target: Orthoses::Attribute::Hook.instance_method(:attr_writer)) do
-                store = @loader.call
+        ::Module.prepend(Hook)
+        store =
+          build_trace_hook.enable(target: Hook.instance_method(:attr)) do
+            build_trace_hook.enable(target: Hook.instance_method(:attr_accessor)) do
+              build_trace_hook.enable(target: Hook.instance_method(:attr_reader)) do
+                build_trace_hook.enable(target: Hook.instance_method(:attr_writer)) do
+                  @loader.call
+                end
               end
             end
           end
-        end
 
         @captured_dict.each do |mod_name, captures|
           captures.each do |(kind, prefix, name), types|
