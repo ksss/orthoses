@@ -13,6 +13,7 @@ class Orthoses::Content
   def sort!: () -> untyped
   def original_rbs: () -> untyped
   def auto_header: () -> (nil | untyped)
+  private def build_super_class: (untyped val) -> (nil | ::String)
   private def decl_to_lines: (untyped decl) -> untyped
   private def uniqed_body_string: () -> String
   private def uniqed_body_decl: () -> RBS::AST::Declarations::t
