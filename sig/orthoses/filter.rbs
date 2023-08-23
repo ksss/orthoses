@@ -6,8 +6,9 @@
 #     Orthoses.rbs_defined_class?(name)
 #   end
 class Orthoses::Filter
+  @loader: Orthoses::_Call
+  @if: untyped
+  @block: ^(String, Orthoses::Content) -> boolish
   def initialize: (Orthoses::_Call loader) { (String, Orthoses::Content) -> boolish } -> void
   def call: () -> Orthoses::store
-  @loader: Orthoses::_Call
-  @block: ^(String, Orthoses::Content) -> boolish
 end

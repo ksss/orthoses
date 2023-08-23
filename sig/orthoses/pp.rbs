@@ -3,6 +3,7 @@
 # Debug current stored values
 #   use Orthoses::PP
 class Orthoses::PP
+  @loader: untyped
   def initialize: (untyped loader) -> void
   def call: () -> untyped
 end

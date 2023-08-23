@@ -47,13 +47,6 @@ module Orthoses
     end
     ::BasicObject.prepend SignletonMethodAddedHook
 
-    def initialize(*events, &block)
-      @mod_name = nil
-      @instance_method_id = nil
-      @singleton_method_id = nil
-      super
-    end
-
     def enable(target: nil, &block)
       return super unless target.kind_of?(String)
 

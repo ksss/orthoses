@@ -1,6 +1,8 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
 class Orthoses::Content::HeaderBuilder
+  @env: untyped
+  @resolver: untyped
   def initialize: (env: untyped) -> void
   def build: (entry: untyped, ?name_hint: untyped?) -> untyped
   private def build_module: (entry: untyped, ?name_hint: untyped?) -> ::String

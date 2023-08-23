@@ -9,7 +9,9 @@
 #     ...
 #   end
 class Orthoses::LazyTracePoint < ::TracePoint
-  def initialize: (*untyped events) { () -> untyped } -> void
+  @mod_name: untyped
+  @instance_method_id: untyped
+  @singleton_method_id: untyped
   def enable: (?target: untyped?) ?{ () -> untyped } -> untyped
   private def trace_instance_method: () ?{ () -> untyped } -> untyped
   private def trace_singleton_method: () ?{ () -> untyped } -> untyped

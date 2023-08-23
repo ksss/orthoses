@@ -1,6 +1,8 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
 class Orthoses::Trace
+  @loader: untyped
+  @patterns: untyped
   def initialize: (untyped loader, patterns: untyped) -> void
   def call: () -> untyped
 end
