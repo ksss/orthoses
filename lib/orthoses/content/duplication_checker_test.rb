@@ -1,3 +1,8 @@
+begin
+  require 'test_helper'
+rescue LoadError
+end
+
 module DuplicationCheckerTest
   def test_update_decl(t)
     buffer, directives, decls = RBS::Parser.parse_signature(<<~RBS)
@@ -31,6 +36,13 @@ module DuplicationCheckerTest
         include Bar # ok
 
         def inter: () -> void # remove
+
+        def mod_func: () -> void # remove
+        def self.mod_func: () -> void # remove
+        def self?.mod_func: () -> void # ok
+
+        def mod_func_env: () -> void # remove
+        def self.mod_func_env: () -> void # remove
       end
     RBS
     decl = decls.first
@@ -45,6 +57,8 @@ module DuplicationCheckerTest
           def inter: () -> void
         end
         include _I
+
+        def self?.mod_func_env: () -> void
       end
     RBS
     env.add_signature(buffer: buffer, directives: directives, decls: decls)
@@ -71,6 +85,8 @@ module DuplicationCheckerTest
                | ...
 
         include Bar
+
+        def self?.mod_func: () -> void
       end
     RBS
     unless expect == actual
