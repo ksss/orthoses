@@ -1,6 +1,7 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
 class Orthoses::Autoload
+  @loader: untyped
   def initialize: (untyped loader) -> void
   def call: () -> untyped
 end

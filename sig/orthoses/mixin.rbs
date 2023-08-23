@@ -1,9 +1,10 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
 class Orthoses::Mixin
+  @loader: Orthoses::_Call
+  @if: untyped
   def initialize: (Orthoses::_Call loader, ?if: nil | ^(Module base_mod, :include | :extend | :prepend how, Module mod) -> boolish) -> void
   def call: () -> Orthoses::store
   private def type_params_sig: (untyped mod) -> String
   CALL_GRAPH: Hash[untyped, [ :include | :extend | :prepend, untyped ]]
-  @loader: Orthoses::_Call
 end

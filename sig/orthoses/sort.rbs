@@ -2,6 +2,7 @@
 
 # use Orthoses::Sort
 class Orthoses::Sort
+  @loader: untyped
   def initialize: (untyped loader) -> void
   def call: () -> untyped
 end

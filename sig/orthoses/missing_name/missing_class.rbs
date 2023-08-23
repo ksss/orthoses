@@ -1,6 +1,7 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
 class Orthoses::MissingName::MissingClass
+  @store: untyped
   def initialize: (untyped store) -> void
   def call: () -> untyped
   private def recur: (untyped content) -> untyped

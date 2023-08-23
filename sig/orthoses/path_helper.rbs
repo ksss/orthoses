@@ -1,6 +1,8 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
 class Orthoses::PathHelper
+  @current: untyped
+  @base_dir: untyped
   def self.best_version_paths: (untyped current, untyped base_dir) -> untyped
   def initialize: (untyped current, untyped base_dir) -> void
   def best_version_paths: () -> untyped

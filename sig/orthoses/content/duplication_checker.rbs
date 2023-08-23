@@ -2,9 +2,14 @@
 
 # Check and drop duplication method, const etc...
 class Orthoses::Content::DuplicationChecker
+  @decl: untyped
+  @known_env: untyped
+  @builder: untyped
+  @uniq_map: untyped
   def initialize: (untyped decl, ?env: untyped?) -> void
   def update_decl: () -> (nil | untyped)
   private def uniq_members: () -> untyped
+  private def drop_by_singleton_instance: () -> untyped
   private def drop_set_method_definition: () -> untyped
   private def drop_known_method_definition: () -> untyped
   private def drop_known_method_definition_recur: (untyped d) -> untyped

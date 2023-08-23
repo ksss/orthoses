@@ -1,9 +1,9 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
 class Orthoses::LoadRBS
+  @loader: Orthoses::_Call
+  @paths: paths
   def initialize: (Orthoses::_Call loader, paths: paths) -> void
   def call: () -> Orthoses::store
   type paths = Array[String] | ^() -> Array[String]
-  @loader: Orthoses::_Call
-  @paths: paths
 end

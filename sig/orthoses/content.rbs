@@ -1,6 +1,10 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
 class Orthoses::Content
+  @name: untyped
+  @body: untyped
+  @header: untyped
+  @comment: untyped
   def initialize: (name: String) -> void
   def <<: (String) -> void
   def concat: (Array[String]) -> void

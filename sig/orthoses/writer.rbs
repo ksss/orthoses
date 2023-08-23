@@ -1,7 +1,8 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
 class Orthoses::Writer
+  @loader: Orthoses::_Call
+  @io: untyped
   def initialize: (Orthoses::_Call loader, io: _Writer) -> void
   def call: () -> Orthoses::store
-  @loader: Orthoses::_Call
 end

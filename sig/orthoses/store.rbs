@@ -3,6 +3,7 @@
 # Internal middleware for return store object
 # Builder set this middleware on last stack by default
 class Orthoses::Store
+  @loader: untyped
   def initialize: (untyped loader) -> void
   def call: () -> untyped
 end

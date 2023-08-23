@@ -1,6 +1,9 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
 class Orthoses::Trace::Attribute
+  @loader: untyped
+  @patterns: untyped
+  @captured_dict: untyped
   def initialize: (untyped loader, patterns: untyped) -> void
   def call: () -> untyped
   private def build_trace_hook: () -> untyped

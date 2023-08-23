@@ -3,6 +3,7 @@
 # UniqContentBody is an internal middleware
 # It's using on orthoses/outputable.rb
 class Orthoses::Outputable::UniqContentBody
+  @loader: untyped
   def initialize: (untyped loader) -> void
   def call: () -> untyped
 end

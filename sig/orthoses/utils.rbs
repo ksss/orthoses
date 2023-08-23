@@ -1,6 +1,8 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
 module Orthoses::Utils
+  self.@env_cache: untyped
+
   def self.unautoload!: () -> untyped
 
   def self.each_const_recursive: (Module root, ?cache: Hash[untyped, true], ?on_error: nil | ^(Orthoses::ConstLoadError) -> void) ?{ (Module, Symbol, untyped) -> void } -> void

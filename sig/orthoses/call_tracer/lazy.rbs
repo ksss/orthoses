@@ -13,6 +13,8 @@
 #       capture.argument[:block]
 #     end
 class Orthoses::CallTracer::Lazy
+  @captures: untyped
+  @lazy_trace_point: untyped
   def initialize: () -> void
   def trace: (String name) ?{ () -> untyped } -> untyped
   attr_reader captures: Array[Orthoses::CallTracer::Capture]

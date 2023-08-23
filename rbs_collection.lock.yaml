@@ -2,7 +2,7 @@
 sources:
 - type: git
   name: ruby/gem_rbs_collection
-  revision: 1b744707c4a3d722e231a34b4e7c2afa01116e6d
+  revision: a4c633634493ab7ae73219022f56acff56ab69af
   remote: https://github.com/ruby/gem_rbs_collection.git
   repo_dir: gems
 path: ".gem_rbs_collection"
@@ -36,7 +36,7 @@ gems:
   source:
     type: stdlib
 - name: rbs
-  version: 3.1.0
+  version: 3.2.0
   source:
     type: rubygems
 - name: rdoc

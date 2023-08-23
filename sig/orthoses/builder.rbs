@@ -10,6 +10,8 @@
 #     run ->() { require 'foo' }
 #   end
 class Orthoses::Builder
+  @use: untyped
+  @runner: untyped
   def initialize: () ?{ () [self: Orthoses::Builder] -> untyped } -> void
   def use: (untyped middleware, *untyped args, **untyped key) ?{ (*untyped, **untyped) -> untyped } -> untyped
   def run: (untyped loader) -> untyped

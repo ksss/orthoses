@@ -2,6 +2,7 @@
 
 # internal
 class Orthoses::Utils::TypeList
+  @types: untyped
   def initialize: (untyped types) -> void
   def inject: () -> untyped
   FALSE_TYPE: RBS::Types::Literal
