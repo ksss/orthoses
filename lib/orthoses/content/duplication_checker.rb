@@ -14,6 +14,7 @@ module Orthoses
 
         uniq_members
         drop_set_method_definition
+        drop_by_singleton_instance
         drop_known_method_definition
         drop_known_const_definition
 
@@ -40,6 +41,14 @@ module Orthoses
         end
       end
 
+      def drop_by_singleton_instance
+        singleton_instances = @uniq_map.values.select { |v| v.instance_of?(RBS::AST::Members::MethodDefinition) && v.kind == :singleton_instance }
+        singleton_instances.each do |member|
+          @uniq_map.delete([member.class, member.name, :instance])
+          @uniq_map.delete([member.class, member.name, :singleton])
+        end
+      end
+
       def drop_set_method_definition
         attr_accessors = @uniq_map.values.grep(RBS::AST::Members::AttrAccessor)
         attr_accessors.each do |member|
@@ -59,18 +68,26 @@ module Orthoses
       def drop_known_method_definition_recur(d)
         d.decl.members.each do |member|
           case member
+          when RBS::AST::Members::MethodDefinition
+            if member.kind == :singleton_instance
+              @uniq_map.delete([member.class, member.name, :instance])
+              @uniq_map.delete([member.class, member.name, :singleton])
+            end
+            @uniq_map.delete(member_key(member))
           when RBS::AST::Members::LocationOnly
             # ignore
           when RBS::AST::Members::AttrAccessor
             @uniq_map.delete([RBS::AST::Members::MethodDefinition, member.name, member.kind])
             @uniq_map.delete([RBS::AST::Members::MethodDefinition, :"#{member.name}=", member.kind])
-          else
-            if member.kind_of?(RBS::AST::Members::Include) && member.name.interface?
+          when RBS::AST::Members::Include
+            if member.name.interface?
               # If interface is included, it is shared in the same namespace.
               drop_known_method_definition_recur(@known_env.interface_decls[member.name])
             else
               @uniq_map.delete(member_key(member))
             end
+          else
+            @uniq_map.delete(member_key(member))
           end
         end
       end
