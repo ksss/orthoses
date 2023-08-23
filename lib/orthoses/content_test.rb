@@ -1,6 +1,17 @@
 # frozen_string_literal: true
 
+begin
+  require 'test_helper'
+rescue LoadError
+end
+
 module ContentTest
+  class Private
+  end
+  private_constant :Private
+  class SuperIsPrivate < Private
+  end
+
   class Simple
   end
   class WithSuper < Integer
@@ -10,6 +21,7 @@ module ContentTest
 
   def test_to_rbs(t)
     store = Orthoses::Utils.new_store
+    store["ContentTest::SuperIsPrivate"]
     store["ContentTest::Simple"] << "CONST: Integer"
     store["ContentTest::WithSuper"]
     store["ContentTest::SuperClassIsNoName"]
@@ -20,6 +32,9 @@ module ContentTest
     actual = store.map { |_, v| v.to_rbs }.join("\n")
 
     expect = <<~RBS
+      class ContentTest::SuperIsPrivate
+      end
+
       class ContentTest::Simple
         CONST: Integer
       end

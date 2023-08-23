@@ -102,19 +102,7 @@ module Orthoses
 
       case val
       when Class
-        superclass =
-          if val.superclass && val.superclass != Object
-            super_module_name = Utils.module_name(val.superclass)
-
-            if super_module_name && super_module_name != "Random::Base" # https://github.com/ruby/rbs/pull/977
-              " < ::#{super_module_name}#{temporary_type_params(super_module_name)}"
-            else
-              nil
-            end
-          else
-            nil
-          end
-        self.header = "class #{Utils.module_name(val)}#{type_params(name)}#{superclass}"
+        self.header = "class #{Utils.module_name(val)}#{type_params(name)}#{build_super_class(val)}"
       when Module
         self.header = "module #{Utils.module_name(val)}#{type_params(name)}"
       else
@@ -123,6 +111,25 @@ module Orthoses
     end
 
     private
+
+    def build_super_class(val)
+      return nil unless val.superclass && val.superclass != Object
+
+      begin
+        # check private const
+        eval(val.superclass.to_s)
+      rescue NameError
+        return nil
+      end
+
+      super_module_name = Utils.module_name(val.superclass)
+      return nil unless super_module_name
+
+      # https://github.com/ruby/rbs/pull/977
+      return nil unless super_module_name != "Random::Base"
+
+      " < ::#{super_module_name}#{temporary_type_params(super_module_name)}"
+    end
 
     class ArrayIO
       def initialize
