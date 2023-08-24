@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+begin
+  require 'test_helper'
+rescue LoadError
+end
+
 module RBSPrototypeRuntimeTest
   class T
     module M

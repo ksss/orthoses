@@ -5,12 +5,12 @@
 #       patterns: ['Foo::*']
 class Orthoses::RBSPrototypeRuntime
   @loader: Orthoses::_Call
-  @patterns: Array[_ToS]
+  @patterns: Array[_ToS]?
   @method_definition_filter: Orthoses::Content::Environment::method_definition_filter?
   @alias_filter: Orthoses::Content::Environment::alias_filter?
   @constant_filter: Orthoses::Content::Environment::constant_filter?
   @mixin_filter: Orthoses::Content::Environment::mixin_filter?
   @attribute_filter: Orthoses::Content::Environment::attribute_filter?
-  def initialize: (Orthoses::_Call loader, patterns: Array[_ToS], ?method_definition_filter: Orthoses::Content::Environment::method_definition_filter?, ?alias_filter: Orthoses::Content::Environment::alias_filter?, ?constant_filter: Orthoses::Content::Environment::constant_filter?, ?mixin_filter: Orthoses::Content::Environment::mixin_filter?, ?attribute_filter: Orthoses::Content::Environment::attribute_filter?) -> void
+  def initialize: (Orthoses::_Call loader, ?patterns: Array[_ToS], ?method_definition_filter: Orthoses::Content::Environment::method_definition_filter?, ?alias_filter: Orthoses::Content::Environment::alias_filter?, ?constant_filter: Orthoses::Content::Environment::constant_filter?, ?mixin_filter: Orthoses::Content::Environment::mixin_filter?, ?attribute_filter: Orthoses::Content::Environment::attribute_filter?) -> void
   def call: () -> Orthoses::store
 end
