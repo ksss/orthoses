@@ -5,7 +5,7 @@ module Orthoses
   class RBSPrototypeRuntime
     def initialize(
       loader,
-      patterns:,
+      patterns: nil,
       method_definition_filter: nil,
       alias_filter: nil,
       constant_filter: nil,
@@ -31,9 +31,9 @@ module Orthoses
           attribute_filter: @attribute_filter,
         )
 
-        patterns = @patterns
+        patterns = @patterns || store.keys
         env = RBS::Environment.new
-        merge = true
+        merge = false
         owners_included = []
         RBS::Prototype::Runtime.new(
           patterns: patterns,
