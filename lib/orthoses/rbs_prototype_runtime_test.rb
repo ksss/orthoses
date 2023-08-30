@@ -20,7 +20,7 @@ module RBSPrototypeRuntimeTest
   def test_runtime(t)
     store = Orthoses::RBSPrototypeRuntime.new(
       -> () { Orthoses::Utils.new_store },
-      patterns: ['RBSPrototypeRuntimeTest::*']
+      patterns: ['RBSPrototypeRuntimeTest::T']
     ).call
 
     actual = store.map { |n, c| c.to_rbs }.join("\n")
@@ -28,14 +28,14 @@ module RBSPrototypeRuntimeTest
       module RBSPrototypeRuntimeTest
       end
 
+      module RBSPrototypeRuntimeTest::T::M
+      end
+
       class RBSPrototypeRuntimeTest::T
         include RBSPrototypeRuntimeTest::T::M
         def m: (untyped a) -> untyped
         alias mm m
         CONST: Integer
-      end
-
-      module RBSPrototypeRuntimeTest::T::M
       end
     RBS
     unless expect == actual

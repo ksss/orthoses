@@ -58,8 +58,12 @@ module Orthoses
           content = Content.new(name: name)
           content.comment = m_entry.primary.decl.comment&.string&.gsub(/^/, "# ")
           content.header = header_builder.build(entry: m_entry, name_hint: name)
-          decls_to_lines(m_entry.decls.map(&:decl)).each do |line|
+          decls = m_entry.decls.map(&:decl)
+          decls_to_lines(decls).each do |line|
             content << line
+          end
+          detect_mixin_and_build_content(decls).each do |mixin_content|
+            yield mixin_content
           end
           yield content
         end
@@ -88,6 +92,14 @@ module Orthoses
             if d.decl.type_params.empty?
               d.decl.type_params.replace(tmp_primary_d.decl.type_params)
             end
+          end
+        end
+      end
+
+      def detect_mixin_and_build_content(decls)
+        decls.flat_map do |decl|
+          decl.members.grep(RBS::AST::Members::Mixin).map do |decl|
+            Content.new(name: decl.name.relative!.to_s)
           end
         end
       end

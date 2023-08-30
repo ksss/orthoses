@@ -17,6 +17,7 @@ class Orthoses::Content::Environment
   #     class Array # <= RBS::GenericParameterMismatchError
   #     end
   private def avoid_generic_parameter_mismatch_error: () -> untyped
+  private def detect_mixin_and_build_content: (untyped decls) -> untyped
   private def decls_to_lines: (untyped decls) -> untyped
   type method_definition_filter = ^(RBS::AST::Members::MethodDefinition) -> boolish
   type alias_filter = ^(RBS::AST::Members::Alias) -> boolish
