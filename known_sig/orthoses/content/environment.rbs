@@ -20,7 +20,7 @@ module Orthoses
         ?mixin_filter: mixin_filter?,
         ?attribute_filter: attribute_filter?
       ) -> void
-      def <<: (RBS::AST::Declarations::t decl) -> RBS::Environment
+      def <<: (RBS::AST::Declarations::t decl) -> self
       def write_to: (store: Orthoses::store) -> void
       def each: () { (Orthoses::Content) -> void } -> void
     end

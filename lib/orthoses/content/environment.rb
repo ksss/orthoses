@@ -33,10 +33,14 @@ module Orthoses
       end
 
       def <<(decl)
-        @load_env << decl
-        @known_env << decl
-      rescue RBS::DuplicatedDeclarationError => err
-        Orthoses.logger.warn(err.inspect)
+        begin
+          @load_env << decl
+          @known_env << decl
+        rescue RBS::DuplicatedDeclarationError => err
+          Orthoses.logger.warn(err.inspect)
+        end
+
+        self
       end
 
       def write_to(store:)
