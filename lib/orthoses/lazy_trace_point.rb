@@ -32,7 +32,8 @@ module Orthoses
     end
     ::Module.prepend MethodAddedHook
 
-    module SignletonMethodAddedHook
+    class ::BasicObject
+      undef singleton_method_added
       def singleton_method_added(id)
         begin
           if h = SINGLETON_METHOD_ADDED_HOOKS[id]
@@ -42,10 +43,8 @@ module Orthoses
           end
         rescue TypeError => e
         end
-        super
       end
     end
-    ::BasicObject.prepend SignletonMethodAddedHook
 
     def enable(target: nil, &block)
       return super unless target.kind_of?(String)
