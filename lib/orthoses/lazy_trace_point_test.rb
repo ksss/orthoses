@@ -123,4 +123,11 @@ module LazyTracePointTest
       t.error("expect Orthoses::LazyTracePoint instance, but got #{called[1].inspect}")
     end
   end
+
+  # https://bugs.ruby-lang.org/issues/19833
+  def test_19833(t)
+    unless BasicObject.superclass.nil?
+      t.error("Should support https://bugs.ruby-lang.org/issues/19833")
+    end
+  end
 end
