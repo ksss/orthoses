@@ -115,15 +115,15 @@ module Orthoses
     def build_super_class(val)
       return nil unless val.superclass && val.superclass != Object
 
+      super_module_name = Utils.module_name(val.superclass)
+      return nil unless super_module_name
+
       begin
         # check private const
-        eval(val.superclass.to_s)
+        eval("::#{val.superclass.to_s}")
       rescue NameError
         return nil
       end
-
-      super_module_name = Utils.module_name(val.superclass)
-      return nil unless super_module_name
 
       # https://github.com/ruby/rbs/pull/977
       return nil unless super_module_name != "Random::Base"
