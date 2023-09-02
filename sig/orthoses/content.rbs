@@ -21,6 +21,8 @@ class Orthoses::Content
   private def decl_to_lines: (untyped decl) -> untyped
   private def uniqed_body_string: () -> String
   private def uniqed_body_decl: () -> RBS::AST::Declarations::t
+  private def escaped_rbs: () -> untyped
+  private def parse: (untyped rbs) -> untyped
   private def temporary_type_params: (untyped name) -> untyped
   private def type_params: (untyped name) -> untyped
   attr_reader name: String
