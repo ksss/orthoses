@@ -165,11 +165,12 @@ module Orthoses
     def uniqed_body_decl
       parsed_decls = begin
         parse(original_rbs)
-      rescue RBS::ParsingError
+      rescue RBS::ParsingError => e
         begin
           # retry with escape
-          Orthoses.logger.warn "Try to parse original rbs"
-          Orthoses.logger.warn "```rbs\n#{original_rbs}```"
+          Orthoses.logger.debug "Try to parse original rbs but ParsingError"
+          Orthoses.logger.debug e.message
+          Orthoses.logger.debug "```rbs\n#{original_rbs}```"
           parse(escaped_rbs)
         rescue RBS::ParsingError
           # giveup
