@@ -18,6 +18,8 @@ module ContentTest
   end
   class SuperClassIsNoName < Class.new
   end
+  class Escape
+  end
 
   def test_to_rbs(t)
     store = Orthoses::Utils.new_store
@@ -27,6 +29,12 @@ module ContentTest
     store["ContentTest::SuperClassIsNoName"]
     store["Array"]
     store["_Foo"]
+    store["ContentTest::Escape"] << "def a-b: () -> void"
+    store["ContentTest::Escape"] << "def self.あいうえお: () -> void"
+    store["ContentTest::Escape"] << "def self?.a_[]: () -> void"
+    # store["ContentTest::Escape"] << "alias b-a a-b"
+    # store["ContentTest::Escape"] << "alias self.b-a self.a-b"
+
     store["_Bar"].header = "interface _Bar[T]"
 
     actual = store.map { |_, v| v.to_rbs }.join("\n")
@@ -49,6 +57,12 @@ module ContentTest
       end
 
       interface _Foo
+      end
+
+      class ContentTest::Escape
+        def `a-b`: () -> void
+        def self.`あいうえお`: () -> void
+        def self?.`a_[]`: () -> void
       end
 
       interface _Bar[T]
