@@ -144,6 +144,7 @@ module Orthoses
         @outs
       end
     end
+    private_constant :ArrayIO
 
     def decl_to_lines(decl)
       out = ArrayIO.new
@@ -162,11 +163,22 @@ module Orthoses
     end
 
     def uniqed_body_decl
-      buffer = RBS::Buffer.new(
-        name: "orthoses/content.rb",
-        content: original_rbs
-      )
-      _, _, parsed_decls = RBS::Parser.parse_signature(buffer)
+      parsed_decls = begin
+        parse(original_rbs)
+      rescue RBS::ParsingError
+        begin
+          # retry with escape
+          Orthoses.logger.warn "Try to parse original rbs"
+          Orthoses.logger.warn "```rbs\n#{original_rbs}```"
+          parse(escaped_rbs)
+        rescue RBS::ParsingError
+          # giveup
+          Orthoses.logger.error "Try to parse escaped rbs"
+          Orthoses.logger.error "```rbs\n#{escaped_rbs}```"
+          raise
+        end
+      end
+
       unless parsed_decls.length == 1
         raise "expect decls.length == 1, but got #{parsed_decls.length}"
       end
@@ -174,9 +186,20 @@ module Orthoses
       parsed_decl.tap do |decl|
         DuplicationChecker.new(decl).update_decl
       end
-    rescue RBS::ParsingError
-      Orthoses.logger.error "```rbs\n#{original_rbs}```"
-      raise
+    end
+
+    def escaped_rbs
+      rbs = original_rbs
+      rbs.gsub!(/def\s*(self\??\.)?(.+?):/) { "def #{$1}`#{$2}`:" }
+      rbs.gsub!(/alias\s*(self\.)?(.+?)\s+(self\.)?(.+)$/) { "alias #{$1}`#{$2}` #{$3}`#{$4}`" }
+      rbs.gsub!(/attr_(reader|writer|accessor)\s*(self\.)?(.+)\s*:\s*(.+)$/) { "attr_#{$1} #{$2}`#{$3}`: #{$4}" }
+      rbs
+    end
+
+    def parse(rbs)
+      rbs.then { |wraped| RBS::Buffer.new(name: "orthoses/content.rb", content: rbs) }
+        .then { |buffer| RBS::Parser.parse_signature(buffer) }
+        .then { |_, _, decls| decls }
     end
 
     def temporary_type_params(name)
