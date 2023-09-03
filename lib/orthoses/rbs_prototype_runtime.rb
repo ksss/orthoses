@@ -32,7 +32,7 @@ module Orthoses
         )
 
         patterns = @patterns || store.keys
-        env = RBS::Environment.new
+        env = Utils.rbs_environment
         merge = false
         owners_included = []
         RBS::Prototype::Runtime.new(
