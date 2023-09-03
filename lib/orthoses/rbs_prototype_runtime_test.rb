@@ -11,6 +11,8 @@ module RBSPrototypeRuntimeTest
     end
     include M
     CONST = 1
+    HASH = {}
+    ARRAY = []
     def m(a)
       2
     end
@@ -35,7 +37,9 @@ module RBSPrototypeRuntimeTest
         include RBSPrototypeRuntimeTest::T::M
         def m: (untyped a) -> untyped
         alias mm m
+        ARRAY: Array[untyped]
         CONST: Integer
+        HASH: Hash[untyped, untyped]
       end
     RBS
     unless expect == actual
