@@ -32,6 +32,7 @@ module ContentTest
     store["ContentTest::Escape"] << "def a-b: () -> void"
     store["ContentTest::Escape"] << "def self.あいうえお: () -> void"
     store["ContentTest::Escape"] << "def self?.a_[]: () -> void"
+    store["ContentTest::Escape"] << "def alias_method: () -> void"
     # store["ContentTest::Escape"] << "alias b-a a-b"
     # store["ContentTest::Escape"] << "alias self.b-a self.a-b"
 
@@ -63,6 +64,7 @@ module ContentTest
         def `a-b`: () -> void
         def self.`あいうえお`: () -> void
         def self?.`a_[]`: () -> void
+        def alias_method: () -> void
       end
 
       interface _Bar[T]

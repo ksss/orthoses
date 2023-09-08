@@ -191,9 +191,9 @@ module Orthoses
 
     def escaped_rbs
       rbs = original_rbs
-      rbs.gsub!(/def\s*(self\??\.)?(.+?):/) { "def #{$1}`#{$2}`:" }
-      rbs.gsub!(/alias\s*(self\.)?(.+?)\s+(self\.)?(.+)$/) { "alias #{$1}`#{$2}` #{$3}`#{$4}`" }
-      rbs.gsub!(/attr_(reader|writer|accessor)\s*(self\.)?(.+)\s*:\s*(.+)$/) { "attr_#{$1} #{$2}`#{$3}`: #{$4}" }
+      rbs.gsub!(/def\s+(self\??\.)?(.+?):/) { "def #{$1}`#{$2}`:" }
+      rbs.gsub!(/alias\s+(self\.)?(.+?)\s+(self\.)?(.+)$/) { "alias #{$1}`#{$2}` #{$3}`#{$4}`" }
+      rbs.gsub!(/attr_(reader|writer|accessor)\s+(self\.)?(.+)\s*:\s*(.+)$/) { "attr_#{$1} #{$2}`#{$3}`: #{$4}" }
       rbs
     end
 
