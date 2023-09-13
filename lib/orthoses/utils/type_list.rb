@@ -8,19 +8,15 @@ module Orthoses
       NIL_TYPE = ::RBS::Types::Bases::Nil.new(location: nil)
       TRUE_TYPE = ::RBS::Types::Literal.new(literal: true, location: nil)
       FALSE_TYPE = ::RBS::Types::Literal.new(literal: false, location: nil)
+      BOOL_TYPE = ::RBS::Types::Bases::Bool.new(location: nil)
 
       def initialize(types)
-        @types = types.map do |type|
-          case type
-          when String
-            ::RBS::Parser.parse_type(type)
-          else
-            type
-          end
-        end
+        @types = types
       end
 
       def inject
+        normalize
+
         uniqed = @types.uniq
 
         return UNTYPED if uniqed.find { |t| t == UNTYPED }
@@ -28,7 +24,7 @@ module Orthoses
         has_true = uniqed.delete(TRUE_TYPE)
         has_false = uniqed.delete(FALSE_TYPE)
         if has_true || has_false
-          uniqed << ::RBS::Types::Bases::Bool.new(location: nil)
+          uniqed << BOOL_TYPE
         end
 
         return UNTYPED if uniqed.empty?
@@ -67,6 +63,37 @@ module Orthoses
         end
 
         injected
+      end
+
+      private
+
+      def normalize
+        @types = @types.map do |type|
+          case type
+          when String
+            ::RBS::Parser.parse_type(type)
+          else
+            type
+          end
+        end
+
+        @types = @types.map do |rbs_type|
+          case rbs_type
+          when ::RBS::Types::ClassInstance
+            case rbs_type.name.to_s
+            when 'TrueClass', '::TrueClass', 'FalseClass', '::FalseClass'
+              BOOL_TYPE
+            when 'NilClass', '::NilClass'
+              NIL_TYPE
+            else
+              rbs_type
+            end
+          else
+            rbs_type
+          end
+        end
+
+        self
       end
     end
   end
