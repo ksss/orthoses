@@ -136,8 +136,8 @@ module Orthoses
         @outs = []
       end
 
-      def puts(line)
-        @outs << line
+      def puts(line = nil)
+        @outs << (line || '')
       end
 
       def to_a
