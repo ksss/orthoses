@@ -178,8 +178,10 @@ module Orthoses
           TypeName(name).absolute!
         when Module
           module_to_type_name(name).absolute!
+        when RBS::TypeName
+          name.absolute!
         else
-          raise TypeError
+          raise TypeError, "#{name.class} is not supported yet"
         end
       rbs_environment.class_decls[type_name]&.then do |entry|
         entry.type_params
