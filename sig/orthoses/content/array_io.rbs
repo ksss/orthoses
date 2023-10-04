@@ -3,6 +3,6 @@
 class Orthoses::Content::ArrayIO
   @outs: untyped
   def initialize: () -> void
-  def puts: (untyped line) -> untyped
+  def puts: (?untyped? line) -> untyped
   def to_a: () -> untyped
 end
