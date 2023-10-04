@@ -1,7 +1,11 @@
 module Orthoses
   class RBSPrototypeRuntime
+    interface _Call
+      def call: () -> (Array[String] | String)
+    end
+
     @loader: Orthoses::_Call
-    @patterns: Array[_ToS]?
+    @patterns: Array[_ToS & Object | _Call & Object]?
     @method_definition_filter: Orthoses::Content::Environment::method_definition_filter?
     @alias_filter: Orthoses::Content::Environment::alias_filter?
     @constant_filter: Orthoses::Content::Environment::constant_filter?
@@ -10,7 +14,7 @@ module Orthoses
 
     def initialize: (
       Orthoses::_Call loader,
-      ?patterns: Array[_ToS],
+      ?patterns: Array[_ToS & Object | _Call & Object]?,
       ?method_definition_filter: Orthoses::Content::Environment::method_definition_filter?,
       ?alias_filter: Orthoses::Content::Environment::alias_filter?,
       ?constant_filter: Orthoses::Content::Environment::constant_filter?,

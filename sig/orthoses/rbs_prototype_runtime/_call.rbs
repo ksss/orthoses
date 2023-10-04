@@ -1,0 +1,5 @@
+# THIS IS GENERATED CODE from `$ rake sig`
+
+interface Orthoses::RBSPrototypeRuntime::_Call
+  def call: () -> (Array[String] | String)
+end

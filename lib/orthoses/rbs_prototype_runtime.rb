@@ -31,7 +31,20 @@ module Orthoses
           attribute_filter: @attribute_filter,
         )
 
-        patterns = @patterns || store.keys
+        patterns = @patterns
+
+        patterns =
+          if patterns
+            patterns.flat_map do |pattern|
+              if pattern.respond_to?(:call)
+                pattern.call
+              else
+                pattern
+              end
+            end
+          else
+            store.keys
+          end
         env = Utils.rbs_environment
         merge = false
         owners_included = []
