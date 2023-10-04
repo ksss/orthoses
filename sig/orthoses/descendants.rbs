@@ -1,0 +1,10 @@
+# THIS IS GENERATED CODE from `$ rake sig`
+
+# use Orthoses::Descendants, of: 'ApplicationJob'
+class Orthoses::Descendants
+  @loader: untyped
+  @of: untyped
+  def initialize: (untyped loader, of: untyped) -> void
+  def call: () -> untyped
+  private def descendants_of: (untyped klass) -> untyped
+end
