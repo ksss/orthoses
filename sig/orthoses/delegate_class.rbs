@@ -6,3 +6,7 @@ class Orthoses::DelegateClass
   def call: () -> Orthoses::store
   def temporary_type_params: (untyped name) -> untyped
 end
+
+module Orthoses::DelegateClass::Hook
+  def inherited: (untyped subclass) -> untyped
+end

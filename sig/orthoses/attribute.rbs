@@ -6,3 +6,13 @@ class Orthoses::Attribute
   def call: () -> Orthoses::store
   CALL_GRAPH: Hash[untyped, untyped]
 end
+
+module Orthoses::Attribute::Hook
+  def attr: (*untyped names) -> untyped
+
+  def attr_accessor: (*untyped names) -> untyped
+
+  def attr_reader: (*untyped names) -> untyped
+
+  def attr_writer: (*untyped names) -> untyped
+end

@@ -8,3 +8,11 @@ class Orthoses::Mixin
   private def type_params_sig: (untyped mod) -> String
   CALL_GRAPH: Hash[untyped, [ :include | :extend | :prepend, untyped ]]
 end
+
+module Orthoses::Mixin::Hook : Module
+  def include: (*untyped modules) -> untyped
+
+  def extend: (*untyped modules) -> untyped
+
+  def prepend: (*untyped modules) -> untyped
+end

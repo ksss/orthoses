@@ -5,3 +5,28 @@ module Orthoses::Outputable
 
   def call: () -> untyped
 end
+
+# AvoidRecursiveAncestorError is an internal middleware
+# It's using on orthoses/outputable.rb
+class Orthoses::Outputable::AvoidRecursiveAncestorError
+  @loader: Orthoses::_Call
+  def initialize: (Orthoses::_Call loader) -> void
+  def call: () -> Orthoses::store
+  private def collect_mixin_recursive: (untyped store, untyped name, untyped mixins) -> untyped
+end
+
+# Constantizable is an internal middleware
+# It's using on orthoses/outputable.rb
+class Orthoses::Outputable::ConstantizableFilter
+  @loader: untyped
+  def initialize: (untyped loader) -> void
+  def call: () -> untyped
+end
+
+# UniqContentBody is an internal middleware
+# It's using on orthoses/outputable.rb
+class Orthoses::Outputable::UniqContentBody
+  @loader: untyped
+  def initialize: (untyped loader) -> void
+  def call: () -> untyped
+end

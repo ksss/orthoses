@@ -21,3 +21,8 @@ class Orthoses::LazyTracePoint < ::TracePoint
   SINGLETON_METHOD_ADDED_HOOKS: Hash[untyped, untyped]
   UNBOUND_NAME_METHOD: UnboundMethod
 end
+
+# for TracePoint target
+module Orthoses::LazyTracePoint::MethodAddedHook
+  def method_added: (untyped id) -> untyped
+end

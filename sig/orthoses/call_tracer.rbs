@@ -7,3 +7,40 @@ class Orthoses::CallTracer
   def trace: (Method | UnboundMethod) ?{ () -> untyped } -> untyped
   attr_accessor captures: Array[Capture]
 end
+
+module Orthoses::CallTracer::Capturable
+  def build_capture: (untyped tp) -> untyped
+
+  private def build_method: (untyped tp) -> untyped
+
+  private def build_argument: (untyped tp) -> untyped
+end
+
+module Orthoses::CallTracer::Capturable::ExtractRestParameters
+  def __extract_rest_parameters__: (*untyped rest, **untyped kw_rest) { () -> untyped } -> { :* => untyped, :** => untyped, :& => untyped, :"..." => ::Array[untyped] }
+end
+
+class Orthoses::CallTracer::Capture < ::Struct[untyped]
+  def method: () -> Method
+  def argument: () -> Hash[Symbol, untyped]
+end
+
+# CallTracer::Lazy is possible to perform a trace
+# equivalent to CallTracer before method is defined.
+#     scope = CallTracerLazy.new
+#     scope.trace("ActiveRecord::Base#scope") do
+#       require 'active_record/all'
+#       @loader.call
+#     end
+#     scope.captures.each do |capture|
+#       capture.argument[:name]
+#       capture.argument[:body]
+#       capture.argument[:block]
+#     end
+class Orthoses::CallTracer::Lazy
+  @captures: untyped
+  @lazy_trace_point: untyped
+  def initialize: () -> void
+  def trace: (String name) ?{ () -> untyped } -> untyped
+  attr_reader captures: Array[Orthoses::CallTracer::Capture]
+end

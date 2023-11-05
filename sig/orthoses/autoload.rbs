@@ -5,3 +5,7 @@ class Orthoses::Autoload
   def initialize: (untyped loader) -> void
   def call: () -> untyped
 end
+
+module Orthoses::Autoload::Hook
+  def autoload: (untyped name, untyped path) -> untyped
+end

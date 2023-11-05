@@ -30,3 +30,68 @@ class Orthoses::Content
   attr_accessor header: String?
   attr_accessor comment: String?
 end
+
+class Orthoses::Content::ArrayIO
+  @outs: untyped
+  def initialize: () -> void
+  def puts: (?untyped? line) -> untyped
+  def to_a: () -> untyped
+end
+
+# Check and drop duplication method, const etc...
+class Orthoses::Content::DuplicationChecker
+  @decl: untyped
+  @known_env: untyped
+  @builder: untyped
+  @uniq_map: untyped
+  def initialize: (untyped decl, ?env: untyped?) -> void
+  def update_decl: () -> (nil | untyped)
+  private def uniq_members: () -> untyped
+  private def drop_by_singleton_instance: () -> untyped
+  private def drop_set_method_definition: () -> untyped
+  private def drop_known_method_definition: () -> untyped
+  private def drop_known_method_definition_recur: (untyped d) -> untyped
+  private def drop_known_const_definition: () -> untyped
+  private def member_key: (untyped member) -> untyped
+end
+
+class Orthoses::Content::Environment
+  @load_env: RBS::Environment
+  @known_env: RBS::Environment
+  @method_definition_filter: method_definition_filter?
+  @alias_filter: alias_filter?
+  @constant_filter: constant_filter?
+  @mixin_filter: mixin_filter?
+  @attribute_filter: attribute_filter?
+  def self.load_from_paths: (untyped paths) -> untyped
+  def initialize: (?method_definition_filter: method_definition_filter?, ?alias_filter: alias_filter?, ?constant_filter: constant_filter?, ?mixin_filter: mixin_filter?, ?attribute_filter: attribute_filter?) -> void
+  def <<: (RBS::AST::Declarations::t decl) -> self
+  def write_to: (store: Orthoses::store) -> void
+  def each: () { (Orthoses::Content) -> void } -> void
+  # Avoid `RBS::GenericParameterMismatchError` from like rbs_prototype_rb
+  #     class Array # <= RBS::GenericParameterMismatchError
+  #     end
+  private def avoid_generic_parameter_mismatch_error: () -> untyped
+  private def detect_mixin_and_build_content: (untyped decls) -> untyped
+  private def decls_to_lines: (untyped decls) -> untyped
+  type method_definition_filter = ^(RBS::AST::Members::MethodDefinition) -> boolish
+  type alias_filter = ^(RBS::AST::Members::Alias) -> boolish
+  type constant_filter = ^(RBS::AST::Declarations::Constant) -> boolish
+  type mixin_filter = ^(RBS::AST::Members::Mixin) -> boolish
+  type attribute_filter = ^(RBS::AST::Members::Attribute) -> boolish
+end
+
+class Orthoses::Content::HeaderBuilder
+  @env: untyped
+  @resolver: untyped
+  def initialize: (env: untyped) -> void
+  def build: (entry: untyped, ?name_hint: untyped?) -> untyped
+  private def build_module: (entry: untyped, ?name_hint: untyped?) -> ::String
+  private def build_class: (entry: untyped, ?name_hint: untyped?) -> ::String
+  private def build_super_class: (untyped primary) -> (nil | untyped)
+  private def build_interface: (entry: untyped, ?name_hint: untyped?) -> ::String
+  private def build_context: (entry: untyped) -> untyped
+  private def name_and_params: (untyped name, untyped params) -> ::String
+  private def name_and_args: (untyped name, untyped args) -> (::String | nil)
+  include RBS::Environment::ContextUtil
+end

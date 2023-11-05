@@ -19,3 +19,7 @@ class Orthoses::Builder
   def to_loader: () -> untyped
   def call: () -> Orthoses::store
 end
+
+module Orthoses::Builder::CallLogable
+  def call: () -> untyped
+end

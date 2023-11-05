@@ -5,3 +5,17 @@ class Orthoses::MissingName
   def initialize: (untyped loader) -> void
   def call: () -> untyped
 end
+
+class Orthoses::MissingName::MissingClass
+  @store: untyped
+  def initialize: (untyped store) -> void
+  def call: () -> untyped
+  private def recur: (untyped content) -> untyped
+end
+
+class Orthoses::MissingName::MissingModule
+  @store: untyped
+  def initialize: (untyped store) -> void
+  def call: () -> untyped
+  private def split_name: (untyped key_name) -> untyped
+end

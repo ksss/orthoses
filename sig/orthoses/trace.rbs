@@ -6,3 +6,45 @@ class Orthoses::Trace
   def initialize: (untyped loader, patterns: untyped) -> void
   def call: () -> untyped
 end
+
+class Orthoses::Trace::Attribute
+  @loader: untyped
+  @patterns: untyped
+  @captured_dict: untyped
+  def initialize: (untyped loader, patterns: untyped) -> void
+  def call: () -> untyped
+  private def build_trace_hook: () -> untyped
+  include Orthoses::Trace::Targetable
+end
+
+module Orthoses::Trace::Attribute::Hook
+  def attr: (*untyped names) -> untyped
+
+  def attr_accessor: (*untyped names) -> untyped
+
+  def attr_reader: (*untyped names) -> untyped
+
+  def attr_writer: (*untyped names) -> untyped
+end
+
+class Orthoses::Trace::Method
+  @loader: untyped
+  @patterns: untyped
+  @stack: untyped
+  @args_return_map: untyped
+  @alias_map: untyped
+  def initialize: (untyped loader, patterns: untyped) -> void
+  def call: () -> untyped
+  private def build_trace_point: () -> untyped
+  private def build_members: () -> untyped
+  private def build_method_definitions: () -> untyped
+  private def build_aliases: () -> untyped
+  include Orthoses::Trace::Targetable
+end
+
+class Orthoses::Trace::Method::Info < ::Struct[untyped]
+end
+
+module Orthoses::Trace::Targetable
+  def target?: (untyped name) -> untyped
+end
