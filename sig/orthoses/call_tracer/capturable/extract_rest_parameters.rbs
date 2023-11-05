@@ -1,0 +1,5 @@
+# THIS IS GENERATED CODE from `$ rake sig`
+
+module Orthoses::CallTracer::Capturable::ExtractRestParameters
+  def __extract_rest_parameters__: (*untyped rest, **untyped kw_rest) { () -> untyped } -> { :* => untyped, :** => untyped, :& => untyped, :"..." => ::Array[untyped] }
+end
