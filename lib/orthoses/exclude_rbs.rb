@@ -28,7 +28,7 @@ module Orthoses
 
     def add_signature_as_known(rbs)
       buffer, directives, decls = ::RBS::Parser.parse_signature(rbs)
-      Utils.rbs_environment.add_signature(buffer:, directives:, decls:)
+      Utils.rbs_environment.add_signature(buffer: buffer, directives: directives, decls: decls)
     end
   end
 end
