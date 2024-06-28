@@ -1,13 +1,7 @@
 ---
-sources:
-- type: git
-  name: ruby/gem_rbs_collection
-  revision: 5666e737d2b27a8425b4e3855c1a38cae54989f7
-  remote: https://github.com/ruby/gem_rbs_collection.git
-  repo_dir: gems
 path: ".gem_rbs_collection"
 gems:
-- name: abbrev
+- name: fileutils
   version: '0'
   source:
     type: stdlib
@@ -35,8 +29,16 @@ gems:
   version: '0'
   source:
     type: stdlib
+- name: rake
+  version: '13.0'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: 436720a4e366323a5a5bf22d71abb9943663edd8
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
 - name: rbs
-  version: 3.2.1
+  version: 3.5.1
   source:
     type: rubygems
 - name: rdoc
