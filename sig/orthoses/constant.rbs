@@ -3,7 +3,7 @@
 class Orthoses::Constant
   @loader: Orthoses::_Call
   @strict: bool
-  @if: ^(Module mod, Symbol const, untyped val, String rbs) -> boolish?
+  @if: (^(Module mod, Symbol const, untyped val, String rbs) -> boolish)?
   @on_error: ^(Orthoses::ConstLoadError) -> void | nil
   def initialize: (Orthoses::_Call loader, ?strict: bool, ?if: ^(Module, Symbol, untyped) -> boolish | nil, ?on_error: ^(Orthoses::ConstLoadError) -> void | nil) -> void
   def call: () -> Orthoses::store

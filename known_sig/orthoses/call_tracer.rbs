@@ -1,5 +1,10 @@
 module Orthoses
   class CallTracer
+    module Capturable
+      module ExtractRestParameters
+        def __extract_rest_parameters__: (*untyped rest, **untyped kw_rest) { (*untyped, **untyped) -> untyped } -> untyped
+      end
+    end
     class Capture < ::Struct[untyped]
       def method: () -> Method
       def argument: () -> Hash[Symbol, untyped]

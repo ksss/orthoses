@@ -17,7 +17,7 @@ module Orthoses::CallTracer::Capturable
 end
 
 module Orthoses::CallTracer::Capturable::ExtractRestParameters
-  def __extract_rest_parameters__: (*untyped rest, **untyped kw_rest) { () -> untyped } -> { :* => untyped, :** => untyped, :& => untyped, :"..." => ::Array[untyped] }
+  def __extract_rest_parameters__: (*untyped rest, **untyped kw_rest) { (*untyped, **untyped) -> untyped } -> untyped
 end
 
 class Orthoses::CallTracer::Capture < ::Struct[untyped]
