@@ -1,0 +1,13 @@
+# THIS IS GENERATED CODE from `$ rake sig`
+
+# Exclude RBS from output.
+# @example
+#   use Orthoses::ExcludeRBS, paths: ['hand-written.rbs']
+class Orthoses::ExcludeRBS
+  @loader: untyped
+  @paths: untyped
+  @rbs: untyped
+  def initialize: (untyped loader, ?paths: untyped?, ?rbs: untyped?) -> void
+  def call: () -> untyped
+  def add_signature_as_known: (untyped rbs) -> untyped
+end
