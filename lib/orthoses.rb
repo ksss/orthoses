@@ -14,6 +14,7 @@ module Orthoses
   autoload :CreateFileByName, 'orthoses/create_file_by_name'
   autoload :DelegateClass, 'orthoses/delegate_class'
   autoload :Descendants, 'orthoses/descendants'
+  autoload :ExcludeRBS, 'orthoses/exclude_rbs'
   autoload :Filter, 'orthoses/filter'
   autoload :Mixin, 'orthoses/mixin'
   autoload :LazyTracePoint, 'orthoses/lazy_trace_point'

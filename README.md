@@ -175,14 +175,19 @@ Force load const defined by `autoload`.
 
 Sort signatures by class/module.
 
-## Orthoses::Trace
+### Orthoses::Trace
 
 Trace the argument and return value objects when the method is actually called and determine the type.
 
-## Orthoses::MissingName
+### Orthoses::MissingName
 
 Completes undefined class/module names.
 If it is unknown whether it is a class or a module, it is defined as an empty module, and if it is a superclass, it is defined as an empty class.
+
+### Orthoses::ExcludeRBS
+
+You can specify that the specified RBS should not be intentionally generated.
+This is useful when you want to exclude handwritten RBS.
 
 ## Development
 
