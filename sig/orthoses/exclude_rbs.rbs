@@ -2,12 +2,12 @@
 
 # Exclude RBS from output.
 # @example
-#   use Orthoses::ExcludeRBS, paths: ['hand-written.rbs']
+#   use Orthoses::ExcludeRBS, paths: Dir['sig/hand-written/**/*.rbs']
 class Orthoses::ExcludeRBS
   @loader: untyped
   @paths: untyped
   @rbs: untyped
   def initialize: (untyped loader, ?paths: untyped?, ?rbs: untyped?) -> void
   def call: () -> untyped
-  def add_signature_as_known: (untyped rbs) -> untyped
+  def add_signature_to_known_env: (untyped rbs) -> untyped
 end
