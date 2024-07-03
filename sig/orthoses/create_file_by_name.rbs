@@ -1,5 +1,10 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
+# @param to [String, nil]
+# @param header [String, nil]
+# @param if [Proc, nil]
+# @param depth [Integer, Hash{String => Integer}, nil]
+# @param rmtree [Boolean]
 class Orthoses::CreateFileByName
   @loader: Orthoses::_Call
   @to: untyped
@@ -7,6 +12,7 @@ class Orthoses::CreateFileByName
   @depth: untyped
   @rmtree: untyped
   @if: untyped
-  def initialize: (Orthoses::_Call loader, to: String, ?header: String?, ?depth: Integer?, ?rmtree: boolish) -> void
+  def initialize: (Orthoses::_Call loader, to: String, ?header: String?, ?depth: Integer | Hash[String, Integer] | nil, ?rmtree: boolish) -> void
   def call: () -> Orthoses::store
+  def extract: (untyped name) -> untyped
 end
