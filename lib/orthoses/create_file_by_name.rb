@@ -3,6 +3,11 @@
 require 'orthoses/outputable'
 
 module Orthoses
+  # @param to [String, nil]
+  # @param header [String, nil]
+  # @param if [Proc, nil]
+  # @param depth [Integer, Hash{String => Integer}, nil]
+  # @param rmtree [Boolean]
   class CreateFileByName
     prepend Outputable
 
@@ -43,8 +48,7 @@ module Orthoses
         @if.nil? || @if.call(name, content)
       end
       grouped = store.group_by do |name, _|
-        splitted = name.to_s.split('::')
-        (@depth ? splitted[0, @depth] : splitted).join('::')
+        extract(name)
       end
 
       grouped.each do |group_name, group|
@@ -61,6 +65,25 @@ module Orthoses
           end.join("\n")
           out.puts contents
           Orthoses.logger.info("Generate file to #{file_path.to_s}")
+        end
+      end
+    end
+
+    def extract(name)
+      case @depth
+      when nil
+        name.to_s
+      when Integer
+        name.split('::')[0, @depth].join('::')
+      when Hash
+        found_key, found_index = @depth.find do |n, _|
+          name.start_with?(n)
+        end
+        case found_index
+        when nil
+          name.to_s
+        else
+          name.split('::')[0, found_index].join('::')
         end
       end
     end
