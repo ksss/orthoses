@@ -36,9 +36,8 @@ module Orthoses
           case tp.event
           when :call
             if tp.defined_class.singleton_class?
-              # e.g. `Minitest::Spec::DSL#to_s`` may return `nil` with `#to_s`
-              m = tp.defined_class.to_s&.match(/#<Class:([\w:]+)>/) or next
-              mod_name = m[1] or next
+              attached_object = tp.defined_class.attached_object
+              mod_name = (attached_object&.is_a?(Module) && attached_object.name) or next
               kind = :singleton
             else
               mod_name = Utils.module_name(tp.defined_class) or next
