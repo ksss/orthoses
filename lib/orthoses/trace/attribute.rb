@@ -44,8 +44,8 @@ module Orthoses
           end
 
         @captured_dict.each do |mod_name, captures|
-          captures.each do |(kind, prefix, name), types|
-            injected = Utils::TypeList.new(types).inject
+          captures.sort.each do |(kind, prefix, name), types|
+            injected = Utils::TypeList.new(types.sort).inject
             store[mod_name] << "#{kind} #{prefix}#{name}: #{injected}"
           end
         end

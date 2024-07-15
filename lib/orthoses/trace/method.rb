@@ -77,9 +77,9 @@ module Orthoses
       def build_method_definitions
         untyped = ::RBS::Types::Bases::Any.new(location: nil)
 
-        @args_return_map.map do |(mod_name, kind, visibility, method_id), type_samples|
+        @args_return_map.sort_by {|key, _| key.join }.map do |(mod_name, kind, visibility, method_id), type_samples|
           type_samples.uniq!
-          method_types = type_samples.map do |(op_name_types, return_type)|
+          method_types = type_samples.sort.map do |(op_name_types, return_type)|
             required_positionals = []
             optional_positionals = []
             rest = nil

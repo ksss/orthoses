@@ -12,6 +12,11 @@ module TraceAttributeTest
         attr_accessor :attr_acce_publ
       end
 
+      class Baz
+        attr_accessor :multi_types
+        attr_accessor :other
+      end
+
       attr_accessor :attr_acce_publ
       attr_reader :attr_read_publ
       attr_writer :attr_writ_publ
@@ -20,6 +25,7 @@ module TraceAttributeTest
       end
 
       attr_accessor :attr_acce_priv
+
       private :attr_acce_priv
 
       def initialize
@@ -52,16 +58,44 @@ module TraceAttributeTest
     expect = <<~RBS
       class TraceAttributeTest::Foo
         attr_accessor attr_acce_priv: Integer
-        attr_accessor attr_acce_publ: Symbol | String
+        attr_accessor attr_acce_publ: String | Symbol
+        attr_accessor self.self_attr_acce_publ: Integer?
         attr_reader attr_read_publ: Symbol
         attr_writer attr_writ_publ: Integer
-        attr_accessor self.self_attr_acce_publ: Integer?
       end
 
       class TraceAttributeTest::Foo::Bar
         attr_accessor attr_acce_publ: Regexp
       end
     RBS
+    unless expect == actual
+      t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
+    end
+  end
+
+  def test_order(t)
+    store1 = Orthoses::Trace::Attribute.new(->{
+      LOADER_ATTRIBUTE.call
+      baz = Foo::Baz.new
+      baz.other = :sym
+      baz.multi_types = 0
+      baz.multi_types = '1'
+
+      Orthoses::Utils.new_store
+    }, patterns: ['TraceAttributeTest::Foo::Baz']).call
+
+    store2 = Orthoses::Trace::Attribute.new(->{
+      LOADER_ATTRIBUTE.call
+      baz = Foo::Baz.new
+      baz.multi_types = '1'
+      baz.multi_types = 0
+      baz.other = :sym
+
+      Orthoses::Utils.new_store
+    }, patterns: ['TraceAttributeTest::Foo::Baz']).call
+
+    expect = store1.map { _2.to_rbs }.join("\n")
+    actual = store2.map { _2.to_rbs }.join("\n")
     unless expect == actual
       t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
     end
