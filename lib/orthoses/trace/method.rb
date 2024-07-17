@@ -36,8 +36,7 @@ module Orthoses
           case tp.event
           when :call
             if tp.defined_class.singleton_class?
-              attached_object = tp.defined_class.attached_object
-              mod_name = (attached_object&.is_a?(Module) && attached_object.name) or next
+              mod_name = Utils.attached_module_name(tp.defined_class) or next
               kind = :singleton
             else
               mod_name = Utils.module_name(tp.defined_class) or next

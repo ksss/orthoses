@@ -171,6 +171,17 @@ module Orthoses
       end
     end
 
+    def self.attached_module_name(mod)
+      if mod.respond_to?(:attached_object)
+        attached_object = mod.attached_object
+        (attached_object&.is_a?(Module) && attached_object.name) || nil
+      else
+        # e.g. `Minitest::Spec::DSL#to_s` may return `nil` with `#to_s`
+        m = mod.to_s&.match(/#<Class:([\w:]+)>/)
+        m && m[1]
+      end
+    end
+
     def self.known_type_params(name)
       type_name =
         case name
