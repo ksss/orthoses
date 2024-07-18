@@ -54,7 +54,13 @@ module TraceMethodTest
         end
       end
     end
+
+    class CustomClassInspect
+      def self.inspect = "it's customized"
+      def self.a = 1
+    end
   }
+
   def test_method(t)
     store = Orthoses::Trace::Method.new(->{
       LOADER_METHOD.call
@@ -94,6 +100,28 @@ module TraceMethodTest
     RBS
     unless expect == actual
       t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
+    end
+  end
+
+  if Class.instance_methods.include?(:attached_object)
+    def test_custom_inspect(t)
+      store = Orthoses::Trace::Method.new(->{
+        LOADER_METHOD.call
+
+        CustomClassInspect.a
+
+        Orthoses::Utils.new_store
+      }, patterns: ['TraceMethodTest::CustomClassInspect']).call
+
+      actual = store.map { |n, c| c.to_rbs }.join("\n")
+      expect = <<~RBS
+        class TraceMethodTest::CustomClassInspect
+          def self.a: () -> Integer
+        end
+      RBS
+      unless expect == actual
+        t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
+      end
     end
   end
 
