@@ -140,6 +140,31 @@ module TraceMethodTest
     end
   end
 
+  def test_pattern_proc(t)
+    # only non-private methods
+    patterns = ->(name, tp) { name == "TraceMethodTest::M" && !tp.self.private_methods.include?(tp.method_id) }
+    store = Orthoses::Trace::Method.new(-> {
+      LOADER_METHOD.call
+
+      m = M.new(100)
+      m.a_ten
+      m.call_priv(true)
+
+      Orthoses::Utils.new_store
+    }, patterns: patterns).call
+
+    actual = store.map { |n, c| c.to_rbs }.join("\n")
+    expect = <<~RBS
+      class TraceMethodTest::M
+        def a_ten: () -> Integer
+        def call_priv: (bool c) -> Integer
+      end
+    RBS
+    unless expect == actual
+      t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
+    end
+  end
+
   def test_raise_first(t)
     Orthoses::Trace::Method.new(->{
       raise rescue nil

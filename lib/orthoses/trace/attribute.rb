@@ -64,7 +64,7 @@ module Orthoses
             mod_name = m[1]
           end
           next unless mod_name
-          next unless target?(mod_name)
+          next unless target?(mod_name, tp1)
           is_singleton = tp1.self.singleton_class?
           prefix = is_singleton ? "self." : ""
           kind = tp1.method_id
