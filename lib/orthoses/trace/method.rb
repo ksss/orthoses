@@ -7,9 +7,10 @@ module Orthoses
       Info = Struct.new(:key, :op_name_types, :raised, keyword_init: true)
       include Targetable
 
-      def initialize(loader, patterns:)
+      def initialize(loader, patterns:, sort_union_types: true)
         @loader = loader
         @patterns = patterns
+        @sort_union_types = sort_union_types
 
         @stack = []
         @args_return_map = Hash.new { |h, k| h[k] = [] }
@@ -79,6 +80,7 @@ module Orthoses
 
         @args_return_map.map do |(mod_name, kind, visibility, method_id), type_samples|
           type_samples.uniq!
+          type_samples.sort! if @sort_union_types
           method_types = type_samples.map do |(op_name_types, return_type)|
             required_positionals = []
             optional_positionals = []

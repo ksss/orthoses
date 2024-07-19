@@ -23,9 +23,10 @@ module Orthoses
 
       include Targetable
 
-      def initialize(loader, patterns:)
+      def initialize(loader, patterns:, sort_union_types: true)
         @loader = loader
         @patterns = patterns
+        @sort_union_types = sort_union_types
 
         @captured_dict = Hash.new { |h, k| h[k] = Hash.new { |hh, kk| hh[kk] = [] } }
       end
@@ -45,6 +46,7 @@ module Orthoses
 
         @captured_dict.each do |mod_name, captures|
           captures.each do |(kind, prefix, name), types|
+            types.sort! if @sort_union_types
             injected = Utils::TypeList.new(types).inject
             store[mod_name] << "#{kind} #{prefix}#{name}: #{injected}"
           end

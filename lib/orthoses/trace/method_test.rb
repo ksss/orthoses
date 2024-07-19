@@ -44,6 +44,15 @@ module TraceMethodTest
         end
       end
 
+      def multi_types(key)
+        {
+          0 => 0,
+          1 => '1',
+          '2' => '2',
+          '3' => 3,
+        }[key]
+      end
+
       private
 
       def priv(bool)
@@ -130,5 +139,61 @@ module TraceMethodTest
       raise rescue nil
       Orthoses::Utils.new_store
     }, patterns: ['TraceMethodTest']).call
+  end
+
+  def test_union_sort(t)
+    store1 = Orthoses::Trace::Method.new(-> {
+      LOADER_METHOD.call
+      m = M.new(100)
+      m.multi_types 0
+      m.multi_types 1
+      m.multi_types '2'
+      m.multi_types '3'
+
+      Orthoses::Utils.new_store
+    }, patterns: ['TraceMethodTest::M']).call
+
+    store2 = Orthoses::Trace::Method.new(-> {
+      LOADER_METHOD.call
+      m = M.new(100)
+      m.multi_types '3'
+      m.multi_types '2'
+      m.multi_types 1
+      m.multi_types 0
+
+      Orthoses::Utils.new_store
+    }, patterns: ['TraceMethodTest::M']).call
+
+    expect = store1.map { _2.to_rbs }.join("\n")
+    actual = store2.map { _2.to_rbs }.join("\n")
+    unless expect == actual
+      t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
+    end
+  end
+
+  def test_without_union_sort(t)
+    store = Orthoses::Trace::Method.new(-> {
+      LOADER_METHOD.call
+      m = M.new(100)
+                        # The order of the union types will be the following
+      m.multi_types '3' # (String) -> Integer
+      m.multi_types '2' # (String) -> String
+      m.multi_types 1   # (Integer) -> String
+      m.multi_types 0   # (Integer) -> Integer
+
+      Orthoses::Utils.new_store
+    }, patterns: ['TraceMethodTest::M'], sort_union_types: false).call
+
+    actual = store.map { _2.to_rbs }.join("\n")
+    expect = <<~RBS
+      class TraceMethodTest::M
+        private def initialize: (Integer a) -> void
+        def multi_types: (String key) -> (Integer | String)
+                       | (Integer key) -> (String | Integer)
+      end
+    RBS
+    unless expect == actual
+      t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
+    end
   end
 end

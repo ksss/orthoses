@@ -2,6 +2,9 @@ module Orthoses
   class Trace
     class Attribute
       include Orthoses::Trace::Targetable
+
+      def initialize: (Orthoses::_Call loader, patterns: Array[String], ?sort_union_types: bool?) -> void
+      def call: () -> Orthoses::store
     end
   end
 end
