@@ -10,9 +10,10 @@ end
 class Orthoses::Trace::Attribute
   @loader: untyped
   @patterns: untyped
+  @sort_union_types: untyped
   @captured_dict: untyped
-  def initialize: (untyped loader, patterns: untyped) -> void
-  def call: () -> untyped
+  def initialize: (Orthoses::_Call loader, patterns: Array[String], ?sort_union_types: bool?) -> void
+  def call: () -> Orthoses::store
   private def build_trace_hook: () -> untyped
   include Orthoses::Trace::Targetable
 end
@@ -30,11 +31,12 @@ end
 class Orthoses::Trace::Method
   @loader: untyped
   @patterns: untyped
+  @sort_union_types: untyped
   @stack: untyped
   @args_return_map: untyped
   @alias_map: untyped
-  def initialize: (untyped loader, patterns: untyped) -> void
-  def call: () -> untyped
+  def initialize: (Orthoses::_Call loader, patterns: Array[String], ?sort_union_types: bool?) -> void
+  def call: () -> Orthoses::store
   private def build_trace_point: () -> untyped
   private def build_members: () -> untyped
   private def build_method_definitions: () -> untyped

@@ -14,7 +14,6 @@ module TraceAttributeTest
 
       class Baz
         attr_accessor :multi_types
-        attr_accessor :other
       end
 
       attr_accessor :attr_acce_publ
@@ -59,9 +58,9 @@ module TraceAttributeTest
       class TraceAttributeTest::Foo
         attr_accessor attr_acce_priv: Integer
         attr_accessor attr_acce_publ: String | Symbol
-        attr_accessor self.self_attr_acce_publ: Integer?
         attr_reader attr_read_publ: Symbol
         attr_writer attr_writ_publ: Integer
+        attr_accessor self.self_attr_acce_publ: Integer?
       end
 
       class TraceAttributeTest::Foo::Bar
@@ -73,11 +72,10 @@ module TraceAttributeTest
     end
   end
 
-  def test_order(t)
+  def test_union_sort(t)
     store1 = Orthoses::Trace::Attribute.new(->{
       LOADER_ATTRIBUTE.call
       baz = Foo::Baz.new
-      baz.other = :sym
       baz.multi_types = 0
       baz.multi_types = '1'
 
@@ -89,13 +87,34 @@ module TraceAttributeTest
       baz = Foo::Baz.new
       baz.multi_types = '1'
       baz.multi_types = 0
-      baz.other = :sym
 
       Orthoses::Utils.new_store
     }, patterns: ['TraceAttributeTest::Foo::Baz']).call
 
     expect = store1.map { _2.to_rbs }.join("\n")
     actual = store2.map { _2.to_rbs }.join("\n")
+    unless expect == actual
+      t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
+    end
+  end
+
+  def test_without_union_sort(t)
+    store = Orthoses::Trace::Attribute.new(->{
+      LOADER_ATTRIBUTE.call
+      baz = Foo::Baz.new
+                            # The order of the union types will be the following
+      baz.multi_types = '1' # String
+      baz.multi_types = 0   # Integer
+
+      Orthoses::Utils.new_store
+    }, patterns: ['TraceAttributeTest::Foo::Baz'], sort_union_types: false).call
+
+    expect = store.map { _2.to_rbs }.join("\n")
+    actual = <<~RBS
+      class TraceAttributeTest::Foo::Baz
+        attr_accessor multi_types: String | Integer
+      end
+    RBS
     unless expect == actual
       t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
     end

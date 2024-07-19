@@ -95,13 +95,13 @@ module TraceMethodTest
     actual = store.map { |n, c| c.to_rbs }.join("\n")
     expect = <<~RBS
       class TraceMethodTest::M
+        private def initialize: (Integer a) -> void
         def a_ten: () -> Integer
         def b_ten: (Integer b) -> Integer
+        private def priv: (bool bool) -> (Integer | Symbol)
         def call_priv: (bool c) -> (Integer | Symbol)
         def dele: (*Array[bool] a, **Hash[untyped, untyped]) -> Integer
         def if_raise: (bool a) -> String
-        private def initialize: (Integer a) -> void
-        private def priv: (bool bool) -> (Integer | Symbol)
         def self.singleton_method?: () -> bool
         alias c_ten a_ten
         alias self.alias_singleton_method? self.singleton_method?
@@ -141,11 +141,10 @@ module TraceMethodTest
     }, patterns: ['TraceMethodTest']).call
   end
 
-  def test_order(t)
-    store1 = Orthoses::Trace::Method.new(->{
+  def test_union_sort(t)
+    store1 = Orthoses::Trace::Method.new(-> {
       LOADER_METHOD.call
       m = M.new(100)
-      m.a_ten
       m.multi_types 0
       m.multi_types 1
       m.multi_types '2'
@@ -154,20 +153,45 @@ module TraceMethodTest
       Orthoses::Utils.new_store
     }, patterns: ['TraceMethodTest::M']).call
 
-    store2 = Orthoses::Trace::Method.new(->{
+    store2 = Orthoses::Trace::Method.new(-> {
       LOADER_METHOD.call
       m = M.new(100)
       m.multi_types '3'
       m.multi_types '2'
       m.multi_types 1
       m.multi_types 0
-      m.a_ten
 
       Orthoses::Utils.new_store
     }, patterns: ['TraceMethodTest::M']).call
 
     expect = store1.map { _2.to_rbs }.join("\n")
     actual = store2.map { _2.to_rbs }.join("\n")
+    unless expect == actual
+      t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
+    end
+  end
+
+  def test_without_union_sort(t)
+    store = Orthoses::Trace::Method.new(-> {
+      LOADER_METHOD.call
+      m = M.new(100)
+                        # The order of the union types will be the following
+      m.multi_types '3' # (String) -> Integer
+      m.multi_types '2' # (String) -> String
+      m.multi_types 1   # (Integer) -> String
+      m.multi_types 0   # (Integer) -> Integer
+
+      Orthoses::Utils.new_store
+    }, patterns: ['TraceMethodTest::M'], sort_union_types: false).call
+
+    actual = store.map { _2.to_rbs }.join("\n")
+    expect = <<~RBS
+      class TraceMethodTest::M
+        private def initialize: (Integer a) -> void
+        def multi_types: (String key) -> (Integer | String)
+                       | (Integer key) -> (String | Integer)
+      end
+    RBS
     unless expect == actual
       t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
     end
