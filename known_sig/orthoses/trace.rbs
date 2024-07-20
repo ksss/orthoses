@@ -1,7 +1,7 @@
 module Orthoses
   class Trace
     interface _CallablePatterns
-      def call: (String, TracePoint) -> bool
+      def call: (String, TracePoint) -> boolish
     end
 
     def initialize: (Orthoses::_Call loader, patterns: Array[String] | _CallablePatterns, ?sort_union_types: bool?) -> void
