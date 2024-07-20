@@ -4,7 +4,7 @@ class Orthoses::Trace
   @loader: untyped
   @patterns: untyped
   @sort_union_types: untyped
-  def initialize: (Orthoses::_Call loader, patterns: Array[String | _CallablePatterns], ?sort_union_types: bool?) -> void
+  def initialize: (Orthoses::_Call loader, patterns: Array[String] | _CallablePatterns, ?sort_union_types: bool?) -> void
   def call: () -> Orthoses::store
 end
 
@@ -13,7 +13,7 @@ class Orthoses::Trace::Attribute
   @patterns: untyped
   @sort_union_types: untyped
   @captured_dict: untyped
-  def initialize: (Orthoses::_Call loader, patterns: Array[String | Orthoses::Trace::_CallablePatterns], ?sort_union_types: bool?) -> void
+  def initialize: (Orthoses::_Call loader, patterns: Array[String] | Orthoses::Trace::_CallablePatterns, ?sort_union_types: bool?) -> void
   def call: () -> Orthoses::store
   private def build_trace_hook: () -> untyped
   include Orthoses::Trace::Targetable
@@ -36,7 +36,7 @@ class Orthoses::Trace::Method
   @stack: untyped
   @args_return_map: untyped
   @alias_map: untyped
-  def initialize: (Orthoses::_Call loader, patterns: Array[String | Orthoses::Trace::_CallablePatterns], ?sort_union_types: bool?) -> void
+  def initialize: (Orthoses::_Call loader, patterns: Array[String] | Orthoses::Trace::_CallablePatterns, ?sort_union_types: bool?) -> void
   def call: () -> Orthoses::store
   private def build_trace_point: () -> untyped
   private def build_members: () -> untyped
@@ -53,5 +53,5 @@ module Orthoses::Trace::Targetable
 end
 
 interface Orthoses::Trace::_CallablePatterns
-  def call: (String, TracePoint) -> bool
+  def call: (String, TracePoint) -> boolish
 end
