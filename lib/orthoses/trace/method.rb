@@ -44,7 +44,7 @@ module Orthoses
               kind = :instance
             end
 
-            next unless target?(mod_name)
+            next unless target?(mod_name, tp)
 
             visibility = tp.self.private_methods.include?(tp.method_id) ? :private : nil
             key = [mod_name, kind, visibility, tp.method_id]
