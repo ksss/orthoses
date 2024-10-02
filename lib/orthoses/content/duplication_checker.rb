@@ -18,7 +18,9 @@ module Orthoses
         drop_known_method_definition
         drop_known_const_definition
 
-        @decl.members.replace(@uniq_map.values)
+        # HACK
+        new_members = @uniq_map.values
+        @decl.instance_eval { @members = new_members }
 
         @uniq_map.clear
       end
