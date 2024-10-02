@@ -34,21 +34,17 @@ gems:
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 436720a4e366323a5a5bf22d71abb9943663edd8
+    revision: f5f878b82e8a8d341b8630040bb1e006ace1ddd7
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: rbs
-  version: 3.5.1
+  version: 3.6.0
   source:
     type: rubygems
 - name: rdoc
   version: '0'
   source:
     type: stdlib
-- name: rgot
-  version: 1.4.0
-  source:
-    type: rubygems
 - name: tsort
   version: '0'
   source:
