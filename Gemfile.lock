@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    orthoses (1.14.0)
+    orthoses (1.15.0)
       rbs (~> 3.0)
 
 GEM
@@ -89,6 +89,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  arm64-darwin-23
   x86_64-darwin-21
   x86_64-linux
 
