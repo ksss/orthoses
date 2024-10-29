@@ -68,7 +68,7 @@ module Orthoses
       require 'rbs/sorter'
       sorter = ::RBS::Sorter.new(nil, stdout: nil)
       decl = to_decl
-      sorter.sort_decl!(decl)
+      decl = sorter.sort_decl(decl)
       lines = decl_to_lines(decl)
       @body.replace(lines)
     end
