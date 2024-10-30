@@ -13,6 +13,7 @@ module ConstantTest
     end
     class Baz
       CONST = 3
+      IGNORE_ME = Class.new
     end
   end
 
@@ -21,7 +22,7 @@ module ConstantTest
       Orthoses::Utils.new_store.tap do |store|
         store["ConstantTest"]
       end
-    }, strict: true).call
+    }, strict: true, if: -> (current, const, val, rbs) { const.to_s != "IGNORE_ME" }).call
 
     unless store.length == 8
       t.error("expect 8 constant decls, but got #{store.length}")

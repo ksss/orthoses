@@ -30,6 +30,7 @@ module Orthoses
             cache[[current, const]] = true
 
             if val.kind_of?(Module)
+              next unless @if.nil? || @if.call(current, const, val, nil)
               will_add_key_and_content << [Utils.module_name(val), nil]
               next
             end
