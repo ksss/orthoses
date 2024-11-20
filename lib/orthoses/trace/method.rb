@@ -34,18 +34,20 @@ module Orthoses
 
       def build_trace_point
         TracePoint.new(:call, :return, :raise) do |tp|
+          next unless tp.defined_class
+
+          if tp.defined_class.singleton_class?
+            mod_name = Utils.attached_module_name(tp.defined_class) or next
+            kind = :singleton
+          else
+            mod_name = Utils.module_name(tp.defined_class) or next
+            kind = :instance
+          end
+
+          next unless target?(mod_name)
+
           case tp.event
           when :call
-            if tp.defined_class.singleton_class?
-              mod_name = Utils.attached_module_name(tp.defined_class) or next
-              kind = :singleton
-            else
-              mod_name = Utils.module_name(tp.defined_class) or next
-              kind = :instance
-            end
-
-            next unless target?(mod_name)
-
             visibility = tp.self.private_methods.include?(tp.method_id) ? :private : nil
             key = [mod_name, kind, visibility, tp.method_id]
             op_name_types = tp.parameters.map do |op, name|

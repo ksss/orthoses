@@ -68,6 +68,12 @@ module TraceMethodTest
       def self.inspect = "it's customized"
       def self.a = 1
     end
+
+    module CallsOtherModule
+      def self.calls_other_module_method
+        "#{M.new(0).a_ten}"
+      end
+    end
   }
 
   def test_method(t)
@@ -190,6 +196,26 @@ module TraceMethodTest
         private def initialize: (Integer a) -> void
         def multi_types: (String key) -> (Integer | String)
                        | (Integer key) -> (String | Integer)
+      end
+    RBS
+    unless expect == actual
+      t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
+    end
+  end
+
+  def test_filtering(t)
+    store = Orthoses::Trace::Method.new(->{
+      LOADER_METHOD.call
+
+      CallsOtherModule.calls_other_module_method
+
+      Orthoses::Utils.new_store
+    }, patterns: ['TraceMethodTest::CallsOtherModule']).call
+
+    actual = store.map { |n, c| c.to_rbs }.join("\n")
+    expect = <<~RBS
+      module TraceMethodTest::CallsOtherModule
+        def self.calls_other_module_method: () -> String
       end
     RBS
     unless expect == actual
