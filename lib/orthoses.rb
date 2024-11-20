@@ -2,6 +2,7 @@
 
 require 'rbs'
 require 'pathname'
+require 'stringio'
 
 require 'orthoses/utils'
 

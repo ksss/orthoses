@@ -10,6 +10,7 @@ gem "rake", "~> 13.0"
 gem "rgot", "~> 1.1"
 gem "activesupport"
 gem "debug"
+gem "stringio"
 
 group :steep do
   gem "steep"
