@@ -16,6 +16,14 @@ task :minitest => :src do
     use Orthoses::Filter do |name, content|
       name.start_with?("Minitest") || name == "Kernel"
     end
+    use Orthoses::ExcludeRBS,
+      rbs: <<~RBS
+        module Kernel
+          RUBYGEMS_ACTIVATION_MONITOR: Monitor
+        end
+      RBS
+    use Orthoses::LoadRBS,
+      paths: ["known.rbs"]
     use Orthoses::Constant,
       strict: false,
       if: ->(current, const, val, rbs){
@@ -40,17 +48,17 @@ task :minitest => :src do
     }
   end.call
 
-  sh "rbs -r mutex_m -I #{out} validate --silent"
-  out.join("manifest.yaml").write <<~YAML
-    dependencies:
-      - name: mutex_m
-  YAML
+  # Remove dependency to rake
+  sh "rm out/minitest/test_task.rbs"
+
+  sh "rbs -I #{out} validate"
   tmp = out.join("kernel.rbs").read
   out.join("kernel.rbs").open("w") do |f|
     f.puts "%a{annotate:rdoc:skip}"
     f.write tmp
   end
-  sh "rbs annotate --gems out"
+  sh "rdoc --ri --output rdoc --root src src"
+  sh "rbs annotate --no-system --no-gems --no-site --no-home -d rdoc out"
 end
 
 task default: :minitest
