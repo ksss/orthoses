@@ -23,7 +23,8 @@ module Orthoses
 
       def build_module(entry:, name_hint: nil)
         primary = entry.primary
-        full_name = name_hint || primary.decl.name.relative!
+        context = build_context(entry: primary)
+        full_name = name_hint || @resolver.resolve(primary.decl.name, context: context) || primary.decl.name.relative!
 
         self_types =
           if primary.decl.self_types.empty?
