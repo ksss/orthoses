@@ -1,3 +1,8 @@
+begin
+  require 'test_helper'
+rescue LoadError
+end
+
 module EnvironmentTest
   def test_visibility(t)
     input = <<~RBS

@@ -60,7 +60,7 @@ module CreateFileByNameTest
     foo_expect = <<~CODE
       # header
 
-      module CreateFileByNameTest::Foo
+      module ::CreateFileByNameTest::Foo
         # foo
         def foo: () -> void
       end

@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+begin
+  require 'test_helper'
+rescue LoadError
+end
+
 module MissingNameTest
   LOADER = -> {
     class C0
@@ -27,13 +32,13 @@ module MissingNameTest
     unless store.has_key?("MissingNameTest::M1::M2")
       t.error("MissingNameTest::M1::M2 not found in store")
     end
-    unless store["MissingNameTest::M1::M2"].header == "module MissingNameTest::M1::M2"
+    unless store["MissingNameTest::M1::M2"].header == "module ::MissingNameTest::M1::M2"
       t.error("MissingNameTest::M1::M2 should be module")
     end
     unless store.has_key?("MissingNameTest::M1")
       t.error("MissingNameTest::M1 not found in store")
     end
-    unless store["MissingNameTest::M1"].header == "module MissingNameTest::M1"
+    unless store["MissingNameTest::M1"].header == "module ::MissingNameTest::M1"
       t.error("MissingNameTest::M1 should be module")
     end
     unless store.has_key?("MissingNameTest::C1::C2")
@@ -45,10 +50,10 @@ module MissingNameTest
     unless store.has_key?("MissingNameTest::C1")
       t.error("MissingNameTest::C1 not found in store")
     end
-    unless store["MissingNameTest::C1"].header == "class MissingNameTest::C1 < ::MissingNameTest::C0"
+    unless store["MissingNameTest::C1"].header == "class ::MissingNameTest::C1 < ::MissingNameTest::C0"
       t.error("MissingNameTest::C1 should be class. but got #{store["MissingNameTest::C1"].header }")
     end
-    unless store["MissingNameTest::C0"].header == "class MissingNameTest::C0"
+    unless store["MissingNameTest::C0"].header == "class ::MissingNameTest::C0"
       t.error("MissingNameTest::C0 should be class")
     end
     unless store.has_key?("MissingNameTest")

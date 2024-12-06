@@ -21,15 +21,15 @@ module Orthoses
 
       private
 
-      def resolve_full_name(entry:, name_hint:)
-        full_name = name_hint || entry.decl.name.relative!
+      def resolve_full_name(entry:)
+        full_name = entry.decl.name.relative!
         context = build_context(entry: entry)
         @resolver.resolve(full_name, context: context) || full_name
       end
 
       def build_module(entry:, name_hint: nil)
         primary = entry.primary
-        full_name = resolve_full_name(entry: primary, name_hint: name_hint)
+        full_name = name_hint || resolve_full_name(entry: primary)
 
         self_types =
           if primary.decl.self_types.empty?
@@ -43,7 +43,7 @@ module Orthoses
 
       def build_class(entry:, name_hint: nil)
         primary = entry.primary
-        full_name = resolve_full_name(entry: primary, name_hint: name_hint)
+        full_name = name_hint || resolve_full_name(entry: primary)
 
         "class #{name_and_params(full_name, primary.decl.type_params)}#{build_super_class(primary)}"
       end
@@ -66,7 +66,7 @@ module Orthoses
       end
 
       def build_interface(entry:, name_hint: nil)
-        full_name = resolve_full_name(entry: entry, name_hint: name_hint)
+        full_name = name_hint || resolve_full_name(entry: entry)
         "interface #{name_and_params(full_name.absolute!, entry.decl.type_params)}"
       end
 

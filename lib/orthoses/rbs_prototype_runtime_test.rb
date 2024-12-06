@@ -30,7 +30,7 @@ module RBSPrototypeRuntimeTest
       module RBSPrototypeRuntimeTest
       end
 
-      module RBSPrototypeRuntimeTest::T::M
+      module ::RBSPrototypeRuntimeTest::T::M
       end
 
       class RBSPrototypeRuntimeTest::T

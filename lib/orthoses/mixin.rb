@@ -44,8 +44,8 @@ module Orthoses
           next if mod_name.start_with?("Orthoses")
           next unless @if.nil? || @if.call(base_mod, how, mod)
 
-          store[mod_name].header = "module #{mod_name}"
-          content << "#{how} #{mod_name}#{type_params_sig(mod)}"
+          store[mod_name].header = "module ::#{mod_name}"
+          content << "#{how} ::#{mod_name}#{type_params_sig(mod)}"
         end
       end
 

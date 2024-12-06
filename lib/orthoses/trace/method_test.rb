@@ -100,7 +100,7 @@ module TraceMethodTest
 
     actual = store.map { |n, c| c.to_rbs }.join("\n")
     expect = <<~RBS
-      class TraceMethodTest::M
+      class ::TraceMethodTest::M
         private def initialize: (Integer a) -> void
         def a_ten: () -> Integer
         def b_ten: (Integer b) -> Integer
@@ -130,7 +130,7 @@ module TraceMethodTest
 
       actual = store.map { |n, c| c.to_rbs }.join("\n")
       expect = <<~RBS
-        class TraceMethodTest::CustomClassInspect
+        class ::TraceMethodTest::CustomClassInspect
           def self.a: () -> Integer
         end
       RBS
@@ -192,7 +192,7 @@ module TraceMethodTest
 
     actual = store.map { _2.to_rbs }.join("\n")
     expect = <<~RBS
-      class TraceMethodTest::M
+      class ::TraceMethodTest::M
         private def initialize: (Integer a) -> void
         def multi_types: (String key) -> (Integer | String)
                        | (Integer key) -> (String | Integer)
@@ -214,7 +214,7 @@ module TraceMethodTest
 
     actual = store.map { |n, c| c.to_rbs }.join("\n")
     expect = <<~RBS
-      module TraceMethodTest::CallsOtherModule
+      module ::TraceMethodTest::CallsOtherModule
         def self.calls_other_module_method: () -> String
       end
     RBS

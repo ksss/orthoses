@@ -27,7 +27,7 @@ module MixinTest
     ).call
 
     expect = <<~RBS
-      module MixinTest::Mod
+      module ::MixinTest::Mod
       end
     RBS
     actual = store["MixinTest::Mod"].to_rbs
@@ -36,11 +36,11 @@ module MixinTest
     end
 
     expect = <<~RBS
-      class MixinTest::Foo
-        prepend MixinTest::Mod
-        extend MixinTest::Mod
-        include MixinTest::Mod
-        include Enumerable[untyped]
+      class ::MixinTest::Foo
+        prepend ::MixinTest::Mod
+        extend ::MixinTest::Mod
+        include ::MixinTest::Mod
+        include ::Enumerable[untyped]
       end
     RBS
     actual = store["MixinTest::Foo"].to_rbs
@@ -50,8 +50,8 @@ module MixinTest
 
     actual = store["Object"].to_rbs
     expect = <<~RBS
-      class Object < ::BasicObject
-        include MixinTest::Mod
+      class ::Object < ::BasicObject
+        include ::MixinTest::Mod
       end
     RBS
     unless expect == actual

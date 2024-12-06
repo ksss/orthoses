@@ -41,26 +41,26 @@ module ContentTest
     actual = store.map { |_, v| v.to_rbs }.join("\n")
 
     expect = <<~RBS
-      class ContentTest::SuperIsPrivate
+      class ::ContentTest::SuperIsPrivate
       end
 
-      class ContentTest::Simple
+      class ::ContentTest::Simple
         CONST: Integer
       end
 
-      class ContentTest::WithSuper < ::Integer
+      class ::ContentTest::WithSuper < ::Integer
       end
 
-      class ContentTest::SuperClassIsNoName
+      class ::ContentTest::SuperClassIsNoName
       end
 
-      class Array[unchecked out Elem]
+      class ::Array[unchecked out Elem]
       end
 
-      interface _Foo
+      interface ::_Foo
       end
 
-      class ContentTest::Escape
+      class ::ContentTest::Escape
         def `a-b`: () -> void
         def self.`あいうえお`: () -> void
         def self?.`a_[]`: () -> void
