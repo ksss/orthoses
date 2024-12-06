@@ -55,16 +55,16 @@ module TraceAttributeTest
 
     actual = store.map { |n, c| c.to_rbs }.join("\n")
     expect = <<~RBS
-      class TraceAttributeTest::Foo
-        attr_accessor attr_acce_priv: Integer
-        attr_accessor attr_acce_publ: String | Symbol
-        attr_reader attr_read_publ: Symbol
-        attr_writer attr_writ_publ: Integer
-        attr_accessor self.self_attr_acce_publ: Integer?
+      class ::TraceAttributeTest::Foo
+        attr_accessor attr_acce_priv: ::Integer
+        attr_accessor attr_acce_publ: ::String | ::Symbol
+        attr_reader attr_read_publ: ::Symbol
+        attr_writer attr_writ_publ: ::Integer
+        attr_accessor self.self_attr_acce_publ: ::Integer?
       end
 
-      class TraceAttributeTest::Foo::Bar
-        attr_accessor attr_acce_publ: Regexp
+      class ::TraceAttributeTest::Foo::Bar
+        attr_accessor attr_acce_publ: ::Regexp
       end
     RBS
     unless expect == actual
@@ -111,8 +111,8 @@ module TraceAttributeTest
 
     expect = store.map { _2.to_rbs }.join("\n")
     actual = <<~RBS
-      class TraceAttributeTest::Foo::Baz
-        attr_accessor multi_types: String | Integer
+      class ::TraceAttributeTest::Foo::Baz
+        attr_accessor multi_types: ::String | ::Integer
       end
     RBS
     unless expect == actual

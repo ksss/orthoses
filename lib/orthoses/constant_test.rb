@@ -32,32 +32,32 @@ module ConstantTest
       content.to_rbs
     end.join("\n")
     expect = <<~RBS
-      module ConstantTest
+      module ::ConstantTest
         CONST: 0
       end
 
-      class ConstantTest::ConstSetClass < ::ConstantTest::StructClass
+      class ::ConstantTest::ConstSetClass < ::ConstantTest::StructClass
       end
 
-      module ConstantTest::Foo
+      module ::ConstantTest::Foo
         CONST: 1
       end
 
-      module ConstantTest::Foo::Bar
+      module ::ConstantTest::Foo::Bar
         CONST: 2
       end
 
-      class ConstantTest::Foo::Baz
+      class ::ConstantTest::Foo::Baz
         CONST: 3
       end
 
-      module ConstantTest::ModuleNew
+      module ::ConstantTest::ModuleNew
       end
 
-      class ConstantTest::NoSuperClass
+      class ::ConstantTest::NoSuperClass
       end
 
-      class ConstantTest::StructClass < ::Struct[untyped]
+      class ::ConstantTest::StructClass < ::Struct[untyped]
       end
     RBS
     unless expect == actual

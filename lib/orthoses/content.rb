@@ -94,7 +94,7 @@ module Orthoses
       return unless @header.nil?
 
       if interface?
-        self.header = "interface #{name}"
+        self.header = "interface ::#{name}"
         return
       end
 
@@ -102,9 +102,9 @@ module Orthoses
 
       case val
       when Class
-        self.header = "class #{Utils.module_name(val)}#{type_params(name)}#{build_super_class(val)}"
+        self.header = "class ::#{Utils.module_name(val)}#{type_params(name)}#{build_super_class(val)}"
       when Module
-        self.header = "module #{Utils.module_name(val)}#{type_params(name)}"
+        self.header = "module ::#{Utils.module_name(val)}#{type_params(name)}"
       else
         raise "#{val.inspect} is not class/module"
       end

@@ -25,7 +25,7 @@ module AttributeTest
     ).call
     actual = store["AttributeTest::Foo"].to_rbs
     expect = <<~RBS
-      class AttributeTest::Foo
+      class ::AttributeTest::Foo
         attr_reader attr: untyped
         attr_accessor attr_accessor: untyped
         attr_reader attr_reader: untyped

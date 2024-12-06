@@ -100,14 +100,14 @@ module TraceMethodTest
 
     actual = store.map { |n, c| c.to_rbs }.join("\n")
     expect = <<~RBS
-      class TraceMethodTest::M
-        private def initialize: (Integer a) -> void
-        def a_ten: () -> Integer
-        def b_ten: (Integer b) -> Integer
-        private def priv: (bool bool) -> (Integer | Symbol)
-        def call_priv: (bool c) -> (Integer | Symbol)
-        def dele: (*Array[bool] a, **Hash[untyped, untyped]) -> Integer
-        def if_raise: (bool a) -> String
+      class ::TraceMethodTest::M
+        private def initialize: (::Integer a) -> void
+        def a_ten: () -> ::Integer
+        def b_ten: (::Integer b) -> ::Integer
+        private def priv: (bool bool) -> (::Integer | ::Symbol)
+        def call_priv: (bool c) -> (::Integer | ::Symbol)
+        def dele: (*::Array[bool] a, **::Hash[untyped, untyped]) -> ::Integer
+        def if_raise: (bool a) -> ::String
         def self.singleton_method?: () -> bool
         alias c_ten a_ten
         alias self.alias_singleton_method? self.singleton_method?
@@ -130,8 +130,8 @@ module TraceMethodTest
 
       actual = store.map { |n, c| c.to_rbs }.join("\n")
       expect = <<~RBS
-        class TraceMethodTest::CustomClassInspect
-          def self.a: () -> Integer
+        class ::TraceMethodTest::CustomClassInspect
+          def self.a: () -> ::Integer
         end
       RBS
       unless expect == actual
@@ -192,10 +192,10 @@ module TraceMethodTest
 
     actual = store.map { _2.to_rbs }.join("\n")
     expect = <<~RBS
-      class TraceMethodTest::M
-        private def initialize: (Integer a) -> void
-        def multi_types: (String key) -> (Integer | String)
-                       | (Integer key) -> (String | Integer)
+      class ::TraceMethodTest::M
+        private def initialize: (::Integer a) -> void
+        def multi_types: (::String key) -> (::Integer | ::String)
+                       | (::Integer key) -> (::String | ::Integer)
       end
     RBS
     unless expect == actual
@@ -214,8 +214,8 @@ module TraceMethodTest
 
     actual = store.map { |n, c| c.to_rbs }.join("\n")
     expect = <<~RBS
-      module TraceMethodTest::CallsOtherModule
-        def self.calls_other_module_method: () -> String
+      module ::TraceMethodTest::CallsOtherModule
+        def self.calls_other_module_method: () -> ::String
       end
     RBS
     unless expect == actual
