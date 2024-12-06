@@ -90,7 +90,7 @@ module Orthoses
       case object
       when Class, Module
         if name = module_name(object)
-          "singleton(#{name})"
+          "singleton(::#{name})"
         else
           "untyped"
         end
@@ -98,7 +98,7 @@ module Orthoses
         if strict
           object.inspect
         else
-          module_name(object.class) || 'untyped'
+          "::#{module_name(object.class)}" || 'untyped'
         end
       when true, false
         if strict
@@ -110,16 +110,16 @@ module Orthoses
         "nil"
       when Set
         if object.empty?
-          "Set[untyped]"
+          "::Set[untyped]"
         else
           ary = object.map do |o|
             object_to_rbs(o, strict: strict)
           end
-          "Set[#{ary.uniq.join(' | ')}]"
+          "::Set[#{ary.uniq.join(' | ')}]"
         end
       when Array
         if object.empty?
-          "Array[untyped]"
+          "::Array[untyped]"
         else
           ary = object.map do |o|
             object_to_rbs(o, strict: strict)
@@ -127,29 +127,29 @@ module Orthoses
           if strict
             "[#{ary.join(', ')}]"
           else
-            "Array[#{TypeList.new(ary).inject}]"
+            "::Array[#{TypeList.new(ary).inject}]"
           end
         end
       when Hash
         if object.empty?
-          "Hash[untyped, untyped]"
+          "::Hash[untyped, untyped]"
         else
           if strict && object.keys.all? { |key| key.is_a?(Symbol) && /\A\w+\z/.match?(key) }
             "{ #{object.map { |k, v| "#{k}: #{object_to_rbs(v, strict: strict)}" }.join(', ')} }"
           else
             keys = object.keys.map { |k| object_to_rbs(k, strict: strict) }
             values = object.values.map { |v| object_to_rbs(v, strict: strict) }
-            "Hash[#{TypeList.new(keys).inject}, #{TypeList.new(values).inject}]"
+            "::Hash[#{TypeList.new(keys).inject}, #{TypeList.new(values).inject}]"
           end
         end
       when Range
         type = object_to_rbs(object.begin || object.end, strict: false)
-        "Range[#{type}]"
+        "::Range[#{type}]"
       when ARGF
         # see also https://github.com/ruby/rbs/pull/975
         'untyped'
       else
-        module_name(object.class) || 'untyped'
+        "::#{module_name(object.class)}" || 'untyped'
       end
     end
 
