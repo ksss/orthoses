@@ -21,10 +21,15 @@ module Orthoses
 
       private
 
+      def resolve_full_name(entry:)
+        full_name = entry.decl.name.relative!
+        context = build_context(entry: entry)
+        @resolver.resolve(full_name, context: context) || full_name
+      end
+
       def build_module(entry:, name_hint: nil)
         primary = entry.primary
-        context = build_context(entry: primary)
-        full_name = name_hint || @resolver.resolve(primary.decl.name, context: context) || primary.decl.name.relative!
+        full_name = name_hint || resolve_full_name(entry: primary).relative!
 
         self_types =
           if primary.decl.self_types.empty?
@@ -38,7 +43,7 @@ module Orthoses
 
       def build_class(entry:, name_hint: nil)
         primary = entry.primary
-        full_name = name_hint || primary.decl.name.relative!
+        full_name = name_hint || resolve_full_name(entry: primary).relative!
 
         "class #{name_and_params(full_name, primary.decl.type_params)}#{build_super_class(primary)}"
       end
@@ -61,10 +66,8 @@ module Orthoses
       end
 
       def build_interface(entry:, name_hint: nil)
-        full_name = name_hint || entry.decl.name.relative!
-        context = build_context(entry: entry)
-        resolved_name = @resolver.resolve(full_name, context: context) || full_name
-        "interface #{name_and_params(resolved_name.relative!, entry.decl.type_params)}"
+        full_name = name_hint || resolve_full_name(entry: entry).relative!
+        "interface #{name_and_params(full_name, entry.decl.type_params)}"
       end
 
       include RBS::Environment::ContextUtil

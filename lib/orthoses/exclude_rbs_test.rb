@@ -39,7 +39,7 @@ module ExcludeRBSTest
     ).call
 
     expect = <<~RBS
-      module ::ExcludeRBSTest::M1
+      module ExcludeRBSTest::M1
         def unknown_method: () -> void
 
         UNKNOWN_CONST: 1
