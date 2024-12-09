@@ -19,9 +19,9 @@ module HeaderBuilderTest
     header_builder = Orthoses::Content::HeaderBuilder.new(env: env)
 
     [
-      ["Foo", "module ::Foo"],
-      ["Foo::Bar", "module ::Foo::Bar"],
-      ["Foo::Bar::Baz", "module ::Foo::Bar::Baz"],
+      ["Foo", "module Foo"],
+      ["Foo::Bar", "module Foo::Bar"],
+      ["Foo::Bar::Baz", "module Foo::Bar::Baz"],
     ].each do |input_name, expect_header|
       entry = env.class_decls[TypeName(input_name).absolute!] or raise "#{input_name} not found"
       output_header = header_builder.build(entry: entry)
@@ -35,6 +35,8 @@ module HeaderBuilderTest
     env = Orthoses::Utils.rbs_environment(collection: false, cache: false)
     _, _, decls = RBS::Parser.parse_signature(<<~RBS)
       class Foo
+        class Bar
+        end
       end
 
       class Bar < Object
@@ -67,6 +69,7 @@ module HeaderBuilderTest
       ["Integer",           "class Integer < ::Numeric"],
       ["Array",             "class Array[unchecked out Elem]"],
       ["Foo",               "class Foo"],
+      ["Foo::Bar",          "class Foo::Bar"],
       ["Bar",               "class Bar"],
       ["Baz",               "class Baz < ::Bar"],
       ["Qux",               "class Qux < ::Struct[untyped]"],
