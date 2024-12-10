@@ -189,6 +189,11 @@ If it is unknown whether it is a class or a module, it is defined as an empty mo
 You can specify that the specified RBS should not be intentionally generated.
 This is useful when you want to exclude handwritten RBS.
 
+### Orthoses::ResolveTypeNames
+
+Call `RBS::Environment#resolve_type_names` and output.
+Using this middleware improves the efficiency of loading files after they are generated.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
