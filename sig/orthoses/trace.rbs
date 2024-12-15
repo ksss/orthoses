@@ -3,17 +3,19 @@
 class Orthoses::Trace
   @loader: untyped
   @patterns: untyped
+  @trace_point_filter: untyped
   @sort_union_types: untyped
-  def initialize: (Orthoses::_Call loader, patterns: Array[String] | _CallablePatterns, ?sort_union_types: bool?) -> void
+  def initialize: (Orthoses::_Call loader, patterns: Array[String], trace_point_filter: _CallableFilter?, ?sort_union_types: bool?) -> void
   def call: () -> Orthoses::store
 end
 
 class Orthoses::Trace::Attribute
   @loader: untyped
   @patterns: untyped
+  @trace_point_filter: untyped
   @sort_union_types: untyped
   @captured_dict: untyped
-  def initialize: (Orthoses::_Call loader, patterns: Array[String] | Orthoses::Trace::_CallablePatterns, ?sort_union_types: bool?) -> void
+  def initialize: (Orthoses::_Call loader, patterns: Array[String], trace_point_filter: Orthoses::Trace::_CallableFilter?, ?sort_union_types: bool?) -> void
   def call: () -> Orthoses::store
   private def build_trace_hook: () -> untyped
   include Orthoses::Trace::Targetable
@@ -32,11 +34,12 @@ end
 class Orthoses::Trace::Method
   @loader: untyped
   @patterns: untyped
+  @trace_point_filter: untyped
   @sort_union_types: untyped
   @stack: untyped
   @args_return_map: untyped
   @alias_map: untyped
-  def initialize: (Orthoses::_Call loader, patterns: Array[String] | Orthoses::Trace::_CallablePatterns, ?sort_union_types: bool?) -> void
+  def initialize: (Orthoses::_Call loader, patterns: Array[String], trace_point_filter: Orthoses::Trace::_CallableFilter?, ?sort_union_types: bool?) -> void
   def call: () -> Orthoses::store
   private def build_trace_point: () -> untyped
   private def build_members: () -> untyped
@@ -49,9 +52,9 @@ class Orthoses::Trace::Method::Info < ::Struct[untyped]
 end
 
 module Orthoses::Trace::Targetable
-  def target?: (untyped name, untyped tp) -> untyped
+  def target?: (untyped name) -> (false | untyped)
 end
 
-interface Orthoses::Trace::_CallablePatterns
-  def call: (String, TracePoint) -> boolish
+interface Orthoses::Trace::_CallableFilter
+  def call: (String) -> boolish
 end

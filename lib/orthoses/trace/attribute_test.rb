@@ -120,8 +120,8 @@ module TraceAttributeTest
     end
   end
 
-  def test_pattern_proc(t)
-    patterns = ->(name) { name == "TraceAttributeTest::Foo" }
+  def test_trace_point_filter(t)
+    trace_point_filter = ->(name) { name == "TraceAttributeTest::Foo" }
     store = Orthoses::Trace::Attribute.new(->{
       LOADER_ATTRIBUTE.call
       foo = Foo.new
@@ -129,7 +129,7 @@ module TraceAttributeTest
       Foo::Bar.new.attr_acce_publ = /reg/
 
       Orthoses::Utils.new_store
-    }, patterns: patterns).call
+    }, patterns: %w[*], trace_point_filter: trace_point_filter).call
 
     actual = store.map { |n, c| c.to_rbs }.join("\n")
     expect = <<~RBS
