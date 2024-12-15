@@ -121,7 +121,7 @@ module TraceAttributeTest
   end
 
   def test_pattern_proc(t)
-    patterns = ->(name, tp) { tp.self.name == "TraceAttributeTest::Foo" }
+    patterns = ->(name) { name == "TraceAttributeTest::Foo" }
     store = Orthoses::Trace::Attribute.new(->{
       LOADER_ATTRIBUTE.call
       foo = Foo.new

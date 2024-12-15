@@ -44,7 +44,7 @@ module Orthoses
             kind = :instance
           end
 
-          next unless target?(mod_name, tp)
+          next unless target?(mod_name)
 
           case tp.event
           when :call

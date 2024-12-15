@@ -3,9 +3,9 @@
 module Orthoses
   class Trace
     module Targetable
-      def target?(name, tp)
+      def target?(name)
         if @patterns.respond_to?(:call)
-          @patterns.call(name, tp)
+          @patterns.call(name)
         else
           @patterns.any? do |pattern|
             if pattern.end_with?("*")

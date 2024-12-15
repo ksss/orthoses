@@ -142,7 +142,7 @@ module TraceMethodTest
 
   def test_pattern_proc(t)
     # only non-private methods
-    patterns = ->(name, tp) { name == "TraceMethodTest::M" && !tp.self.private_methods.include?(tp.method_id) }
+    patterns = ->(name) { name == "TraceMethodTest::M" }
     store = Orthoses::Trace::Method.new(-> {
       LOADER_METHOD.call
 
@@ -156,7 +156,9 @@ module TraceMethodTest
     actual = store.map { |n, c| c.to_rbs }.join("\n")
     expect = <<~RBS
       class TraceMethodTest::M
+        private def initialize: (Integer a) -> void
         def a_ten: () -> Integer
+        private def priv: (bool bool) -> Integer
         def call_priv: (bool c) -> Integer
       end
     RBS
