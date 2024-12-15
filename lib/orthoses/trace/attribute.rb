@@ -23,9 +23,10 @@ module Orthoses
 
       include Targetable
 
-      def initialize(loader, patterns:, sort_union_types: true)
+      def initialize(loader, patterns:, trace_point_filter: nil, sort_union_types: true)
         @loader = loader
         @patterns = patterns
+        @trace_point_filter = trace_point_filter
         @sort_union_types = sort_union_types
 
         @captured_dict = Hash.new { |h, k| h[k] = Hash.new { |hh, kk| hh[kk] = [] } }
