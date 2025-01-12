@@ -33,7 +33,7 @@ module Orthoses
         if content.header && content.header.include?("<")
           _, superclass = content.header.split(/\s*<\s*/, 2)
           superclass.sub!(/\[.*/, "")
-          new_name = TypeName(superclass).relative!.to_s
+          new_name = RBS::TypeName.parse(superclass).relative!.to_s
           recur(@store[new_name])
         end
       end
@@ -60,7 +60,7 @@ module Orthoses
       def split_name(key_name)
         ret = []
 
-        type_name = TypeName(key_name).relative!
+        type_name = RBS::TypeName.parse(key_name).relative!
         if !Utils.rbs_defined_class?(type_name.to_s) && !@store.has_key?(type_name.to_s)
           ret << type_name.to_s
         end

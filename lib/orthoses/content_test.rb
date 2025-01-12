@@ -119,7 +119,7 @@ module ContentTest
     env.add_signature(buffer: buffer, directives: directives, decls: decls)
 
     begin
-      RBS::DefinitionBuilder.new(env: env.resolve_type_names).build_instance(TypeName("::ContentTest::Simple"))
+      RBS::DefinitionBuilder.new(env: env.resolve_type_names).build_instance(RBS::TypeName.parse("::ContentTest::Simple"))
     rescue => err
       t.error("\n```rbs\n#{store["ContentTest::Simple"].to_rbs}```\n#{err.inspect}")
     end

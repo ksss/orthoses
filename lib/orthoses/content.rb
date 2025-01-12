@@ -86,7 +86,7 @@ module Orthoses
 
     def auto_header
       env = Utils.rbs_environment
-      if entry = env.class_decls[TypeName(name).absolute!]
+      if entry = env.class_decls[RBS::TypeName.parse(name).absolute!]
         @header = Content::HeaderBuilder.new(env: env).build(entry: entry)
         return
       end
