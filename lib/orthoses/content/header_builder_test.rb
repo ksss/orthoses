@@ -23,7 +23,7 @@ module HeaderBuilderTest
       ["Foo::Bar", "module Foo::Bar"],
       ["Foo::Bar::Baz", "module Foo::Bar::Baz"],
     ].each do |input_name, expect_header|
-      entry = env.class_decls[TypeName(input_name).absolute!] or raise "#{input_name} not found"
+      entry = env.class_decls[RBS::TypeName.parse(input_name).absolute!] or raise "#{input_name} not found"
       output_header = header_builder.build(entry: entry)
       unless expect_header == output_header
         t.error("expect=#{expect_header}, but got #{output_header}")
@@ -77,7 +77,7 @@ module HeaderBuilderTest
       ["Aaa",               "class Aaa < Bbb"],
       ["SuperIsClassAlias", "class SuperIsClassAlias < ClassAlias"],
     ].each do |input_name, expect_header|
-      entry = env.class_decls[TypeName(input_name).absolute!] or raise "#{input_name} not found"
+      entry = env.class_decls[RBS::TypeName.parse(input_name).absolute!] or raise "#{input_name} not found"
       output_header = header_builder.build(entry: entry)
       unless expect_header == output_header
         t.error("expect=#{expect_header}, but got #{output_header}")
@@ -109,7 +109,7 @@ module HeaderBuilderTest
       ["_Foo", "interface _Foo"],
       ["_Bar", "interface _Bar[T]"],
     ].each do |input_name, expect_header|
-      entry = env.interface_decls[TypeName(input_name).absolute!] or raise "#{input_name} not found"
+      entry = env.interface_decls[RBS::TypeName.parse(input_name).absolute!] or raise "#{input_name} not found"
       output_header = header_builder.build(entry: entry)
       unless expect_header == output_header
         t.error("expect=#{expect_header}, but got #{output_header}")

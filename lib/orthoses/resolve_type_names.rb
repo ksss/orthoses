@@ -29,7 +29,7 @@ module Orthoses
         store.each do |name, content|
           out = StringIO.new
           writer = RBS::Writer.new(out: out)
-          type_name = TypeName(content.name).absolute!
+          type_name = RBS::TypeName.parse(content.name).absolute!
           entry = env.class_decls[type_name] || raise
           content.header = content_header(entry)
           entry.decls.each do |decl|

@@ -165,7 +165,7 @@ module Orthoses
     def self.module_to_type_name(mod)
       name = Utils.module_name(mod)
       if name && !name.empty?
-        TypeName(name)
+        RBS::TypeName.parse(name)
       else
         nil
       end
@@ -186,7 +186,7 @@ module Orthoses
       type_name =
         case name
         when String
-          TypeName(name).absolute!
+          RBS::TypeName.parse(name).absolute!
         when Module
           module_to_type_name(name).absolute!
         when RBS::TypeName

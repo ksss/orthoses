@@ -3,6 +3,7 @@
 require 'rbs'
 require 'pathname'
 require 'stringio'
+require_relative 'orthoses/shims'
 
 require 'orthoses/utils'
 

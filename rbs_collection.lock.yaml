@@ -34,14 +34,18 @@ gems:
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 443b2934235be3a76b9022b21764d06429ac6d7e
+    revision: 7651e7b92c15bd5b4bc11fd3dd455be0ea571fd0
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: rbs
-  version: 3.6.1
+  version: 3.8.1
   source:
     type: rubygems
 - name: rdoc
+  version: '0'
+  source:
+    type: stdlib
+- name: stringio
   version: '0'
   source:
     type: stdlib
