@@ -17,8 +17,10 @@ jobs:
           - '3.1'
           - '3.2'
           - '3.3'
+          - '3.4'
     env:
       BUNDLE_WITHOUT: steep
+      RUBYOPT: ${{ matrix.ruby == '3.4' && '--parser=parse.y' || '' }}
     steps:
     - uses: actions/checkout@v4
     - name: Set up Ruby
