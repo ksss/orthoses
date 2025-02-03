@@ -126,16 +126,16 @@ module CreateFileByNameTest
       to: "tmp",
       depth: {
         "A" => 2,
+        "*" => 1
       },
     ).call
 
     a = Pathname("tmp/a.rbs")
     aa = Pathname("tmp/a/a.rbs")
     b = Pathname("tmp/b.rbs")
-    bb = Pathname("tmp/b/b.rbs")
     c = Pathname("tmp/c.rbs")
 
-    [a, aa, b, bb, c].each do |file|
+    [a, aa, b, c].each do |file|
       unless file.exist?
         t.fatal("file not created `#{file}`")
       end
@@ -155,8 +155,7 @@ module CreateFileByNameTest
     b_expect = <<~RBS
       class B
       end
-    RBS
-    bb_expect = <<~RBS
+
       class B::B
       end
     RBS
@@ -169,7 +168,6 @@ module CreateFileByNameTest
       [a.read, a_expect],
       [aa.read, aa_expect],
       [b.read, b_expect],
-      [bb.read, bb_expect],
       [c.read, c_expect],
     ].each do |actual, expect|
       unless actual == expect
