@@ -77,7 +77,7 @@ module Orthoses
         name.split('::')[0, @depth].join('::')
       when Hash
         found_key, found_index = @depth.find do |n, _|
-          name.start_with?(n)
+          n == '*' || name.start_with?(n)
         end
         case found_index
         when nil
