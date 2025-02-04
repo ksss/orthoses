@@ -86,6 +86,7 @@ class Orthoses::Content::HeaderBuilder
   @resolver: untyped
   def initialize: (env: untyped) -> void
   def build: (entry: untyped, ?name_hint: untyped?) -> untyped
+  private def resolve_full_name: (entry: untyped) -> untyped
   private def build_module: (entry: untyped, ?name_hint: untyped?) -> ::String
   private def build_class: (entry: untyped, ?name_hint: untyped?) -> ::String
   private def build_super_class: (untyped primary) -> (nil | untyped)
