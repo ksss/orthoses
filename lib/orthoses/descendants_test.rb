@@ -13,7 +13,7 @@ module DescendantsTest
   class C < B
   end
   D = Class.new(A)
-  e = Class.new(A)
+  Class.new(A)
 
   def test_string(t)
     store = Orthoses::Descendants.new(
