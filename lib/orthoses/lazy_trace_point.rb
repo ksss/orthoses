@@ -25,7 +25,7 @@ module Orthoses
               h[mod_name]&.call(self, id)
             end
           end
-        rescue TypeError => e
+        rescue TypeError
         end
         super
       end
@@ -41,7 +41,7 @@ module Orthoses
               h[mod_name]&.call(self, id)
             end
           end
-        rescue TypeError => e
+        rescue TypeError
         end
       end
     end
