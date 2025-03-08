@@ -1,3 +1,5 @@
+require 'test_helper'
+
 module OutputableTest
   class Simple
     prepend Orthoses::Outputable

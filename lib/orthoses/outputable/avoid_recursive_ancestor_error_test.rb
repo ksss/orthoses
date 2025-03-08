@@ -1,3 +1,5 @@
+require 'test_helper'
+
 module AvoidRecursiveAncestorErrorTest
   def test_avoid_recursive_ancestor_error(t)
     store = Orthoses::Outputable::AvoidRecursiveAncestorError.new(->(){

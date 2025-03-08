@@ -1,6 +1,8 @@
 require 'tmpdir'
 require 'fileutils'
 
+require 'test_helper'
+
 module PathHelperTest
   def test_s_best_version_paths(t)
     Dir.mktmpdir do |dir|

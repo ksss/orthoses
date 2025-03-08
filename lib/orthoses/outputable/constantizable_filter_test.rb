@@ -1,3 +1,5 @@
+require 'test_helper'
+
 module ConstantizableTest
   def test_delete_if_error(t)
     store = Orthoses::Outputable::ConstantizableFilter.new(->(){

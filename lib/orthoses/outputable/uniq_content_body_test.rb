@@ -1,3 +1,5 @@
+require 'test_helper'
+
 module UniqContentBodyTest
   def test_uniq_content_body(t)
     store = Orthoses::Outputable::UniqContentBody.new(->(){

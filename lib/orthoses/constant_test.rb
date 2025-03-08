@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'test_helper'
+
 module ConstantTest
   CONST = 0
   StructClass = Struct.new(:foo)

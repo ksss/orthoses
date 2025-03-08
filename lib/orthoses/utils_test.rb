@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'test_helper'
+
 module UtilsTest
   def test_rbs_defined_const?(t)
     [

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'test_helper'
+
 module TapTest
   def test_tap(t)
     store = Orthoses::Builder.new do
