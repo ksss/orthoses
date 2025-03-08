@@ -61,12 +61,14 @@ module Orthoses
       if collection
         config_path = RBS::Collection::Config.find_config_path || RBS::Collection::Config::PATH || raise("needs rbs_collection.yaml")
         lock_path = RBS::Collection::Config.to_lockfile_path(config_path)
-        raise "needs rbs_collection.yaml file" unless lock_path.file?
-        lock = RBS::Collection::Config::Lockfile.from_lockfile(
-          lockfile_path: lock_path,
-          data: YAML.load_file(lock_path.to_s)
-        )
-        loader.add_collection(lock)
+        if lock_path.file?
+          loader.add_collection(RBS::Collection::Config::Lockfile.from_lockfile(
+            lockfile_path: lock_path,
+            data: YAML.load_file(lock_path.to_s)
+          ))
+        else
+          Orthoses.logger.debug("rbs_collection.lock.yaml not found in #{lock_path}")
+        end
       end
 
       case library
