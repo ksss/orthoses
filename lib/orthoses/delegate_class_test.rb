@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'test_helper'
+
 module DelegateClassTest
   def test_delegate_class(t)
     store = Orthoses::DelegateClass.new(->(){

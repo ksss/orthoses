@@ -1,3 +1,5 @@
+require 'test_helper'
+
 module LoadRBSTest
   def test_load_rbs_test(t)
     store = Orthoses::LoadRBS.new(

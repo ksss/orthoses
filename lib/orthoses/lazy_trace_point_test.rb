@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-begin
-  require 'test_helper'
-rescue LoadError
-end
+require 'test_helper'
 
 module LazyTracePointTest
   LOADER1 = ->{

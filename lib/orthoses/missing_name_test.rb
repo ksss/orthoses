@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'test_helper'
+
 module MissingNameTest
   LOADER = -> {
     class C0
@@ -10,6 +12,9 @@ module MissingNameTest
     end
     module M1
       module M2
+      end
+      class C3
+        extend M2
       end
     end
   }

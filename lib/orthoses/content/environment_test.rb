@@ -1,3 +1,5 @@
+require 'test_helper'
+
 module EnvironmentTest
   def test_visibility(t)
     input = <<~RBS

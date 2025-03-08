@@ -1,7 +1,4 @@
-begin
-  require 'test_helper'
-rescue LoadError
-end
+require 'test_helper'
 
 module DuplicationCheckerTest
   def test_update_decl(t)

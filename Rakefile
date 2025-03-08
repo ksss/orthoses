@@ -3,10 +3,10 @@
 require "bundler/gem_tasks"
 require "rgot/cli"
 
-task :test do
-  require 'orthoses'
-  Orthoses.logger.level = :error
-  exit Rgot::Cli.new(%w[-v lib integration_test]).run
+require "rake/testtask"
+Rake::TestTask.new do |task|
+  task.libs = %w[lib test]
+  task.test_files = FileList["lib/**/*_test.rb"]
 end
 
 desc "generate self signature to `sig` dir"
