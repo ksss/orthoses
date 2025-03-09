@@ -1,0 +1,10 @@
+module Orthoses
+  class Trace
+    interface _CallableFilter
+      def call: (String) -> boolish
+    end
+
+    def initialize: (Orthoses::_Call loader, patterns: Array[String], trace_point_filter: _CallableFilter?, ?sort_union_types: bool?) -> void
+    def call: () -> Orthoses::store
+  end
+end

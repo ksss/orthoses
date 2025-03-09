@@ -3,7 +3,7 @@ module Orthoses
     class Method
       include Orthoses::Trace::Targetable
 
-      def initialize: (Orthoses::_Call loader, patterns: Array[String], ?sort_union_types: bool?) -> void
+      def initialize: (Orthoses::_Call loader, patterns: Array[String], trace_point_filter: Orthoses::Trace::_CallableFilter?, ?sort_union_types: bool?) -> void
       def call: () -> Orthoses::store
     end
   end

@@ -142,6 +142,32 @@ module TraceMethodTest
     end
   end
 
+  def test_trace_point_filter(t)
+    trace_point_filter = ->(name) { name == "TraceMethodTest::M" }
+    store = Orthoses::Trace::Method.new(-> {
+      LOADER_METHOD.call
+
+      m = M.new(100)
+      m.a_ten
+      m.call_priv(true)
+
+      Orthoses::Utils.new_store
+    }, patterns: %w[*], trace_point_filter: trace_point_filter).call
+
+    actual = store.map { |n, c| c.to_rbs }.join("\n")
+    expect = <<~RBS
+      class TraceMethodTest::M
+        private def initialize: (Integer a) -> void
+        def a_ten: () -> Integer
+        private def priv: (bool bool) -> Integer
+        def call_priv: (bool c) -> Integer
+      end
+    RBS
+    unless expect == actual
+      t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
+    end
+  end
+
   def test_raise_first(t)
     Orthoses::Trace::Method.new(->{
       raise rescue nil

@@ -116,4 +116,27 @@ module TraceAttributeTest
       t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
     end
   end
+
+  def test_trace_point_filter(t)
+    trace_point_filter = ->(name) { name == "TraceAttributeTest::Foo" }
+    store = Orthoses::Trace::Attribute.new(->{
+      LOADER_ATTRIBUTE.call
+      foo = Foo.new
+      foo.attr_read_publ
+      Foo::Bar.new.attr_acce_publ = /reg/
+
+      Orthoses::Utils.new_store
+    }, patterns: %w[*], trace_point_filter: trace_point_filter).call
+
+    actual = store.map { |n, c| c.to_rbs }.join("\n")
+    expect = <<~RBS
+      class TraceAttributeTest::Foo
+        attr_accessor attr_acce_priv: Integer
+        attr_reader attr_read_publ: Symbol
+      end
+    RBS
+    unless expect == actual
+      t.error("expect=\n```rbs\n#{expect}```\n, but got \n```rbs\n#{actual}```\n")
+    end
+  end
 end
