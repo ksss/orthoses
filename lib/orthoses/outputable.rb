@@ -15,10 +15,18 @@ module Orthoses
   #     def call
   #       ...
   module Outputable
+    autoload :ResolveTypeNames, 'orthoses/outputable/resolve_type_names'
+
+    def initialize(loader, resolve_type_names: false, **)
+      @resolve_type_names = resolve_type_names
+      super(loader, **)
+    end
+
     def call
       @loader = AvoidRecursiveAncestorError.new(@loader)
       @loader = ConstantizableFilter.new(@loader)
       @loader = UniqContentBody.new(@loader)
+      @loader = ResolveTypeNames.new(@loader) if @resolve_type_names
       super
     end
   end

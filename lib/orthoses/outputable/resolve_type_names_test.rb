@@ -3,7 +3,7 @@ require 'test_helper'
 module ResolveTypeNamesTest
   def test_middleware(t)
     store = Orthoses::Builder.new do
-      use Orthoses::ResolveTypeNames
+      use Orthoses::Outputable::ResolveTypeNames
       use Orthoses::Tap do |store|
         store["Foo"].comment = "# Comment1\n# Comment2"
         store["Foo"].header = "class Foo"

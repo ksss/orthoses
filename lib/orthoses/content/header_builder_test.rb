@@ -16,9 +16,9 @@ module HeaderBuilderTest
     header_builder = Orthoses::Content::HeaderBuilder.new(env: env)
 
     [
-      ["Foo", "module Foo"],
-      ["Foo::Bar", "module Foo::Bar"],
-      ["Foo::Bar::Baz", "module Foo::Bar::Baz"],
+      ["Foo", "module ::Foo"],
+      ["Foo::Bar", "module ::Foo::Bar"],
+      ["Foo::Bar::Baz", "module ::Foo::Bar::Baz"],
     ].each do |input_name, expect_header|
       entry = env.class_decls[RBS::TypeName.parse(input_name).absolute!] or raise "#{input_name} not found"
       output_header = header_builder.build(entry: entry)
@@ -60,19 +60,19 @@ module HeaderBuilderTest
     header_builder = Orthoses::Content::HeaderBuilder.new(env: env)
 
     [
-      ["BasicObject",       "class BasicObject"],
-      ["Object",            "class Object < ::BasicObject"],
-      ["Random",            "class Random"],
-      ["Integer",           "class Integer < ::Numeric"],
-      ["Array",             "class Array[unchecked out Elem]"],
-      ["Foo",               "class Foo"],
-      ["Foo::Bar",          "class Foo::Bar"],
-      ["Bar",               "class Bar"],
-      ["Baz",               "class Baz < ::Bar"],
-      ["Qux",               "class Qux < ::Struct[untyped]"],
-      ["Quux",              "class Quux < ::Hash[String, Integer]"],
-      ["Aaa",               "class Aaa < Bbb"],
-      ["SuperIsClassAlias", "class SuperIsClassAlias < ClassAlias"],
+      ["BasicObject",       "class ::BasicObject"],
+      ["Object",            "class ::Object < ::BasicObject"],
+      ["Random",            "class ::Random"],
+      ["Integer",           "class ::Integer < ::Numeric"],
+      ["Array",             "class ::Array[unchecked out Elem]"],
+      ["Foo",               "class ::Foo"],
+      ["Foo::Bar",          "class ::Foo::Bar"],
+      ["Bar",               "class ::Bar"],
+      ["Baz",               "class ::Baz < ::Bar"],
+      ["Qux",               "class ::Qux < ::Struct[untyped]"],
+      ["Quux",              "class ::Quux < ::Hash[String, Integer]"],
+      ["Aaa",               "class ::Aaa < Bbb"],
+      ["SuperIsClassAlias", "class ::SuperIsClassAlias < ClassAlias"],
     ].each do |input_name, expect_header|
       entry = env.class_decls[RBS::TypeName.parse(input_name).absolute!] or raise "#{input_name} not found"
       output_header = header_builder.build(entry: entry)
@@ -101,10 +101,10 @@ module HeaderBuilderTest
     header_builder = Orthoses::Content::HeaderBuilder.new(env: env)
 
     [
-      ["Mod::_Foo", "interface Mod::_Foo"],
-      ["Mod::_Bar", "interface Mod::_Bar[T]"],
-      ["_Foo", "interface _Foo"],
-      ["_Bar", "interface _Bar[T]"],
+      ["Mod::_Foo", "interface ::Mod::_Foo"],
+      ["Mod::_Bar", "interface ::Mod::_Bar[T]"],
+      ["_Foo", "interface ::_Foo"],
+      ["_Bar", "interface ::_Bar[T]"],
     ].each do |input_name, expect_header|
       entry = env.interface_decls[RBS::TypeName.parse(input_name).absolute!] or raise "#{input_name} not found"
       output_header = header_builder.build(entry: entry)

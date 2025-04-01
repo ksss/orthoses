@@ -51,7 +51,7 @@ module ContentTest
       class ContentTest::SuperClassIsNoName
       end
 
-      class Array[unchecked out Elem]
+      class ::Array[unchecked out Elem]
       end
 
       interface _Foo

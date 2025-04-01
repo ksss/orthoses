@@ -15,6 +15,6 @@ class Orthoses::RBSPrototypeRuntime
   def call: () -> Orthoses::store
 end
 
-interface Orthoses::RBSPrototypeRuntime::_Call
+interface ::Orthoses::RBSPrototypeRuntime::_Call
   def call: () -> (Array[String] | String)
 end

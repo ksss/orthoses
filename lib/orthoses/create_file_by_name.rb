@@ -55,6 +55,10 @@ module Orthoses
         file_path = Pathname("#{@to}/#{group_name.split('::').map(&:underscore).join('/')}.rbs")
         file_path.dirname.mkpath
         file_path.open('w+') do |out|
+          if @resolve_type_names
+            out.puts "# resolve-type-names: false"
+            out.puts
+          end
           if @header
             out.puts @header
             out.puts

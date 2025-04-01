@@ -35,8 +35,9 @@ module ExcludeRBSTest
       RBS
     ).call
 
+    # RBS::Environment#insert_decl resolve namespace as root by default.
     expect = <<~RBS
-      module ExcludeRBSTest::M1
+      module ::ExcludeRBSTest::M1
         def unknown_method: () -> void
 
         UNKNOWN_CONST: 1
