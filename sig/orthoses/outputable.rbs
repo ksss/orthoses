@@ -1,7 +1,11 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
 module Orthoses::Outputable
+  @resolve_type_names: untyped
+
   @loader: untyped
+
+  def initialize: (untyped loader, ?resolve_type_names: bool, **untyped) -> void
 
   def call: () -> untyped
 end
@@ -21,6 +25,23 @@ class Orthoses::Outputable::ConstantizableFilter
   @loader: untyped
   def initialize: (untyped loader) -> void
   def call: () -> untyped
+end
+
+class Orthoses::Outputable::ResolveTypeNames
+  @loader: untyped
+  def initialize: (untyped loader) -> void
+  def call: () -> untyped
+  private def entry_and_members: (untyped env, untyped type_name) -> untyped
+  private def content_header: (untyped entry) -> untyped
+  private def class_header: (untyped decl) -> ::String
+  private def module_header: (untyped decl) -> ::String
+  private def interface_header: (untyped decl) -> ::String
+end
+
+module Orthoses::Outputable::ResolveTypeNames::WriterCopy
+  def name_and_args: (untyped name, untyped args) -> (::String | nil)
+
+  def name_and_params: (untyped name, untyped params) -> ::String
 end
 
 # UniqContentBody is an internal middleware
