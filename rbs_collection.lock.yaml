@@ -29,16 +29,24 @@ gems:
   version: '0'
   source:
     type: stdlib
+- name: pp
+  version: '0'
+  source:
+    type: stdlib
+- name: prettyprint
+  version: '0'
+  source:
+    type: stdlib
 - name: rake
   version: '13.0'
   source:
     type: git
     name: ruby/gem_rbs_collection
-    revision: 7651e7b92c15bd5b4bc11fd3dd455be0ea571fd0
+    revision: 61a28f2cc8fe29f87c6d9d7da03615f5f0289c36
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: rbs
-  version: 3.8.1
+  version: 3.9.2
   source:
     type: rubygems
 - name: rdoc
