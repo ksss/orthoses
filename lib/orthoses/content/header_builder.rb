@@ -29,7 +29,7 @@ module Orthoses
 
       def build_module(entry:, name_hint: nil)
         primary = entry.primary
-        full_name = name_hint || resolve_full_name(entry: primary).relative!
+        full_name = name_hint || resolve_full_name(entry: primary)
 
         self_types =
           if primary.decl.self_types.empty?
@@ -43,7 +43,7 @@ module Orthoses
 
       def build_class(entry:, name_hint: nil)
         primary = entry.primary
-        full_name = name_hint || resolve_full_name(entry: primary).relative!
+        full_name = name_hint || resolve_full_name(entry: primary)
 
         "class #{name_and_params(full_name, primary.decl.type_params)}#{build_super_class(primary)}"
       end
@@ -66,7 +66,7 @@ module Orthoses
       end
 
       def build_interface(entry:, name_hint: nil)
-        full_name = name_hint || resolve_full_name(entry: entry).relative!
+        full_name = name_hint || resolve_full_name(entry: entry)
         "interface #{name_and_params(full_name, entry.decl.type_params)}"
       end
 

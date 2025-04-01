@@ -5,9 +5,11 @@ class Orthoses::ResolveTypeNames
   @loader: untyped
   def initialize: (untyped loader) -> void
   def call: () -> untyped
+  private def entry_and_members: (untyped env, untyped type_name) -> untyped
   private def content_header: (untyped entry) -> untyped
   private def class_header: (untyped decl) -> ::String
   private def module_header: (untyped decl) -> ::String
+  private def interface_header: (untyped decl) -> ::String
 end
 
 module Orthoses::ResolveTypeNames::WriterCopy

@@ -47,7 +47,7 @@ module MixinTest
 
     actual = store["Object"].to_rbs
     expect = <<~RBS
-      class Object < ::BasicObject
+      class ::Object < ::BasicObject
         include MixinTest::Mod
       end
     RBS

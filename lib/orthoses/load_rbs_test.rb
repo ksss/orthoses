@@ -44,7 +44,7 @@ module LoadRBSTest
     end
 
     expect = <<~RBS
-      interface Orthoses::_Call
+      interface ::Orthoses::_Call
         def call: () -> Orthoses::store
       end
     RBS
@@ -54,7 +54,7 @@ module LoadRBSTest
     end
 
     expect = <<~RBS
-      interface Orthoses::_MiddleWare
+      interface ::Orthoses::_MiddleWare
         include Orthoses::_Call
       end
     RBS

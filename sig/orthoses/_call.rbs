@@ -1,5 +1,5 @@
 # THIS IS GENERATED CODE from `$ rake sig`
 
-interface Orthoses::_Call
+interface ::Orthoses::_Call
   def call: () -> Orthoses::store
 end
