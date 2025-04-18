@@ -31,6 +31,7 @@ module Orthoses
             writer = RBS::Writer.new(out: out)
             type_name = RBS::TypeName.parse(content.name).absolute!
             entry, members = entry_and_members(env, type_name)
+            raise "Cannot fetch entry for #{type_name}" unless entry && members
             content.header = content_header(entry)
             members.each do |member|
               writer.write_member(member)
@@ -44,19 +45,11 @@ module Orthoses
 
       def entry_and_members(env, type_name)
         if type_name.class?
-          env.class_decls[type_name]&.then do |entry|
-            [entry, entry.decls.flat_map { |decl| decl.decl.members }]
-          end
+          entry = env.class_decls[type_name] or return
+          [entry, entry.decls.flat_map { |decl| decl.decl.members }]
         elsif type_name.interface?
-          env.interface_decls[type_name]&.then do |entry|
-            [entry, [entry.decl.members]]
-          end
-        end.then do |entry, members|
-          unless entry
-            Orthoses.logger.warn "No entry for #{type_name}"
-            return
-          end
-          [entry, members]
+          entry = env.interface_decls[type_name] or return
+          [entry, entry.decl.members]
         end
       end
 
@@ -93,12 +86,10 @@ module Orthoses
 
       module WriterCopy
         def name_and_args(name, args)
-          if name && args
-            if args.empty?
-              "#{name}"
-            else
-              "#{name}[#{args.join(", ")}]"
-            end
+          if args.empty?
+            "#{name}"
+          else
+            "#{name}[#{args.join(", ")}]"
           end
         end
 

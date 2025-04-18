@@ -13,6 +13,10 @@ module ResolveTypeNamesTest
 
         store["Bar"].comment = "# Comment3\n# Comment4"
         store["Bar"].header = "class Bar  < Foo"
+
+        store["Foo::_Baz"].header = "interface Foo::_Baz"
+        store["Foo::_Baz"].comment = "# Comment5\n# Comment6"
+        store["Foo::_Baz"] << "def baz: () -> String"
       end
       run -> () {}
     end.call
@@ -31,6 +35,12 @@ module ResolveTypeNamesTest
       # Comment3
       # Comment4
       class ::Bar < ::Foo
+      end
+
+      # Comment5
+      # Comment6
+      interface ::Foo::_Baz
+        def baz: () -> ::String
       end
     RBS
     unless expect == actual
