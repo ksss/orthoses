@@ -28,20 +28,22 @@ class Orthoses::Outputable::ConstantizableFilter
 end
 
 class Orthoses::Outputable::ResolveTypeNames
-  @loader: untyped
-  def initialize: (untyped loader) -> void
-  def call: () -> untyped
-  private def entry_and_members: (untyped env, untyped type_name) -> untyped
-  private def content_header: (untyped entry) -> untyped
-  private def class_header: (untyped decl) -> ::String
-  private def module_header: (untyped decl) -> ::String
-  private def interface_header: (untyped decl) -> ::String
+  @loader: Orthoses::_Call
+  def initialize: (Orthoses::_Call loader) -> void
+  def call: () -> Orthoses::store
+  private def entry_and_members: (RBS::Environment, RBS::TypeName) -> ([ RBS::Environment::ModuleEntry | RBS::Environment::ClassEntry, ::Array[::RBS::AST::Members::t | ::RBS::AST::Declarations::t] ] | [ RBS::Environment::InterfaceEntry, ::Array[::RBS::AST::Declarations::Interface::member] ] | nil)
+  private def content_header: (entry) -> String
+  private def class_header: (::RBS::AST::Declarations::Class) -> String
+  private def module_header: (::RBS::AST::Declarations::Module) -> String
+  private def interface_header: (::RBS::AST::Declarations::Interface) -> String
+  type entry = RBS::Environment::ModuleEntry | RBS::Environment::ClassEntry | RBS::Environment::InterfaceEntry
+  include WriterCopy
 end
 
 module Orthoses::Outputable::ResolveTypeNames::WriterCopy
-  def name_and_args: (untyped name, untyped args) -> (::String | nil)
+  def name_and_args: (::RBS::TypeName, ::Array[::RBS::Types::t]) -> String
 
-  def name_and_params: (untyped name, untyped params) -> ::String
+  def name_and_params: (::RBS::TypeName, ::Array[::RBS::AST::TypeParam]) -> String
 end
 
 # UniqContentBody is an internal middleware
