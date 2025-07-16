@@ -10,4 +10,5 @@ class Orthoses::ExcludeRBS
   def initialize: (untyped loader, ?paths: untyped?, ?rbs: untyped?) -> void
   def call: () -> untyped
   def add_signature_to_known_env: (untyped rbs) -> untyped
+  def rebuild_environment: () -> untyped
 end
