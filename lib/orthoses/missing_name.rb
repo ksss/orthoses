@@ -51,7 +51,7 @@ module Orthoses
         end
         missings.uniq!
         missings.each do |missing|
-          @store[missing].header = "module #{missing}"
+          @store[missing]
         end
       end
 

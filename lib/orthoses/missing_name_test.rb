@@ -17,6 +17,10 @@ module MissingNameTest
         extend M2
       end
     end
+    class CC
+      module MM
+      end
+    end
   }
   def test_missing_name(t)
     store = Orthoses::MissingName.new(
@@ -25,9 +29,14 @@ module MissingNameTest
         Orthoses::Utils.new_store.tap do |store|
           store["MissingNameTest::M1::M2"] << "CONST: 1"
           store["MissingNameTest::C1::C2"].header = "class MissingNameTest::C1::C2 < ::MissingNameTest::C1"
+          store["MissingNameTest::CC::MM"]
         end
       }
     ).call
+
+    store.each do |_, content|
+      content.auto_header
+    end
 
     unless store.has_key?("MissingNameTest::M1::M2")
       t.error("MissingNameTest::M1::M2 not found in store")
@@ -58,6 +67,12 @@ module MissingNameTest
     end
     unless store.has_key?("MissingNameTest")
       t.error("MissingNameTest not found in store")
+    end
+    unless store["MissingNameTest::CC::MM"].header == "module MissingNameTest::CC::MM"
+      t.error("MissingNameTest::CC::MM should be module")
+    end
+    unless store["MissingNameTest::CC"].header == "class MissingNameTest::CC"
+      t.error("MissingNameTest::CC should be class")
     end
   end
 end
