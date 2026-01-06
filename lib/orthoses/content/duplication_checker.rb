@@ -37,7 +37,7 @@ module Orthoses
             drop_member = @uniq_map[key]
             @uniq_map[key] = member
             if drop_member
-              Orthoses.logger.info("#{@decl.name} \"#{member.location.source}\" was droped since duplication")
+              Orthoses.logger.info("#{@decl.name} \"#{member.location.source}\" was dropped since duplication")
             end
           end
         end
